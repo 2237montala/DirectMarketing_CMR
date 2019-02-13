@@ -1,3 +1,4 @@
+#https://sebastianraschka.com/Articles/2014_sqlite_in_python_tutorial.html
 import sqlite3
 
 sqlite_file = 'my_first_db.sqlite'
