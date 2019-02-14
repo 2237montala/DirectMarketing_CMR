@@ -57,7 +57,7 @@ def main():
             print(name,value)
 
         for row in csvreader:
-            rows.append(searchRow(reqHeaders,next(csvreader)))
+            rows.append(searchRow(reqHeaders,row))
 
         print(rows[0])
         print(rows[1])
