@@ -4,10 +4,12 @@ class Ingestor:
 
 
 
-        reqHeaders={"Site Address":-1,"Site City":-1,"Site Zip Code":-1}
+        reqHeaders=listToDict(requiredHeaders,-1)
 
-    def listToDict(self,list,dict):
+    def listToDict(self,list,defaultVal):
         dict = {}
 
         for item in list:
             dict[item] = -1
+
+        return dict
