@@ -32,6 +32,14 @@ def getHeaderIndex(headerDic,fieldsList):
 
     return headerDic
 
+def searchRow(headerDic, unfilteredRow):
+    filteredRow = []
+
+    for header in headerDic:
+        filteredRow.append(unfilteredRow[headerDic[header]])
+
+    return filteredRow
+
 def main():
     filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
     rows = []
@@ -41,15 +49,6 @@ def main():
     with open(filename, 'r') as csvfile:
         csvreader = csv.reader(csvfile)
         fields = next(csvreader)
-
-        # for header in reqHeaders:
-        #     count = 0
-        #     for field in fields:
-        #         if field.upper() == header.upper():
-        #             reqHeaders[header] = count
-        #         else:
-        #             count = count + 1
-
         reqHeaders = getHeaderIndex(reqHeaders,fields)
 
         print("Number of headers: %d" % len(fields))
@@ -58,6 +57,15 @@ def main():
             print(name,value)
 
         for row in csvreader:
-            rows.append(row)
+            rows.append(searchRow(reqHeaders,next(csvreader)))
 
-        print("Total no. of rows: %d"%(csvreader.line_num))
+        print(rows[0])
+        print(rows[1])
+        print(rows[2])
+        print(rows[3])
+        #for row in csvreader:
+        #    rows.append(row)
+        #print("Total no. of rows: %d"%(csvreader.line_num))
+
+#Run main method
+main()
