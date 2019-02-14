@@ -21,15 +21,43 @@
 #https://www.geeksforgeeks.org/working-csv-files-python/
 import csv
 
-filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
-row = []
-fields = []
+def getHeaderIndex(headerDic,fieldsList):
+    for header in headerDic:
+        count = 0
+        for field in fieldsList:
+            if field.upper() == header.upper():
+                headerDic[header] = count
+            else:
+                count = count + 1
 
-with open(filename, 'r') as csvfile:
-    csvreader = csv.reader(csvfile)
-    fields = csvreader.next()
+    return headerDic
 
-    for row in csvreader:
-        rows.append(row)
+def main():
+    filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
+    rows = []
+    fields = []
+    reqHeaders={"Site Address":-1,"Site City":-1,"Site Zip Code":-1}
 
-    print("Total no. of rows: %d"%(csvreader.line_num))
+    with open(filename, 'r') as csvfile:
+        csvreader = csv.reader(csvfile)
+        fields = next(csvreader)
+
+        # for header in reqHeaders:
+        #     count = 0
+        #     for field in fields:
+        #         if field.upper() == header.upper():
+        #             reqHeaders[header] = count
+        #         else:
+        #             count = count + 1
+
+        reqHeaders = getHeaderIndex(reqHeaders,fields)
+
+        print("Number of headers: %d" % len(fields))
+
+        for name, value in reqHeaders.items():
+            print(name,value)
+
+        for row in csvreader:
+            rows.append(row)
+
+        print("Total no. of rows: %d"%(csvreader.line_num))
