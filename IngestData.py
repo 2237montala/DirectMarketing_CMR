@@ -21,48 +21,55 @@
 #https://www.geeksforgeeks.org/working-csv-files-python/
 import csv
 
-def getHeaderIndex(headerDic,fieldsList):
-    for header in headerDic:
-        count = 0
-        for field in fieldsList:
-            if field.upper() == header.upper():
-                headerDic[header] = count
-            else:
-                count = count + 1
-
-    return headerDic
-
-def searchRow(headerDic, unfilteredRow):
-    filteredRow = []
-
-    for header in headerDic:
-        filteredRow.append(unfilteredRow[headerDic[header]])
-
-    return filteredRow
+# def getHeaderIndex(headerDic,fieldsList):
+#     for header in headerDic:
+#         count = 0
+#         for field in fieldsList:
+#             if field.upper() == header.upper():
+#                 headerDic[header] = count
+#             else:
+#                 count = count + 1
+#
+#     return headerDic
+#
+# def searchRow(headerDic, unfilteredRow):
+#     filteredRow = []
+#
+#     for header in headerDic:
+#         filteredRow.append(unfilteredRow[headerDic[header]])
+#
+#     return filteredRow
+from Ingestor import Ingestor
 
 def main():
     filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
-    rows = []
-    fields = []
+    #rows = []
+    #fields = []
     reqHeaders={"Site Address":-1,"Site City":-1,"Site Zip Code":-1}
+    ingestor = Ingestor(filename, reqHeaders)
 
-    with open(filename, 'r') as csvfile:
-        csvreader = csv.reader(csvfile)
-        fields = next(csvreader)
-        reqHeaders = getHeaderIndex(reqHeaders,fields)
+    ingestor.readCSV()
 
-        print("Number of headers: %d" % len(fields))
-
-        for name, value in reqHeaders.items():
-            print(name,value)
-
-        for row in csvreader:
-            rows.append(searchRow(reqHeaders,row))
-
-        print(rows[0])
-        print(rows[1])
-        print(rows[2])
-        print(rows[3])
+    print(ingestor.getRow(0))
+    for person in ingestor.getRows():
+        print(person)
+    # with open(filename, 'r') as csvfile:
+    #     csvreader = csv.reader(csvfile)
+    #     fields = next(csvreader)
+    #     reqHeaders = getHeaderIndex(reqHeaders,fields)
+    #
+    #     print("Number of headers: %d" % len(fields))
+    #
+    #     for name, value in reqHeaders.items():
+    #         print(name,value)
+    #
+    #     for row in csvreader:
+    #         rows.append(searchRow(reqHeaders,row))
+    #
+    #     print(rows[0])
+    #     print(rows[1])
+    #     print(rows[2])
+    #     print(rows[3])
         #for row in csvreader:
         #    rows.append(row)
         #print("Total no. of rows: %d"%(csvreader.line_num))
