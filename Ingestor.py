@@ -1,7 +1,7 @@
 import csv
 
 class Ingestor:
-    def __init__(self,fileLocation,srchCritera ):
+    def __init__(self,fileLocation,srchCritera):
         self.filename = fileLocation
         self.searchCritera=self.listToDict(srchCritera,-1)
         self.rows = []
@@ -14,6 +14,11 @@ class Ingestor:
             dict[item] = -1
 
         return dict
+
+    #Make opening the csv and reading the rows 3 different method
+    def openCSVFile(self):
+    def readInHeaders(self):
+    def readInRowData(self):
 
     def readCSV(self):
         with open(self.filename, 'r') as csvfile:
@@ -42,8 +47,17 @@ class Ingestor:
 
         return filteredRow
 
+    def getCritera(self):
+        return self.searchCritera
+
     def getRows(self):
         return self.rows
 
     def getRow(self, index):
         return self.rows[index]
+
+    def getNumberOfRow(self):
+        return len(self.rows)
+
+    def getNumberOfCritera(self):
+        return len(self.searchCritera)
