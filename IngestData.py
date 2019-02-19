@@ -43,36 +43,20 @@ from Ingestor import Ingestor
 
 def main():
     filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
-    #rows = []
-    #fields = []
-    reqHeaders={"Site Address":-1,"Site City":-1,"Site Zip Code":-1}
-    ingestor = Ingestor(filename, reqHeaders)
-
+    ingestor = Ingestor(filename)
     ingestor.readCSV()
 
-    print(ingestor.getRow(0))
-    for person in ingestor.getRows():
-        print(person)
-    # with open(filename, 'r') as csvfile:
-    #     csvreader = csv.reader(csvfile)
-    #     fields = next(csvreader)
-    #     reqHeaders = getHeaderIndex(reqHeaders,fields)
-    #
-    #     print("Number of headers: %d" % len(fields))
-    #
-    #     for name, value in reqHeaders.items():
-    #         print(name,value)
-    #
-    #     for row in csvreader:
-    #         rows.append(searchRow(reqHeaders,row))
-    #
-    #     print(rows[0])
-    #     print(rows[1])
-    #     print(rows[2])
-    #     print(rows[3])
-        #for row in csvreader:
-        #    rows.append(row)
-        #print("Total no. of rows: %d"%(csvreader.line_num))
+    print(ingestor.getHeaders())
+    tempHeaders = ingestor.getHeaders()
+    searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5],tempHeaders[6],tempHeaders[22]]
+    print(searchCritera)
+    dict = ingestor.getHeaderIndex(ingestor.listToDict(searchCritera,-1),tempHeaders)
+    print(dict)
+
+    print(ingestor.getRow(1))
+    ingestor.trimRows(dict,ingestor.getRows())
+    print(ingestor.getRow(1))
+
 
 #Run main method
 main()
