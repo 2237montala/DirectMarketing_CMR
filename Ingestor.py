@@ -59,16 +59,16 @@ class Ingestor:
     def getRows(self):
         return self.rows
 
-    def getRow(self, index):
+    def getRowAt(self, index):
         return self.rows[index]
 
-    def getNumberOfRow(self):
+    def getNumberOfRows(self):
         return len(self.rows)
 
-    def getNumberOfCritera(self):
-        return len(self.searchCritera)
+    def getNumberOfHeaders(self):
+        return len(self.headers)
 
-    def getHeaders(self):
+    def getCSVHeaders(self):
         return self.headers
 
     def getFileLoc(self):
@@ -80,26 +80,3 @@ class Ingestor:
             return True
         else:
             return False
-
-#THIS CODE DOESNT WORK
-#Python doesn't keep file open after exiting with open line
-# #Make opening the csv and reading the rows 3 different method
-# def openCSVFile(self,fName):
-#     if os.path.exists(fName):
-#         try:
-#             with open(fName, 'r') as csvfile:
-#                 self.csvReader = csv.reader(csvfile)
-#         except IOERROR:
-#             return False
-#         return True
-#     else:
-#         return False
-#
-# def readInHeaders(self):
-#     headers = next(self.csvReader)
-#     return headers
-#
-# def readInRowData(self,searchCritera):
-#     self.searchCritera = self.getHeaderIndex(searchCritera,fields)
-#     for row in self.csvreader:
-#         self.rows.append(self.searchRow(self.searchCritera,row))
