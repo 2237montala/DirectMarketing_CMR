@@ -4,17 +4,14 @@ import os
 class Ingestor:
     def __init__(self,fileLocation):
         self.filename = fileLocation
-        #self.searchCritera=self.listToDict(srchCritera,-1)
         self.rows = []
         self.headers = []
 
 
     def listToDict(self,list,defaultVal):
         dict = {}
-
         for item in list:
             dict[item] = -1
-
         return dict
 
     def readCSV(self):
@@ -35,12 +32,10 @@ class Ingestor:
                     break
                 else:
                     count = count + 1
-
         return headerDic
 
     def searchRow(self,headerDic, unfilteredRow):
         filteredRow = []
-
         for header in headerDic:
             filteredRow.append(unfilteredRow[headerDic[header]])
 
@@ -71,6 +66,7 @@ class Ingestor:
         return self.headers
 
 #THIS CODE DOESNT WORK
+#Python doesn't keep file open after exiting with open line
 # #Make opening the csv and reading the rows 3 different method
 # def openCSVFile(self,fName):
 #     if os.path.exists(fName):

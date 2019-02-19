@@ -49,7 +49,6 @@ def main():
     print(ingestor.getHeaders())
     tempHeaders = ingestor.getHeaders()
     searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5],tempHeaders[6],tempHeaders[22]]
-    print(searchCritera)
     dict = ingestor.getHeaderIndex(ingestor.listToDict(searchCritera,-1),tempHeaders)
     print(dict)
 
