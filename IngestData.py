@@ -19,26 +19,6 @@
 
 #print(currSheetDims)
 #https://www.geeksforgeeks.org/working-csv-files-python/
-import csv
-
-# def getHeaderIndex(headerDic,fieldsList):
-#     for header in headerDic:
-#         count = 0
-#         for field in fieldsList:
-#             if field.upper() == header.upper():
-#                 headerDic[header] = count
-#             else:
-#                 count = count + 1
-#
-#     return headerDic
-#
-# def searchRow(headerDic, unfilteredRow):
-#     filteredRow = []
-#
-#     for header in headerDic:
-#         filteredRow.append(unfilteredRow[headerDic[header]])
-#
-#     return filteredRow
 from Ingestor import Ingestor
 
 def main():
@@ -47,18 +27,25 @@ def main():
     ingestor.readCSV()
 
     print("Header of csv file")
-    print(ingestor.getHeaders())
-    tempHeaders = ingestor.getHeaders()
+    print(ingestor.getCSVHeaders())
+    tempHeaders = ingestor.getCSVHeaders()
     searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5],tempHeaders[6],tempHeaders[22]]
+
     dict = ingestor.getHeaderIndex(ingestor.listToDict(searchCritera,-1),tempHeaders)
     print("\nDictionary of search critera and their indexes in the csv")
     print(dict)
 
     print("\nPrint raw list from csv")
-    print(ingestor.getRow(1))
+    print(ingestor.getRowAt(1))
     ingestor.trimRows(dict,ingestor.getRows())
     print("\nPrint filtered list from unfiltered row")
-    print(ingestor.getRow(1))
+    print(ingestor.getRowAt(1))
+
+    print("\nNumber of columns")
+    print(ingestor.getNumberOfHeaders())
+
+    print("\nNumber of rows")
+    print(ingestor.getNumberOfRows())
 
     print("\nUpdating file to a csv in project folder names newList.csv. Expected:False")
     print(ingestor.updateFileLoc("/home/anthonym/Documents/SchoolWork/SoftwareEngineering/newList.csv"))
