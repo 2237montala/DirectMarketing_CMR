@@ -43,36 +43,27 @@ from Ingestor import Ingestor
 
 def main():
     filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
-    #rows = []
-    #fields = []
-    reqHeaders={"Site Address":-1,"Site City":-1,"Site Zip Code":-1}
-    ingestor = Ingestor(filename, reqHeaders)
-
+    ingestor = Ingestor(filename)
     ingestor.readCSV()
 
-    print(ingestor.getRow(0))
-    for person in ingestor.getRows():
-        print(person)
-    # with open(filename, 'r') as csvfile:
-    #     csvreader = csv.reader(csvfile)
-    #     fields = next(csvreader)
-    #     reqHeaders = getHeaderIndex(reqHeaders,fields)
-    #
-    #     print("Number of headers: %d" % len(fields))
-    #
-    #     for name, value in reqHeaders.items():
-    #         print(name,value)
-    #
-    #     for row in csvreader:
-    #         rows.append(searchRow(reqHeaders,row))
-    #
-    #     print(rows[0])
-    #     print(rows[1])
-    #     print(rows[2])
-    #     print(rows[3])
-        #for row in csvreader:
-        #    rows.append(row)
-        #print("Total no. of rows: %d"%(csvreader.line_num))
+    print("Header of csv file")
+    print(ingestor.getHeaders())
+    tempHeaders = ingestor.getHeaders()
+    searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5],tempHeaders[6],tempHeaders[22]]
+    dict = ingestor.getHeaderIndex(ingestor.listToDict(searchCritera,-1),tempHeaders)
+    print("\nDictionary of search critera and their indexes in the csv")
+    print(dict)
 
+    print("\nPrint raw list from csv")
+    print(ingestor.getRow(1))
+    ingestor.trimRows(dict,ingestor.getRows())
+    print("\nPrint filtered list from unfiltered row")
+    print(ingestor.getRow(1))
+
+    print("\nUpdating file to a csv in project folder names newList.csv. Expected:False")
+    print(ingestor.updateFileLoc("/home/anthonym/Documents/SchoolWork/SoftwareEngineering/newList.csv"))
+
+    print("\nUpdating file to a csv with no name. Expected:false")
+    print(ingestor.updateFileLoc(""))
 #Run main method
 main()
