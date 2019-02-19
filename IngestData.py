@@ -46,16 +46,24 @@ def main():
     ingestor = Ingestor(filename)
     ingestor.readCSV()
 
+    print("Header of csv file")
     print(ingestor.getHeaders())
     tempHeaders = ingestor.getHeaders()
     searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5],tempHeaders[6],tempHeaders[22]]
     dict = ingestor.getHeaderIndex(ingestor.listToDict(searchCritera,-1),tempHeaders)
+    print("\nDictionary of search critera and their indexes in the csv")
     print(dict)
 
+    print("\nPrint raw list from csv")
     print(ingestor.getRow(1))
     ingestor.trimRows(dict,ingestor.getRows())
+    print("\nPrint filtered list from unfiltered row")
     print(ingestor.getRow(1))
 
+    print("\nUpdating file to a csv in project folder names newList.csv. Expected:False")
+    print(ingestor.updateFileLoc("/home/anthonym/Documents/SchoolWork/SoftwareEngineering/newList.csv"))
 
+    print("\nUpdating file to a csv with no name. Expected:false")
+    print(ingestor.updateFileLoc(""))
 #Run main method
 main()

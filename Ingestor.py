@@ -15,13 +15,19 @@ class Ingestor:
         return dict
 
     def readCSV(self):
-        with open(self.filename, 'r') as csvfile:
-            csvreader = csv.reader(csvfile)
-            self.headers = next(csvreader)
-            #self.searchCritera = self.getHeaderIndex(self.searchCritera,fields)
-            for row in csvreader:
-                #self.rows.append(self.searchRow(self.searchCritera,row))
-                self.rows.append(row)
+        if os.path.exists(self.filename):
+            try:
+                with open(self.filename, 'r') as csvfile:
+                    csvreader = csv.reader(csvfile)
+                    self.headers = next(csvreader)
+                    for row in csvreader:
+                        self.rows.append(row)
+            except IOERROR:
+                return False
+                return True
+            else:
+                return False
+
 
     def getHeaderIndex(self,headerDic,fieldsList):
         for header in headerDic:
@@ -64,6 +70,16 @@ class Ingestor:
 
     def getHeaders(self):
         return self.headers
+
+    def getFileLoc(self):
+        return self.filename
+
+    def updateFileLoc(self,newLocation):
+        if newLocation and os.path.exists(newLocation):
+            self.filename = newLocation
+            return True
+        else:
+            return False
 
 #THIS CODE DOESNT WORK
 #Python doesn't keep file open after exiting with open line
