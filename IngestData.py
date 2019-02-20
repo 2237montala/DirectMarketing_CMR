@@ -19,7 +19,7 @@
 
 #print(currSheetDims)
 #https://www.geeksforgeeks.org/working-csv-files-python/
-from Ingestor import Ingestor
+from Ingestor import Ingestors
 
 def main():
     filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
@@ -29,7 +29,7 @@ def main():
     print("Header of csv file")
     print(ingestor.getCSVHeaders())
     tempHeaders = ingestor.getCSVHeaders()
-    searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5],tempHeaders[6],tempHeaders[22]]
+    searchCritera = ["Site Address",tempHeaders[3],tempHeaders[5],tempHeaders[6],tempHeaders[22],tempHeaders[43]]
 
     dict = ingestor.getHeaderIndex(ingestor.listToDict(searchCritera,-1),tempHeaders)
     print("\nDictionary of search critera and their indexes in the csv")
@@ -37,7 +37,7 @@ def main():
 
     print("\nPrint raw list from csv")
     print(ingestor.getRowAt(1))
-    ingestor.trimRows(dict,ingestor.getRows())
+    ingestor.searchRows(dict,ingestor.getRows())
     print("\nPrint filtered list from unfiltered row")
     print(ingestor.getRowAt(1))
 

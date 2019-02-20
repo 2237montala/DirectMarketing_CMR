@@ -9,6 +9,10 @@ class Ingestor:
 
 
     def listToDict(self,list,defaultVal):
+        """
+        Takes an array of strings and maps it to an
+        dictionary with a specified default val
+        """
         dict = {}
         for item in list:
             dict[item] = -1
@@ -22,14 +26,19 @@ class Ingestor:
                     self.headers = next(csvreader)
                     for row in csvreader:
                         self.rows.append(row)
+                return True
             except IOERROR:
                 return False
-                return True
             else:
                 return False
 
 
     def getHeaderIndex(self,headerDic,fieldsList):
+        """
+        Takes the header dictionary and finds each element in the column
+        headers from the fields list. It then updates the integer values
+        for each element to match what column it is
+        """
         for header in headerDic:
             count = 0
             for field in fieldsList:
@@ -41,15 +50,25 @@ class Ingestor:
         return headerDic
 
     def searchRow(self,headerDic, unfilteredRow):
+        """
+        Takes the header dictionary and an unfiltered row of data and sorts
+        it. Using the int value in the dictionary for each element it take
+        it from the unfiltered row. The values from the unfiltered row are saved
+        in a new array and returned
+        """
         filteredRow = []
         for header in headerDic:
             filteredRow.append(unfilteredRow[headerDic[header]])
 
         return filteredRow
 
-    def trimRows(self,headerDic,oldRows):
+    def searchRows(self,headerDic,unfilteredRows):
+        """
+        Iderates over all the rows in unfiltered rows and sorts them using
+        the dictionary
+        """
         newRows = []
-        for row in oldRows:
+        for row in unfilteredRows:
             newRows.append(self.searchRow(headerDic,row))
         self.rows = newRows
 
