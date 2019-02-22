@@ -17,26 +17,23 @@ def create_table(table_name, column_name, column_type):
         if not doesTableExist(table_name):
             #c.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
             c.execute("CREATE TABLE %s (%s %s)" % (table_name, column_name, column_type))
+            conn.commit()
             return True
         else:
             #Returns false if tabel already exists
             return False
 
 def doesTableExist(table_name):
-    try:
-        c.execute("""SELECT COUNT(*) FROM %s WHERE 'TEST_TABLE' """ % (table_name))
-        #c.execute("""SELECT COUNT(*)FROM %s WHERE table_name = '{0}'""".format(table_name.replace('\'', '\'\''))% table_name)
-        #c.execute("""SELECT COUNT(*)FROM information_schema.tables WHERE table_name = '{0}'""".format(table_name.replace('\'', '\'\'')))
-        temp = c.fetchall()[0][0]
-        print(temp)
-        if temp == 1:
-            print("Table exsists")
-            return True
-        else:
-            print("Table doesn't exist")
-            return False
-    except:
-        print("Table doesn't exist THROW ERROR")
+    #c.execute("""SELECT COUNT(*) FROM %s WHERE %s """ % (table_name,table_name))
+    #c.execute("""SELECT COUNT(*) FROM 'TEST_TABLE.tables' WHERE table_name = %s """ % (table_name))
+    c.execute("SELECT * FROM sqlite_master WHERE name = '%s' and type='table'" % table_name)
+    temp = c.fetchone()[1]
+    print(temp)
+    if temp == table_name:
+        print("Table exsists")
+        return True
+    else:
+        print("Table doesn't exist")
         return False
 
 
@@ -59,7 +56,7 @@ def add_column(tablename,column_name, column_type):
 def add_row(tablename, column, row, dataType):
     with conn:
         if dataType == 's':
-            c.execute("INSERT OR IGNORE INTO %s (%s) VALUES (%s)" % (tablename, column, row))
+            c.execute("INSERT OR IGNORE INTO %s (%s) VALUES (?)" % (tablename, column), (row,))
         #if column == 'Name':
         #    c.execute("INSERT OR IGNORE INTO %s (%s) VALUES (?)" % (tablename, column), (row,) )
         #elif column == 'Number':
@@ -78,6 +75,6 @@ add_row(t,'Name','John','s')
 #c.execute("DELETE FROM %s" % t)
 #conn.commit()
 # c.execute("DROP TABLE %s" % t)
-# conn.commit()
+#conn.commit()
 print(return_table(t))
 conn.close()
