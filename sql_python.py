@@ -1,6 +1,7 @@
 # https://sebastianraschka.com/Articles/2014_sqlite_in_python_tutorial.html
 # https://www.dataquest.io/blog/python-pandas-databases/
 # https://www.youtube.com/watch?v=pd-0G0MigUA
+#https://stackoverflow.com/questions/17044259/python-how-to-check-if-table-exists
 import sqlite3
 from Ingestor import Ingestor
 
@@ -13,7 +14,16 @@ c = conn.cursor()
 
 def create_table(table_name, column_name, column_type):
     with conn:
-        c.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
+        if  not doesTableExist(table_name):
+            c.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
+
+def doesTableExist(table_name,file_name):
+    c.execute("""SELECT COUNT(*)FROM %s WHERE table_name = '{0}'""".format(table_name.replace('\'', '\'\''))% file_name)
+
+    if c.fetchone()[0] == 1:
+        return True
+    else:
+        return False
 
 
 def return_table(tablename):
