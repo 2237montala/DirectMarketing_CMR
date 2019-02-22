@@ -19,15 +19,25 @@ class Ingestor:
         return dict
 
     def readCSV(self):
+        """
+        Reads the csv from the file specified in the constructor. It reads in
+        the first row as the row if column headers. Then it reads in the
+        reamining rows into a 2d array
+        """
         if os.path.exists(self.filename):
             try:
                 with open(self.filename, 'r') as csvfile:
+                    #Created csv reader object
                     csvreader = csv.reader(csvfile)
+                    #Reads in first row
+                    #next(csvreader) reads in the next row
                     self.headers = next(csvreader)
                     for row in csvreader:
+                        #Loops through all rows in csvreader adding it to and array
                         self.rows.append(row)
                 return True
             except IOERROR:
+                #If there is an io error return a false
                 return False
             else:
                 return False
@@ -40,9 +50,13 @@ class Ingestor:
         for each element to match what column it is
         """
         for header in headerDic:
+            #Loops through each item in the dictionary
             count = 0
             for field in fieldsList:
+                #Loops through each column header in the column header array
                 if field.upper() == header.upper():
+                    #If the current column header is the same as the header in
+                    #the header dictionary then save that index value
                     headerDic[header] = count
                     break
                 else:
