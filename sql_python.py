@@ -24,6 +24,9 @@ def create_table(table_name, column_name, column_type):
         else:
             #Returns false if tabel already exists
             return False
+<<<<<<< HEAD
+>>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
+=======
 >>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
 
 def doesTableExist(table_name):
@@ -71,6 +74,7 @@ def add_row(tablename, column, row, dataType):
 t = 'TEST_TABLE'
 create_table(t, 'Name', 'string')
 <<<<<<< HEAD
+<<<<<<< HEAD
 add_column(t,'Number', 'string')
 add_column(t,'Equity', 'integer')
 add_row(t, 'Name', 'John')
@@ -84,6 +88,8 @@ add_row(t, 'Number', 3)
 # print(return_table(t))
 # conn.close()
 =======
+=======
+>>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
 #add_column(t,'Number', 'string')
 #add_column(t,'Equity', 'integer')
 #add_row(t,'Name','John','s')
@@ -97,4 +103,7 @@ add_row(t, 'Number', 3)
 #conn.commit()
 print(return_table(t))
 conn.close()
+<<<<<<< HEAD
+>>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
+=======
 >>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
