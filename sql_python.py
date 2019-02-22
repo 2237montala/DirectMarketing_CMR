@@ -14,14 +14,27 @@ c = conn.cursor()
 
 def create_table(table_name, column_name, column_type):
     with conn:
+<<<<<<< HEAD
         if not doesTableExist(table_name):
             #c.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
             c.execute("CREATE TABLE %s (%s %s)" % (table_name, column_name, column_type))
             conn.commit()
+=======
+<<<<<<< HEAD
+      #  if  not doesTableExist(table_name):
+      c.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
+=======
+        if  not doesTableExist(table_name):
+            c.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
+>>>>>>> cdb49ea9132ab71d6413e4ec4578a6c59e9815d1
             return True
         else:
             #Returns false if tabel already exists
             return False
+<<<<<<< HEAD
+>>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
+=======
+>>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
 
 def doesTableExist(table_name):
     #c.execute("""SELECT COUNT(*) FROM %s WHERE %s """ % (table_name,table_name))
@@ -65,9 +78,32 @@ def add_row(tablename, column, row, dataType):
 # Creating a new SQLite table with 1 column
 t = 'TEST_TABLE'
 create_table(t, 'Name', 'string')
+<<<<<<< HEAD
 add_column(t,'Number', 'string')
 add_column(t,'Equity', 'integer')
 add_row(t,'Name','John','s')
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+add_column(t,'Number', 'string')
+add_column(t,'Equity', 'integer')
+add_row(t, 'Name', 'John')
+add_row(t, 'Number', 1)
+add_row(t, 'Number', 2)
+add_row(t, 'Number', 3)
+# c.execute("DELETE FROM t")
+# conn.commit()
+# c.execute("DROP TABLE %s" % t)
+# conn.commit()
+# print(return_table(t))
+# conn.close()
+=======
+=======
+>>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
+#add_column(t,'Number', 'string')
+#add_column(t,'Equity', 'integer')
+#add_row(t,'Name','John','s')
+>>>>>>> cdb49ea9132ab71d6413e4ec4578a6c59e9815d1
 #add_row(t, 'Name', 'John')
 # add_row(t, 'Number', 1)
 # add_row(t, 'Number', 2)
@@ -78,3 +114,7 @@ add_row(t,'Name','John','s')
 #conn.commit()
 print(return_table(t))
 conn.close()
+<<<<<<< HEAD
+>>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
+=======
+>>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
