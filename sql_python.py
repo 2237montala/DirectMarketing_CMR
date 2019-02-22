@@ -14,8 +14,9 @@ c = conn.cursor()
 
 def create_table(table_name, column_name, column_type):
     with conn:
-        if  not doesTableExist(table_name):
-            c.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
+        if not doesTableExist(table_name):
+            #c.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
+            c.execute("CREATE TABLE %s (%s %s)" % (table_name, column_name, column_type))
             return True
         else:
             #Returns false if tabel already exists
@@ -26,14 +27,16 @@ def doesTableExist(table_name):
         c.execute("""SELECT COUNT(*) FROM %s WHERE 'TEST_TABLE' """ % (table_name))
         #c.execute("""SELECT COUNT(*)FROM %s WHERE table_name = '{0}'""".format(table_name.replace('\'', '\'\''))% table_name)
         #c.execute("""SELECT COUNT(*)FROM information_schema.tables WHERE table_name = '{0}'""".format(table_name.replace('\'', '\'\'')))
-        if c.fetchone()[0] == 0:
+        temp = c.fetchall()[0][0]
+        print(temp)
+        if temp == 1:
             print("Table exsists")
             return True
         else:
             print("Table doesn't exist")
             return False
     except:
-        print("Table doesn't exist")
+        print("Table doesn't exist THROW ERROR")
         return False
 
 
@@ -65,16 +68,16 @@ def add_row(tablename, column, row, dataType):
 # Creating a new SQLite table with 1 column
 t = 'TEST_TABLE'
 create_table(t, 'Name', 'string')
-#add_column(t,'Number', 'string')
-#add_column(t,'Equity', 'integer')
-#add_row(t,'Name','John','s')
+add_column(t,'Number', 'string')
+add_column(t,'Equity', 'integer')
+add_row(t,'Name','John','s')
 #add_row(t, 'Name', 'John')
 # add_row(t, 'Number', 1)
 # add_row(t, 'Number', 2)
 # add_row(t, 'Number', 3)
 #c.execute("DELETE FROM %s" % t)
 #conn.commit()
-#c.execute("DROP TABLE %s" % t)
-#conn.commit()
+# c.execute("DROP TABLE %s" % t)
+# conn.commit()
 print(return_table(t))
 conn.close()
