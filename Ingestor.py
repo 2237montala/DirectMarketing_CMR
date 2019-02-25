@@ -8,15 +8,14 @@ class Ingestor:
         self.headers = []
 
 
-    def listToDict(self,list,defaultVal):
+    def listToTwoD(self,list,defaultVal):
         """
-        Takes an array of strings and maps it to an
-        dictionary with a specified default val
+        Takes and array and makes it a 2d array with a default value
         """
-        dict = {}
+        newArray = []
         for item in list:
-            dict[item] = -1
-        return dict
+            newArray.append([item,-1])
+        return newArray
 
     def readCSV(self):
         """
@@ -43,27 +42,27 @@ class Ingestor:
                 return False
 
 
-    def getHeaderIndex(self,headerDic,fieldsList):
+    def getHeaderIndex(self,headerList,fieldsList):
         """
         Takes the header dictionary and finds each element in the column
         headers from the fields list. It then updates the integer values
         for each element to match what column it is
         """
-        for header in headerDic:
-            #Loops through each item in the dictionary
+        headerListWithIndex = self.listToTwoD(headerList,-1)
+
+        for i in range(len(headerListWithIndex)):
             count = 0
             for field in fieldsList:
-                #Loops through each column header in the column header array
-                if field.upper() == header.upper():
-                    #If the current column header is the same as the header in
-                    #the header dictionary then save that index value
-                    headerDic[header] = count
+                if field.upper() == headerListWithIndex[i][0].upper():
+                    headerListWithIndex[i][1] = count
+                    headerListWithIndex[i][0] = headerListWithIndex[i][0].replace(' ','_')
+
                     break
                 else:
                     count = count + 1
-        return headerDic
+        return headerListWithIndex
 
-    def searchRow(self,headerDic, unfilteredRow):
+    def searchRow(self,headerListWithIndex, unfilteredRow):
         """
         Takes the header dictionary and an unfiltered row of data and sorts
         it. Using the int value in the dictionary for each element it take
@@ -71,9 +70,8 @@ class Ingestor:
         in a new array and returned
         """
         filteredRow = []
-        for header in headerDic:
-            filteredRow.append(unfilteredRow[headerDic[header]])
-
+        for i in range(len(headerListWithIndex)):
+            filteredRow.append(unfilteredRow[headerListWithIndex[i][1]])
         return filteredRow
 
     def searchRows(self,headerDic,unfilteredRows):
