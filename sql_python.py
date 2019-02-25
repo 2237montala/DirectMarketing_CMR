@@ -27,18 +27,16 @@ print(ingestor.getRowAt(0))
 for i in range(0,len(searchCritera)):
     searchCritera[i] = searchCritera[i].replace(' ','_')
 
-print(searchCritera)
-
 new_table = 'Probate'
+print('\nCreating a new table using the search critera as headers')
+print('\nIf the row already exists it will throw an error and continue')
 db.create_table_list(new_table,searchCritera,'string')
-#db.create_table(new_table, searchCritera,'string')
-#
-#for i in range(1,len(searchCriteraTwoD)):
-#    db.add_column(new_table,searchCritera,'string')
 
+print('\nAdding all the rows from the CSV file into new table')
 for person in ingestor.getRows():
     db.add_row_list(new_table, searchCritera, person)
     pass
 
+print('\nPrinting all table entries')
 print(db.return_table(new_table))
 db.clear_table(new_table)
