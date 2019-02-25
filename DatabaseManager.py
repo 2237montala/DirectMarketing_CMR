@@ -45,13 +45,16 @@ class DatabaseManager:
             print('False')
             return False
 
-    def add_row(self, table_name, column, row):
-        with self.conn:
-                self.cursor.execute("INSERT OR IGNORE INTO %s (%s) VALUES (?)" % (table_name, column), (row, ))
+    # def add_row(self, table_name, column, row):
+    #     with self.conn:
+    #         self.cursor.execute("INSERT OR IGNORE INTO %s (%s) VALUES(?)" % (table_name,'"{}"'.format(column)), ('"{}"'.format(row_arr[0])))
+    #         for i in range(1,len(column_arr)):
+    #             self.cursor.execute("UPDATE %s SET %s='%s' WHERE %s='%s' " % (table_name, column_arr, row_arr[i], column_arr[0], row_arr[0]))
 
-    def add_row(self, table_name, column_arr, row_arr):
+    def add_row_list(self, table_name, column_arr, row_arr):
         with self.conn:
-            self.cursor.execute("INSERT OR IGNORE INTO %s (%s) VALUES(?)" % (table_name,'"{}"'.format(column_arr[0])), ('"{}"'.format(row_arr[0])))
+            print('"{}"'.format(row_arr[0]))
+            self.cursor.execute("INSERT OR IGNORE INTO %s (%s) VALUES(?)" % (table_name,'"{}"'.format(column_arr[0])), (row_arr[0],))
             for i in range(1,len(column_arr)):
                 self.cursor.execute("UPDATE %s SET %s='%s' WHERE %s='%s' " % (table_name, column_arr[i], row_arr[i], column_arr[0], row_arr[0]))
 

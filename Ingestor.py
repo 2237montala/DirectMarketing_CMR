@@ -55,8 +55,8 @@ class Ingestor:
             for field in fieldsList:
                 if field.upper() == headerListWithIndex[i][0].upper():
                     headerListWithIndex[i][1] = count
-                    headerListWithIndex[i][0].replace(' ','_')
-                    
+                    headerListWithIndex[i][0] = headerListWithIndex[i][0].replace(' ','_')
+
                     break
                 else:
                     count = count + 1

@@ -26,23 +26,25 @@ ingestor.searchRows(searchCriteraTwoD,ingestor.getRows())
 print("\nPrint filtered list from unfiltered row")
 print(ingestor.getRowAt(0))
 
-for i in range(0,len(searchCriteraTwoD)):
-    pass
-    #searchCriteraTwoD[i][0] = searchCriteraTwoD[i][0].replace(' ','_')
+for i in range(0,len(searchCritera)):
+    searchCritera[i] = searchCritera[i].replace(' ','_')
     #searchCriteraTwoD[i][0] = searchCriteraTwoD[i][0].replace("'",'"')
 
-print(searchCriteraTwoD)
+print(searchCritera)
 
 new_table = 'Probate'
-db.create_table(new_table, searchCritera,'string')
+#db.create_table(new_table, searchCriteraTwoD[0][0],'string')
 
-for i in range(1,len(searchCritera)):
-    db.add_column(new_table,searchCritera,'string')
+for i in range(1,len(searchCriteraTwoD)):
+    #db.add_column(new_table,searchCriteraTwoD[i][0],'string')
+    pass
 
 #db.add_column(new_table, headers[1], 'string')
 #db.add_row(new_table, ['Site_Address'], ["Steve"])
 #print(ingestor.getRows())
-db.add_row(new_table,searchCritera,ingestor.getRowAt(0))
+print(ingestor.getRowAt(0))
+print(type(ingestor.getRowAt(0)[0]))
+db.add_row_list(new_table,searchCritera,ingestor.getRowAt(0))
 
 #for person in ingestor.getRows():
     #print(person)
