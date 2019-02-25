@@ -16,8 +16,6 @@ ingestor.readCSV()
 tempHeaders = ingestor.getCSVHeaders()
 searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5],tempHeaders[15],tempHeaders[16]]
 
-#searchCritera = [tempHeaders[3],tempHeaders[5],tempHeaders[15],tempHeaders[16]]
-
 searchCriteraTwoD = ingestor.getHeaderIndex(searchCritera,tempHeaders)
 print("\nDictionary of search critera and their indexes in the csv")
 print(searchCriteraTwoD)
@@ -28,18 +26,19 @@ print(ingestor.getRowAt(0))
 
 for i in range(0,len(searchCritera)):
     searchCritera[i] = searchCritera[i].replace(' ','_')
-    #searchCriteraTwoD[i][0] = searchCriteraTwoD[i][0].replace("'",'"')
 
 print(searchCritera)
 
 new_table = 'Probate'
-db.create_table(new_table, searchCriteraTwoD[0][0],'string')
-
-for i in range(1,len(searchCriteraTwoD)):
-    db.add_column(new_table,searchCriteraTwoD[i][0],'string')
+db.create_table_list(new_table,searchCritera,'string')
+#db.create_table(new_table, searchCritera,'string')
+#
+#for i in range(1,len(searchCriteraTwoD)):
+#    db.add_column(new_table,searchCritera,'string')
 
 for person in ingestor.getRows():
     db.add_row_list(new_table, searchCritera, person)
+    pass
 
 print(db.return_table(new_table))
 db.clear_table(new_table)
