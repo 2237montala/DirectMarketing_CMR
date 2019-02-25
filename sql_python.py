@@ -33,26 +33,13 @@ for i in range(0,len(searchCritera)):
 print(searchCritera)
 
 new_table = 'Probate'
-#db.create_table(new_table, searchCriteraTwoD[0][0],'string')
+db.create_table(new_table, searchCriteraTwoD[0][0],'string')
 
 for i in range(1,len(searchCriteraTwoD)):
-    #db.add_column(new_table,searchCriteraTwoD[i][0],'string')
-    pass
+    db.add_column(new_table,searchCriteraTwoD[i][0],'string')
 
-#db.add_column(new_table, headers[1], 'string')
-#db.add_row(new_table, ['Site_Address'], ["Steve"])
-#print(ingestor.getRows())
-print(ingestor.getRowAt(0))
-print(type(ingestor.getRowAt(0)[0]))
-db.add_row_list(new_table,searchCritera,ingestor.getRowAt(0))
-
-#for person in ingestor.getRows():
-    #print(person)
-    #db.add_row(new_table, searchCritera, person)
-#db.add_row(new_table, headers, ["Steve","Smith"])
+for person in ingestor.getRows():
+    db.add_row_list(new_table, searchCritera, person)
 
 print(db.return_table(new_table))
-
-#print(db.print_table(new_table))
-
 db.clear_table(new_table)
