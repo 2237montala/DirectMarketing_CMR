@@ -1,5 +1,6 @@
 from gui import GUI
 from DatabaseManager import DatabaseManager
+from PyQt5.QtWidgets import *
 
 def main():
     sqlite_file = 'test.db'
@@ -13,6 +14,5 @@ def main():
     app = GUI()
     app.run(1650,900)
     app.update_table([],rows)
-
 
 main()

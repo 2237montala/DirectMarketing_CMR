@@ -34,7 +34,7 @@ class GUI:
         #1 = stretch to max string length
         #table.horizontalHeader().setSectionResizeMode(1)
         self.set_table(table)
-        self.get_table().repaint()
+        self.get_table().reset()
 
     def get_table(self):
         return self.table

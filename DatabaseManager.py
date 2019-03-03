@@ -24,9 +24,11 @@ class DatabaseManager:
         Checks if the table exists by checking the database file for a table
         with the same name
         """
+        
         try:
-            self.cursor.execute("SELECT * FROM sqlite_master WHERE name = '%s' AND type = 'table'" % table_name)
-            if self.cursor.fetchone()[1] == table_name:
+            self.cursor.execute("SELECT * FROM sqlite_master WHERE type='table' AND name='table_name'")
+#             self.cursor.execute("SELECT * FROM sqlite_master WHERE name = '%s' AND type = 'table'" % table_name)
+            if self.cursor.fetchone():
                 #If it returns a 1 that means a table with the same names exists
                 return True
             else:
@@ -68,7 +70,8 @@ class DatabaseManager:
         with self.conn:
             self.cursor.execute("INSERT OR IGNORE INTO %s (%s) VALUES(?)" % (table_name,'"{}"'.format(column_arr[0])), (row_arr[0],))
             for i in range(1,len(column_arr)):
-                self.cursor.execute("UPDATE %s SET %s='%s' WHERE %s='%s'" % (table_name, '"{}"'.format(column_arr[i]), row_arr[i], column_arr[0], row_arr[0]))
+#                 self.cursor.execute("UPDATE %s SET %s='%s' WHERE %s='%s'" % (table_name, '"{}"'.format(column_arr[i]), row_arr[i], column_arr[0], row_arr[0]))
+                self.cursor.execute("UPDATE %s SET %s=? WHERE %s=?" % (table_name, column_arr[i], column_arr[0]), (row_arr[i], row_arr[0],))
 
     def clear_table(self, table_name):
         """
