@@ -9,7 +9,7 @@ from Ingestor import Ingestor
 sqlite_file = 'test.db'
 db = DatabaseManager(sqlite_file)
 
-filename = #put file path here. include the file name and the .csv extension
+filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
 ingestor = Ingestor(filename)
 ingestor.readCSV()
 

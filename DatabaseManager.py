@@ -34,7 +34,7 @@ class DatabaseManager:
                 return False
         except sqlite3.Error as er:
             #If another error is throws print it
-            print 'er:', er.message
+            print('Error message:', er.args[0])
             return False
 
     def create_table_list(self,table_name,column_name_list,column_type):
@@ -57,7 +57,7 @@ class DatabaseManager:
             self.cursor.execute("ALTER TABLE %s ADD COLUMN %s %s" % (table_name,'"{}"'.format(column_name) ,column_type))
             return True
         except sqlite3.Error as er:
-            print 'er:', er.message
+            print('Error message:', er.args[0])
             return False
 
     def add_row_list(self, table_name, column_arr, row_arr):
@@ -86,5 +86,5 @@ class DatabaseManager:
             self.cursor.execute("SELECT * FROM %s" % table_name)
             return self.cursor.fetchall()
         except sqlite3.Error as er:
-            print 'er:', er.message
+            print('Error message:', er.args[0])
             return False
