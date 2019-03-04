@@ -1,8 +1,12 @@
 from PyQt5.QtWidgets import *
+from DatabaseManager import DatabaseManager
 
 class GUI:
-    def __init__(self):
-        pass
+    def __init__(self,db_file):
+        self.db = DatabaseManager(db_file)
+
+        self.curr_table = "Probate"
+        #rows = db.return_table(new_table)
 
     def edit_table(self,row_list):
         self.add_items(self.get_table(),row_list)
@@ -25,15 +29,18 @@ class GUI:
             col = col + 1
 
     def update_table(self, row_list,header_list):
+        print("updating table")
+        print(row_list)
         table = self.get_table()
-        #table = QTableWidget(len(row_list),len(header_list))
-        table = QTableWidget(1,1)
+        print(table.rowCount())
+        table = QTableWidget(len(row_list),len(header_list))
         #table.setHorizontalHeaderLabels(header_list)
-        #self.add_items(table,row_list)
+        self.add_items(table,row_list)
 
         #1 = stretch to max string length
         #table.horizontalHeader().setSectionResizeMode(1)
         self.set_table(table)
+        print(self.get_table().rowCount())
         self.get_table().repaint()
 
     def get_table(self):
@@ -42,6 +49,22 @@ class GUI:
     def set_table(self,new_table):
         self.table = new_table
 
+    def update_button_click(self):
+        print("Button clicked")
+        self.update_table(self.db.get_table(self.curr_table),[])
+
+    #Add widgets
+    def add_widgets(self):
+        self.table = QTableWidget(1,5)
+        self.updateButton = QPushButton("Update Table")
+        self.updateButton.clicked.connect(self.update_button_click)
+
+        layout = QGridLayout()
+        layout.addWidget(self.table)
+        layout.addWidget(self.updateButton)
+        return layout
+
+    # Main run method
     def run(self,screen_width,screen_height):
         w = screen_width
         h = screen_height
@@ -53,10 +76,8 @@ class GUI:
         #           ["John Smith", "1175 Deerfield Rd"],
         #           ["Ulysses Cardenas","1105 Adams Ave"]]
 
-        self.table = QTableWidget(1,5)
-        layout = QGridLayout()
-        layout.addWidget(self.table)
+
         window.resize(w,h)
-        window.setLayout(layout)
+        window.setLayout(self.add_widgets())
         window.show()
         app.exec_()

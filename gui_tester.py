@@ -2,17 +2,12 @@ from gui import GUI
 from DatabaseManager import DatabaseManager
 
 def main():
-    sqlite_file = 'test.db'
-    db = DatabaseManager(sqlite_file)
+    #print(rows)
+    data_base_file = 'test.db'
 
-    new_table = "Probate"
-    rows = db.return_table(new_table)
-
-    print(rows)
-
-    app = GUI()
+    app = GUI(data_base_file)
     app.run(1650,900)
-    app.update_table([],rows)
+    #app.update_table([],rows)
 
 
 main()
