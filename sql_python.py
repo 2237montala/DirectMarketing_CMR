@@ -38,5 +38,5 @@ for person in ingestor.getRows():
     pass
 
 print('\nPrinting all table entries')
-print(db.return_table(new_table))
+print(db.get_table(new_table))
 #db.clear_table(new_table)

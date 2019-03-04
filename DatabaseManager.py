@@ -78,7 +78,7 @@ class DatabaseManager:
         with self.conn:
                 self.cursor.execute("DELETE FROM %s" % table_name)
 
-    def return_table(self, table_name):
+    def get_table(self, table_name):
         """
         Returns the table as an 2d list
         """
