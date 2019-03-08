@@ -10,20 +10,20 @@ class GUI:
         self.curr_table = "Probate"
         #rows = db.return_table(new_table)
 
-    def edit_table(self,row_list):
-        self.add_items(self.get_table(),row_list)
-        self.get_table().repaint()
 
     def add_items(self,table,row_list):
         row_count = 0
+        print(type(row_list[0][0]))
+        print(type(row_list[0][2]))
         for row in row_list:
             self.add_item(table,row_count,row)
             row_count += 1
 
     def add_item(self,table,row_num,row):
         col = 0
-        for str in row:
-            item = QTableWidgetItem(str)
+        for value in row:
+            item = QTableWidgetItem(value)
+            item.setFlags(Qt.ItemIsEnabled)
             #0x0080 align vertical centered
             #0x0004 align horizontally centered
             item.setTextAlignment(0x0080 | 0x0004)
@@ -35,17 +35,15 @@ class GUI:
         print(row_list)
         table = self.get_table()
         print(table.rowCount())
-        #table = QTableWidget(len(row_list),len(header_list))
         table.setRowCount(len(row_list))
         table.setColumnCount(len(header_list))
-        #table.setHorizontalHeaderLabels(header_list)
+        table.setHorizontalHeaderLabels(header_list)
         self.add_items(table,row_list)
 
         #1 = stretch to max string length
-        #table.horizontalHeader().setSectionResizeMode(1)
+        table.horizontalHeader().setSectionResizeMode(1)
         self.set_table(table)
         print(self.get_table().rowCount())
-        #self.get_table().viewport().repaint()
 
     def get_table(self):
         return self.table
@@ -56,8 +54,8 @@ class GUI:
 
     def update_button_click(self):
         print("Button clicked")
-        self.update_table(self.db.get_table(self.curr_table),[])
-        #self.get_table().show()
+        self.update_table(self.db.get_table(self.curr_table)
+                         ,self.db.get_headers(self.curr_table))
 
     #Add widgets
     def add_widgets(self):
