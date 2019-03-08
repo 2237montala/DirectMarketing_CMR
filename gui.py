@@ -22,6 +22,10 @@ class GUI:
     def add_item(self,table,row_num,row):
         col = 0
         for value in row:
+            if type(value) == int:
+                value = str(value)
+                print(value)
+
             item = QTableWidgetItem(value)
             item.setFlags(Qt.ItemIsEnabled)
             #0x0080 align vertical centered
