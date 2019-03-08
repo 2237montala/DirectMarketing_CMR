@@ -33,7 +33,11 @@ class DatabaseManager:
                 #print("Table already exists")
                 return False
         except sqlite3.Error as er:
-            #If another error is throws print it
+            #Catches sql errors
+            print('Error message:', er.args[0])
+            return False
+        except Exception as er:
+            #General error message
             print('Error message:', er.args[0])
             return False
 
@@ -86,5 +90,20 @@ class DatabaseManager:
             self.cursor.execute("SELECT * FROM %s" % table_name)
             return self.cursor.fetchall()
         except sqlite3.Error as er:
+            print('Error message:', er.args[0])
+            return False
+
+    def get_headers(self,table_name):
+        """
+        Return the colum headers for the table
+        """
+        try:
+            #self.cursor.execute('PRAGMA TABLE_INFO({})'.format(table_name))
+            self.cursor.execute('PRAGMA TABLE_INFO(%s)' % table_name)
+            #self.cursor.execute("SELECT * FROM name = '%s'" % table_name)
+            headers = [tup[1] for tup in self.cursor.fetchall()]
+            return headers
+        except Exception as er:
+            #General error message
             print('Error message:', er.args[0])
             return False
