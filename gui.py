@@ -1,4 +1,6 @@
+from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 from DatabaseManager import DatabaseManager
 
 class GUI:
@@ -33,7 +35,9 @@ class GUI:
         print(row_list)
         table = self.get_table()
         print(table.rowCount())
-        table = QTableWidget(len(row_list),len(header_list))
+        #table = QTableWidget(len(row_list),len(header_list))
+        table.setRowCount(len(row_list))
+        table.setColumnCount(len(header_list))
         #table.setHorizontalHeaderLabels(header_list)
         self.add_items(table,row_list)
 
@@ -41,7 +45,7 @@ class GUI:
         #table.horizontalHeader().setSectionResizeMode(1)
         self.set_table(table)
         print(self.get_table().rowCount())
-        self.get_table().repaint()
+        #self.get_table().viewport().repaint()
 
     def get_table(self):
         return self.table
@@ -49,9 +53,11 @@ class GUI:
     def set_table(self,new_table):
         self.table = new_table
 
+
     def update_button_click(self):
         print("Button clicked")
         self.update_table(self.db.get_table(self.curr_table),[])
+        #self.get_table().show()
 
     #Add widgets
     def add_widgets(self):
@@ -69,7 +75,7 @@ class GUI:
         w = screen_width
         h = screen_height
         app = QApplication([])
-        window = QWidget()
+        self.window = QWidget()
 
         #headers = ["Name", "Address"];
         #row =     [["Jimmy Qt-Designer","17 Elm St"],
@@ -77,7 +83,8 @@ class GUI:
         #           ["Ulysses Cardenas","1105 Adams Ave"]]
 
 
-        window.resize(w,h)
-        window.setLayout(self.add_widgets())
-        window.show()
+        self.window.resize(w,h)
+        self.window.setLayout(self.add_widgets())
+        self.window.show()
+
         app.exec_()
