@@ -63,6 +63,12 @@ class DatabaseManager:
         except sqlite3.Error as er:
             print('Error message:', er.args[0])
             return False
+        except Exception as er:
+            #General error message
+            print('Error message:', er.args[0])
+            return False
+
+
 
     def add_row_list(self, table_name, column_arr, row_arr):
         """
@@ -100,7 +106,6 @@ class DatabaseManager:
         try:
             #self.cursor.execute('PRAGMA TABLE_INFO({})'.format(table_name))
             self.cursor.execute('PRAGMA TABLE_INFO(%s)' % table_name)
-            #self.cursor.execute("SELECT * FROM name = '%s'" % table_name)
             headers = [tup[1] for tup in self.cursor.fetchall()]
             return headers
         except Exception as er:
