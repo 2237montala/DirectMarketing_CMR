@@ -105,9 +105,11 @@ class GUI:
         self.fileBrowserButton.clicked.connect(self.open_file_browser)
 
         layout = QGridLayout()
+        #addWidget(widget,row,column,row span,col span)
         layout.addWidget(self.table,1,1,1,2)
         layout.addWidget(self.updateButton,2,1,1,1)
         layout.addWidget(self.fileBrowserButton,2,2,1,1)
+
         return layout
 
     # Main run method
@@ -119,12 +121,6 @@ class GUI:
         h = screen_height
         app = QApplication([])
         self.window = QWidget()
-
-        #headers = ["Name", "Address"];
-        #row =     [["Jimmy Qt-Designer","17 Elm St"],
-        #           ["John Smith", "1175 Deerfield Rd"],
-        #           ["Ulysses Cardenas","1105 Adams Ave"]]
-
 
         self.window.resize(w,h)
         self.window.setLayout(self.add_widgets())
