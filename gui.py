@@ -4,6 +4,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from DatabaseManager import DatabaseManager
+from file_browser import file_browser
 
 class GUI:
     def __init__(self,db_file):
@@ -85,17 +86,28 @@ class GUI:
         self.update_table(self.db.get_table(self.curr_table)
                          ,self.db.get_headers(self.curr_table))
 
+    def open_file_browser(self):
+        """
+        Opens a file browser to select a csv to add
+        """
+        fb = file_browser('CSV File Finder')
+        file_loc = fb.open_window()
+
+
     def add_widgets(self):
         """
         Adds the widgets to the window
         """
         self.table = QTableWidget(1,5)
         self.updateButton = QPushButton("Update Table")
+        self.fileBrowserButton = QPushButton("Upload File")
         self.updateButton.clicked.connect(self.update_button_click)
+        self.fileBrowserButton.clicked.connect(self.open_file_browser)
 
         layout = QGridLayout()
-        layout.addWidget(self.table)
-        layout.addWidget(self.updateButton)
+        layout.addWidget(self.table,1,1,1,2)
+        layout.addWidget(self.updateButton,2,1,1,1)
+        layout.addWidget(self.fileBrowserButton,2,2,1,1)
         return layout
 
     # Main run method
