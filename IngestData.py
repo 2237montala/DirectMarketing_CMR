@@ -14,7 +14,7 @@ def main():
     print("Header of csv file")
     print(ingestor.getCSVHeaders())
     tempHeaders = ingestor.getCSVHeaders()
-    searchCritera = ["Site Address",tempHeaders[3],tempHeaders[5],tempHeaders[6],tempHeaders[22]]
+    searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5],tempHeaders[6],tempHeaders[15],tempHeaders[16]]
 
     searchCritera = ingestor.getHeaderIndex(searchCritera,tempHeaders)
     print("\nDictionary of search critera and their indexes in the csv")
