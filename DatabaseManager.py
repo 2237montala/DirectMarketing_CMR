@@ -68,6 +68,9 @@ class DatabaseManager:
             print('Error message:', er.args[0])
             return False
 
+    def add_list_of_rows(self,table_name,column_list,rows):
+        for row in rows:
+            self.add_row_list(table_name,column_list,row)
 
 
     def add_row_list(self, table_name, column_arr, row_arr):
@@ -112,3 +115,8 @@ class DatabaseManager:
             #General error message
             print('Error message:', er.args[0])
             return False
+
+    def remove_spaces(self,old_list):
+        for i in range(len(old_list)):
+            old_list[i] = old_list[i].replace(' ','_')
+        return old_list
