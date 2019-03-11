@@ -19,7 +19,7 @@ class file_browser(QWidget):
     def openFileNameDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        file_name, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getget_tableOpenFileName()", "","All Files (*);;CSV Files (*.csv)", options=options)
+        file_name, _ = QFileDialog.getOpenFileName(self,"File Browser", "","All Files (*);;CSV Files (*.csv)", options=options)
         if file_name:
             print(file_name)
             return file_name
@@ -39,9 +39,11 @@ class file_browser(QWidget):
             print(fileName)
 
     def open_window(self):
+        #Runs the open file name dialog method
+        #which returns a string
         return self.openFileNameDialog()
 
 if __name__ == '__main__':
     app = QApplication([])
-    ex = file_browser()
+    ex = file_browser('Test')
     app.exec_()
