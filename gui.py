@@ -5,12 +5,75 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from DatabaseManager import DatabaseManager
 from file_browser import file_browser
+from csv_importer import csv_importer_popup
 
-class GUI:
+class GUI():
     def __init__(self,db_file):
+        super().__init__()
         self.db = DatabaseManager(db_file)
         self.curr_table = "Probate"
-        #rows = db.return_table(new_table)
+
+    def create_menu_bar(self):
+        #Create a new menu bar
+        mainMenu = QMenuBar()
+        fileMenu = mainMenu.addMenu('File')
+        editMenu = mainMenu.addMenu('Edit')
+
+        #Adds a action called import csv that calls the method
+        #when clicked
+        #editMenu.addAction('Import CSV',self.open_file_browser)
+        editMenu.addAction('Import CSV',self.open_csv_import)
+
+        #Does the same things as the line above it
+        #imprtCSV = QAction('Import CSV',self.window)
+        #imprtCSV.triggered.connect(self.open_file_browser)
+        #editMenu.addAction(imprtCSV)
+
+        viewMenu = mainMenu.addMenu('View')
+        viewMenu.addAction('Switch Table')
+        searchMenu = mainMenu.addMenu('Search')
+        toolsMenu = mainMenu.addMenu('Tools')
+
+        return mainMenu;
+
+    def add_widgets(self):
+        """
+        Adds the widgets to the window
+        """
+        self.table = QTableWidget(1,5)
+        self.updateButton = QPushButton("Update Table")
+        self.fileBrowserButton = QPushButton("Upload File")
+        self.updateButton.clicked.connect(self.update_button_click)
+        self.fileBrowserButton.clicked.connect(self.open_file_browser)
+
+
+
+        layout = QGridLayout()
+        #addWidget(widget,row,column,row span,col span)
+        layout.addWidget(self.create_menu_bar(),1,1,1,2)
+        layout.addWidget(self.table,2,1,1,2)
+        layout.addWidget(self.updateButton,3,1,1,1)
+        layout.addWidget(self.fileBrowserButton,3,2,1,1)
+
+        return layout
+
+    def open_file_browser(self):
+        """
+        Opens a file browser to select a csv to add
+        """
+        fb = file_browser('CSV File Finder')
+        file_loc = fb.open_window()
+
+
+    def open_csv_import(self):
+        #https://stackoverflow.com/questions/4838890/python-pyqt-popup-window
+        #Explained how to make another widget pop up
+        #Key is to make a widget and use self.widget
+        self.csv_importer = csv_importer_popup("TEst")
+
+        self.csv_importer.setGeometry(QRect(100, 100, 400, 200))
+
+        self.csv_importer.show()
 
     def add_items(self,table,row_list):
         """
@@ -86,32 +149,6 @@ class GUI:
         self.update_table(self.db.get_table(self.curr_table)
                          ,self.db.get_headers(self.curr_table))
 
-    def open_file_browser(self):
-        """
-        Opens a file browser to select a csv to add
-        """
-        fb = file_browser('CSV File Finder')
-        file_loc = fb.open_window()
-
-
-    def add_widgets(self):
-        """
-        Adds the widgets to the window
-        """
-        self.table = QTableWidget(1,5)
-        self.updateButton = QPushButton("Update Table")
-        self.fileBrowserButton = QPushButton("Upload File")
-        self.updateButton.clicked.connect(self.update_button_click)
-        self.fileBrowserButton.clicked.connect(self.open_file_browser)
-
-        layout = QGridLayout()
-        #addWidget(widget,row,column,row span,col span)
-        layout.addWidget(self.table,1,1,1,2)
-        layout.addWidget(self.updateButton,2,1,1,1)
-        layout.addWidget(self.fileBrowserButton,2,2,1,1)
-
-        return layout
-
     # Main run method
     def run(self,screen_width,screen_height):
         """
@@ -119,7 +156,7 @@ class GUI:
         """
         w = screen_width
         h = screen_height
-        app = QApplication([])
+        app = QApplication(sys.argv)
         self.window = QWidget()
 
         self.window.resize(w,h)
