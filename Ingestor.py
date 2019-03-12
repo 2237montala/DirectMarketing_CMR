@@ -64,8 +64,8 @@ class Ingestor:
 
     def searchRow(self,headerListWithIndex, unfilteredRow):
         """
-        Takes the header dictionary and an unfiltered row of data and sorts
-        it. Using the int value in the dictionary for each element it take
+        Takes the header 2d list and an unfiltered row of data and sorts
+        it. Using the int value in the 2d list for each element it take
         it from the unfiltered row. The values from the unfiltered row are saved
         in a new array and returned
         """
