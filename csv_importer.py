@@ -110,13 +110,24 @@ class csv_importer_popup(QWidget):
             buttonText = self.buttonGroups[0].buttons()[buttonID].text()
             #buttonText = self.buttonGroups[0].id(self.buttonGroups[0].checkedId()).text()
 
+            #Check which table coresponds with the button pressed
             for tableName in self.tablesInDB:
                 if buttonText == tableName:
                     print(tableName)
                     #print(self.ingestor.getRowAt(0))
+                    #Uses the ingestor to search the unfiltered rows using
+                    #this search critera list
                     self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                     rows = self.ingestor.getRows()
-                    print(rows)
+
+                    #Check if tables exists already
+                    if not self.db.doesTableExist(tableName):
+                        #If not the create it with the table name
+                        self.db.create_table_list(tableName,self.db.remove_spaces(DEFAULT_LISTS[buttonID]),'string')
+
+                    #Add the searched rows to the table that was clicked
+                    #The seach critera list has to have spaces removed so the db
+                    #doesn't get confused
                     self.db.add_list_of_rows(tableName,self.db.remove_spaces(DEFAULT_LISTS[buttonID]),rows)
                     print(self.db.get_table(tableName))
 
