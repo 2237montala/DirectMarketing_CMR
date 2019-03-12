@@ -16,6 +16,7 @@ class csv_importer_popup(QWidget):
         self.title = window_title
         self.setWindowTitle(self.title)
 
+
         self.commonFileTypes = ['Absentee', 'Divorce', 'Lis Pendents','Probate']
         self.tablesInDB = tables
 
@@ -86,6 +87,7 @@ class csv_importer_popup(QWidget):
         layout.addWidget(cancelButton,3,1)
         layout.addWidget(importButton,3,2)
         self.setLayout(layout)
+        self.resize(self.sizeHint())
 
         if debug:
             #Only here so if you run this class something shows up
