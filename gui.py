@@ -11,7 +11,8 @@ class GUI():
     def __init__(self,db_file):
         super().__init__()
         self.db = DatabaseManager(db_file)
-        self.curr_table = "Probate"
+        self.curr_table = "Divorce"
+        self.tables = ['Absentee','Divorce','Lis Pendent','Probate']
 
     def create_menu_bar(self):
         #Create a new menu bar
@@ -69,9 +70,10 @@ class GUI():
         #https://stackoverflow.com/questions/4838890/python-pyqt-popup-window
         #Explained how to make another widget pop up
         #Key is to make a widget and use self.widget
-        self.csv_importer = csv_importer_popup("TEst")
+        file = file_browser("File Browser").openFileNameDialog()
+        self.csv_importer = csv_importer_popup("CSV Importer",file,self.tables,'test.db')
 
-        self.csv_importer.setGeometry(QRect(100, 100, 400, 200))
+        #self.csv_importer.setGeometry(QRect(100, 100, 400, 200))
 
         self.csv_importer.show()
 
