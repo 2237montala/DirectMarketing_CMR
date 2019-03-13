@@ -1,6 +1,13 @@
 #https://stackoverflow.com/questions/16856647/sqlite3-programmingerror-incorrect-number-of-bindings-supplied-the-current-sta
+#https://stackoverflow.com/questions/39196462/how-to-use-variable-for-sqlite-table-name?rq=1 <- finds if a table exists
 
 import sqlite3
+import re
+
+#This means All characters that are A to Z or a to z or 0 to 9 or _ that
+#exist anywhere in the string
+VALID_CHARS = '^[A-Za-z0-9_]*$'
+
 
 class DatabaseManager:
     def __init__ (self, file_loc):
@@ -11,13 +18,17 @@ class DatabaseManager:
         """
         Creates a new table with a name and the first column
         """
-        with self.conn:
-          if not self.doesTableExist(table_name):
-              self.cursor.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
-              self.conn.commit()
-              return True
-          else:
-                return False
+        try:
+            with self.conn:
+              if not self.doesTableExist(table_name):
+                  self.cursor.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
+                  self.conn.commit()
+                  return True
+              else:
+                  return False
+        except Exception as er:
+            print('Error message:', er.args[0])
+            return False
 
     def doesTableExist(self, table_name):
         """
@@ -25,9 +36,9 @@ class DatabaseManager:
         with the same name
         """
         try:
-            self.cursor.execute("SELECT * FROM sqlite_master WHERE name = '%s' AND type = 'table'" % table_name)
-            if self.cursor.fetchone()[1] == table_name:
-                #If it returns a 1 that means a table with the same names exists
+            self.cursor.execute("SELECT 1 FROM sqlite_master WHERE name = ? AND type = 'table'",(table_name,))
+            if self.cursor.fetchone() is not None:
+                #If it doesn't return none then the table exists
                 return True
             else:
                 #print("Table already exists")
@@ -60,9 +71,6 @@ class DatabaseManager:
             #get mad for special characters
             self.cursor.execute("ALTER TABLE %s ADD COLUMN %s %s" % (table_name,'"{}"'.format(column_name) ,column_type))
             return True
-        except sqlite3.Error as er:
-            print('Error message:', er.args[0])
-            return False
         except Exception as er:
             #General error message
             print('Error message:', er.args[0])
@@ -120,3 +128,10 @@ class DatabaseManager:
         for i in range(len(old_list)):
             old_list[i] = old_list[i].replace(' ','_')
         return old_list
+
+    def is_valid_string(self,input_str):
+        if re.match(VALID_CHARS,input_str):
+            #Checks if the string is only letters and numbers
+            return input_str
+        else:
+            raise Exception('Illegally formatted string')

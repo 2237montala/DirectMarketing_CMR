@@ -24,19 +24,18 @@ ingestor.searchRows(searchCriteraTwoD,ingestor.getRows())
 print("\nPrint filtered list from unfiltered row")
 print(ingestor.getRowAt(0))
 
-#for i in range(len(searchCritera)):
-#    searchCritera[i] = searchCritera[i].replace(' ','_')
 searchCritera = db.remove_spaces(searchCritera)
 
-new_table = 'Divorce'
+new_table = 'Absentee'
 print('\nCreating a new table using the search critera as headers')
-print('\nIf the row already exists it will throw an error and continue')
+print('If the row already exists it will throw an error and continue')
 db.create_table_list(new_table,searchCritera,'string')
+
 
 print('\nAdding all the rows from the CSV file into new table')
 #for person in ingestor.getRows():
     #db.add_row_list(new_table, searchCritera, person)
-db.add_list_of_rows(new_table,searchCritera,ingestor.getRows())
+#db.add_list_of_rows(new_table,searchCritera,ingestor.getRows())
 
 print('\nPrinting table headers')
 print(db.get_headers(new_table))
