@@ -28,7 +28,7 @@ print(ingestor.getRowAt(0))
 
 searchCritera = db.remove_spaces(searchCritera)
 
-new_table = 'Absentee'
+new_table = 'Divorce'
 print('\nCreating a new table using the search critera as headers')
 print('If the row already exists it will throw an error and continue')
 db.create_table_list(new_table,searchCritera,'string')
@@ -37,7 +37,7 @@ db.create_table_list(new_table,searchCritera,'string')
 print('\nAdding all the rows from the CSV file into new table')
 #for person in ingestor.getRows():
     #db.add_row_list(new_table, searchCritera, person)
-db.add_list_of_rows(new_table,searchCritera,ingestor.getRows())
+#db.add_list_of_rows(new_table,searchCritera,ingestor.getRows())
 
 print('\nPrinting table headers')
 print(db.get_headers(new_table))

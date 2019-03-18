@@ -6,7 +6,7 @@ def main():
     data_base_file = 'test.db'
 
     app = GUI(data_base_file)
-    app.run(1650,900)
+    app.run(1650,800)
     #app.update_table([],rows)
 
 

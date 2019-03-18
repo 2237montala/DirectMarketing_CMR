@@ -31,8 +31,8 @@ class GUI():
         #editMenu.addAction(imprtCSV)
 
         viewMenu = mainMenu.addMenu('View')
-        viewMenu.addMenu("Switch Table")
-        viewMenu.addAction('Switch Table',self.add_menu_item)
+        switchTableMenu = viewMenu.addMenu("Switch Table")
+        self.add_menu_items(self.db.get_table_names(),switchTableMenu)
         searchMenu = mainMenu.addMenu('Search')
         toolsMenu = mainMenu.addMenu('Tools')
 
@@ -52,8 +52,9 @@ class GUI():
 
 
         layout = QGridLayout()
+        self.menuBar = self.create_menu_bar()
         #addWidget(widget,row,column,row span,col span)
-        layout.addWidget(self.create_menu_bar(),1,1,1,2)
+        layout.addWidget(self.menuBar,1,1,1,2)
         layout.addWidget(self.table,2,1,1,2)
         layout.addWidget(self.updateButton,3,1,1,1)
         layout.addWidget(self.fileBrowserButton,3,2,1,1)
@@ -153,16 +154,21 @@ class GUI():
         print("Button clicked")
         self.update_table(self.db.get_table(self.curr_table)
                          ,self.db.get_headers(self.curr_table))
-        
+
     def set_curr_table_name(self, new_table_name):
-        self.curr_table(new_table_name)
-    
-    def add_menu_items(self):
-        #Still working on it
-        table_names = self.tables
-        
-        for str in table_names:
-            menu.addAction(str, self.set_curr_table_name(str))
+        self.curr_table = new_table_name
+
+    def print_action(self):
+        print(self.menuBar.sender().text())
+        self.set_curr_table_name(self.menuBar.sender().text())
+
+
+    def add_menu_items(self,table_names,menu):
+        for name in table_names:
+            #menu.addAction(name,(lambda: self.print_action(name)))
+            menu.addAction(name,self.print_action)
+            #, self.set_curr_table_name(name)
+
     # Main run method
     def run(self,screen_width,screen_height):
         """
