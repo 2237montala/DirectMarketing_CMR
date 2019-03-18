@@ -140,6 +140,10 @@ class csv_importer_popup(QWidget):
                 if item.isChecked():
                     print(item.text())
 
+            #What needs to happen after this
+            #Get all the check boxes and give them to the csv Ingestor
+            #Send the returned filtered data to the DatabaseManager and save
+            #it to a new database that has a custom name
 
 #Running this file with run this part of the code
 #Makes a pop up window
