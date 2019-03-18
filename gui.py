@@ -45,7 +45,8 @@ class GUI():
         self.updateButton = QPushButton("Update Table")
         self.fileBrowserButton = QPushButton("Upload File")
         self.updateButton.clicked.connect(self.update_button_click)
-        self.fileBrowserButton.clicked.connect(self.open_file_browser)
+#         self.fileBrowserButton.clicked.connect(self.open_file_browser)
+        self.fileBrowserButton.clicked.connect(self.open_csv_import)
 
 
 
