@@ -31,7 +31,8 @@ class GUI():
         #editMenu.addAction(imprtCSV)
 
         viewMenu = mainMenu.addMenu('View')
-        viewMenu.addAction('Switch Table')
+        viewMenu.addMenu("Switch Table")
+        viewMenu.addAction('Switch Table',self.switch_curr_table)
         searchMenu = mainMenu.addMenu('Search')
         toolsMenu = mainMenu.addMenu('Tools')
 
@@ -76,6 +77,7 @@ class GUI():
         #self.csv_importer.setGeometry(QRect(100, 100, 400, 200))
 
         self.csv_importer.show()
+
 
     def add_items(self,table,row_list):
         """
