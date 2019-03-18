@@ -9,6 +9,8 @@ from Ingestor import Ingestor
 sqlite_file = 'test.db'
 db = DatabaseManager(sqlite_file)
 
+CLEAR_ON_COMPLETION = True
+
 filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
 ingestor = Ingestor(filename)
 ingestor.readCSV()
@@ -35,11 +37,21 @@ db.create_table_list(new_table,searchCritera,'string')
 print('\nAdding all the rows from the CSV file into new table')
 #for person in ingestor.getRows():
     #db.add_row_list(new_table, searchCritera, person)
-#db.add_list_of_rows(new_table,searchCritera,ingestor.getRows())
+db.add_list_of_rows(new_table,searchCritera,ingestor.getRows())
 
 print('\nPrinting table headers')
 print(db.get_headers(new_table))
 
 print('\nPrinting all table entries')
 print(db.get_table(new_table))
-#db.clear_table(new_table)
+
+print("\nPrinting the names of all tables in the database")
+print(db.get_table_names())
+
+if CLEAR_ON_COMPLETION:
+    print("\nClearing table")
+    db.clear_table(new_table)
+    print("\nPrinting table to show it is cleared")
+    db.get_table(new_table)
+else:
+    print("\nClear on completion is false")

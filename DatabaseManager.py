@@ -106,9 +106,27 @@ class DatabaseManager:
         try:
             self.cursor.execute("SELECT * FROM %s" % table_name)
             return self.cursor.fetchall()
-        except sqlite3.Error as er:
+        except Exception as er:
+            #General error message
             print('Error message:', er.args[0])
-            return False
+            return None
+
+    def get_table_names(self):
+        """
+        Returns a list of the table names in the database
+        """
+        try:
+            self.cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+            names = self.cursor.fetchall()
+            formatedNames = []
+            for name in names:
+                formatedNames.append(name[0])
+            return formatedNames
+        except Exception as er:
+            #General error message
+            print('Error message:', er.args[0])
+            return None
+
 
     def get_headers(self,table_name):
         """
