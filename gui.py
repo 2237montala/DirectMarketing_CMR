@@ -23,7 +23,7 @@ class GUI():
         #Adds a action called import csv that calls the method
         #when clicked
         #editMenu.addAction('Import CSV',self.open_file_browser)
-        editMenu.addAction('Import CSV',self.open_csv_import)
+        editMenu.addAction('Import CSV',self.open_csv_import())
 
         #Does the same things as the line above it
         #imprtCSV = QAction('Import CSV',self.window)
@@ -31,7 +31,7 @@ class GUI():
         #editMenu.addAction(imprtCSV)
 
         viewMenu = mainMenu.addMenu('View')
-        viewMenu.addAction('Switch Table')
+        viewMenu.addAction('Switch Table', self.add_menu_items)
         searchMenu = mainMenu.addMenu('Search')
         toolsMenu = mainMenu.addMenu('Tools')
 
@@ -139,7 +139,7 @@ class GUI():
 
     def set_table(self,new_table):
         """
-        Sets the current windows table to the paramter table
+        Sets the current windows table to the paramater table
         """
         self.table = new_table
 
@@ -151,7 +151,14 @@ class GUI():
         print("Button clicked")
         self.update_table(self.db.get_table(self.curr_table)
                          ,self.db.get_headers(self.curr_table))
-
+        
+    def set_curr_table_name(self, new_table_name):
+        self.curr_table(new_table_name)
+    
+    def add_menu_items(self):
+        #Still working on it
+        for str in table_names:
+            menu.addAction(str, self.set_curr_table_name(str))
     # Main run method
     def run(self,screen_width,screen_height):
         """
