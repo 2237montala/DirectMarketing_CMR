@@ -10,14 +10,16 @@ sqlite_file = 'test.db'
 db = DatabaseManager(sqlite_file)
 
 # filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
-filename = "/Users/Ulysses/Downloads/MOCK_DATA.csv"
+filename = "/Users/Ulysses/Downloads/The_lists/Divorce list 08.20.18 FIXED.csv"
+# filename = "/Users/Ulysses/Downloads/MOCK_DATA.csv"
 ingestor = Ingestor(filename)
 ingestor.readCSV()
 
 tempHeaders = ingestor.getCSVHeaders()
-# searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5],tempHeaders[15],tempHeaders[16]]
+searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5],tempHeaders[15],tempHeaders[16]]
 # 133 & 156 missing :(
-searchCritera = [tempHeaders[1],tempHeaders[2],tempHeaders[3],tempHeaders[5]]
+
+# searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[4],tempHeaders[5],tempHeaders[6]]
 
 searchCriteraTwoD = ingestor.getHeaderIndex(searchCritera,tempHeaders)
 print("\nDictionary of search critera and their indexes in the csv")
