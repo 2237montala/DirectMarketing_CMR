@@ -144,7 +144,8 @@ class csv_importer_popup(QWidget):
 #Running this file with run this part of the code
 #Makes a pop up window
 if __name__ == '__main__':
-    file = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
+#     file = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
+    file = "/Users/Ulysses/Downloads/The_lists/Divorce list 08.20.18 FIXED.csv"
     tables = ['Absentee','Divorce','Lis Pendent','Probate']
     app = QApplication([])
     ex = csv_importer_popup('Test',file,tables,'test.db',True)
