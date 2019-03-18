@@ -23,7 +23,7 @@ class GUI():
         #Adds a action called import csv that calls the method
         #when clicked
         #editMenu.addAction('Import CSV',self.open_file_browser)
-        editMenu.addAction('Import CSV',self.open_csv_import)
+        editMenu.addAction('Import CSV',self.open_csv_import())
 
         #Does the same things as the line above it
         #imprtCSV = QAction('Import CSV',self.window)
@@ -31,8 +31,12 @@ class GUI():
         #editMenu.addAction(imprtCSV)
 
         viewMenu = mainMenu.addMenu('View')
+<<<<<<< HEAD
         viewMenu.addMenu("Switch Table")
         viewMenu.addAction('Switch Table',self.switch_curr_table)
+=======
+        viewMenu.addAction('Switch Table', self.add_menu_items)
+>>>>>>> 1a3d0f39d769753b15f73569684c03d968836175
         searchMenu = mainMenu.addMenu('Search')
         toolsMenu = mainMenu.addMenu('Tools')
 
@@ -46,7 +50,8 @@ class GUI():
         self.updateButton = QPushButton("Update Table")
         self.fileBrowserButton = QPushButton("Upload File")
         self.updateButton.clicked.connect(self.update_button_click)
-        self.fileBrowserButton.clicked.connect(self.open_file_browser)
+#         self.fileBrowserButton.clicked.connect(self.open_file_browser)
+        self.fileBrowserButton.clicked.connect(self.open_csv_import)
 
 
 
@@ -140,7 +145,7 @@ class GUI():
 
     def set_table(self,new_table):
         """
-        Sets the current windows table to the paramter table
+        Sets the current windows table to the paramater table
         """
         self.table = new_table
 
@@ -152,7 +157,14 @@ class GUI():
         print("Button clicked")
         self.update_table(self.db.get_table(self.curr_table)
                          ,self.db.get_headers(self.curr_table))
-
+        
+    def set_curr_table_name(self, new_table_name):
+        self.curr_table(new_table_name)
+    
+    def add_menu_items(self):
+        #Still working on it
+        for str in table_names:
+            menu.addAction(str, self.set_curr_table_name(str))
     # Main run method
     def run(self,screen_width,screen_height):
         """
