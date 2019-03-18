@@ -142,6 +142,14 @@ class DatabaseManager:
             print('Error message:', er.args[0])
             return False
 
+    def get_row_at(self,table_name,address):
+        try:
+            #self.cursor.execute('SELECT * FROM (?) WHERE )
+        except Exception as er:
+            #General error message
+            print('Error message:', er.args[0])
+            return None
+
     def remove_spaces(self,old_list):
         for i in range(len(old_list)):
             old_list[i] = old_list[i].replace(' ','_')
