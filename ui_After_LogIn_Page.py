@@ -6,10 +6,19 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5 import QtCore
+from PyQt5 import QtWidgets
+from PyQt5 import QtGui
+
+import sys
+#import PyQt5
 
 
 class Ui_MainWindow(object):
+    def __init__(self):
+        super().__init__()
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1650, 950)
@@ -102,3 +111,15 @@ class Ui_MainWindow(object):
         self.actionkpdskkds.setText(_translate("MainWindow", "kpdskkds"))
 
 
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    main = Ui_MainWindow()
+    #self.window = QWidget()
+    #mainWindow = QMainWindow()
+    mainWindow = QMainWindow()
+    main.setupUi(mainWindow)
+    main.retranslateUi(mainWindow)
+    mainWindow.show()
+
+    ex = main
+    app.exec_()
