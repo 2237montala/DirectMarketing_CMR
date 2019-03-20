@@ -1,6 +1,5 @@
 #https://stackoverflow.com/questions/16856647/sqlite3-programmingerror-incorrect-number-of-bindings-supplied-the-current-sta
 #https://stackoverflow.com/questions/39196462/how-to-use-variable-for-sqlite-table-name?rq=1 <- finds if a table exists
-#https://www.sqlite.org/faq.html Remove table at row id example
 
 import sqlite3
 import re
@@ -128,6 +127,7 @@ class DatabaseManager:
             print('Error message:', er.args[0])
             return None
 
+
     def get_headers(self,table_name):
         """
         Return the colum headers for the table
@@ -142,10 +142,29 @@ class DatabaseManager:
             print('Error message:', er.args[0])
             return False
 
+    # def get_row_at(self,table_name,column_name, column_value):
+    #     try:
+    #         self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name), (column_value,))
+    #         return self.cursor.fetchall()
+    #     except Exception as er:
+    #         #General error message
+    #         print('Error message:', er.args[0])
+    #         return None
+    #
+    # def get_row_at(self,table_name,row_id):
+    #     try:
+    #         self.cursor.execute('SELECT * FROM %s WHERE rowid = ?' % (table_name), (column_value,))
+    #         return self.cursor.fetchall()
+    #     except Exception as er:
+    #         #General error message
+    #         print('Error message:', er.args[0])
+    #         return None
+
     def get_row_at(self,table_name,column_name = None, column_value = None, row_id = -1):
         try:
             if row_id != -1:
                 #The user wants to use row id to get row
+                print("Using row id")
                 self.cursor.execute('SELECT * FROM %s WHERE _rowid_ = ?' % (table_name), (row_id,))
             else:
                 #The user wants to use a specific column to get row
@@ -155,25 +174,6 @@ class DatabaseManager:
             #General error message
             print('Error message:', er.args[0])
             return None
-
-    def delete_row_at(self,table_name, row_id = -1):
-        try:
-            with self.conn:
-                #Create a temporary table names temp with the data from
-                #the original table but skips the row at the row id
-                self.cursor.execute('CREATE TEMPORARY TABLE temp AS SELECT * FROM %s WHERE _rowid_ != ?' % (table_name) ,(row_id,))
-                #Delete the old table
-                self.cursor.execute('DROP TABLE %s' % table_name)
-                #Create a new table with the same name as the old table
-                #and copies all the data from temp
-                self.cursor.execute('CREATE TABLE %s AS SELECT * FROM temp' % table_name)
-                #Deletes the temp table
-                self.cursor.execute('DROP TABLE temp')
-                return True
-        except Exception as er:
-            #General error message
-            print('Error message:', er.args[0])
-            return False
 
     def remove_spaces(self,old_list):
         for i in range(len(old_list)):

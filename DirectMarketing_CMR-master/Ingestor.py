@@ -23,9 +23,8 @@ class Ingestor:
         the first row as the row if column headers. Then it reads in the
         reamining rows into a 2d array
         """
-
-        try:
-            if os.path.exists(self.filename):
+        if os.path.exists(self.filename):
+            try:
                 with open(self.filename, 'r') as csvfile:
                     #Created csv reader object
                     csvreader = csv.reader(csvfile)
@@ -36,12 +35,11 @@ class Ingestor:
                         #Loops through all rows in csvreader adding it to and array
                         self.rows.append(row)
                 return True
-        except Exception as er:
-            print('Error message:', er.args[0])
-            return False
-            #If there is an io error return a false
-        else:
-            return False
+            except IOERROR:
+                #If there is an io error return a false
+                return False
+            else:
+                return False
 
 
     def getHeaderIndex(self,headerList,fieldsList):

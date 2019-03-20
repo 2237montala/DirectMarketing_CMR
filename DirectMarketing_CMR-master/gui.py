@@ -1,6 +1,4 @@
 #https://pythonspot.com/pyqt5/
-# How to covert pyQt designer file to python file
-# pyuic5 -o ui_form.py testing.ui
 import sys
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -76,9 +74,12 @@ class GUI():
         #Explained how to make another widget pop up
         #Key is to make a widget and use self.widget
         file = file_browser("File Browser").openFileNameDialog()
-        if(file != None):
-            self.csv_importer = csv_importer_popup("CSV Importer",file,self.tables,'test.db')
-            self.csv_importer.show()
+        self.csv_importer = csv_importer_popup("CSV Importer",file,self.tables,'test.db')
+
+        #self.csv_importer.setGeometry(QRect(100, 100, 400, 200))
+
+        self.csv_importer.show()
+
 
     def add_items(self,table,row_list):
         """

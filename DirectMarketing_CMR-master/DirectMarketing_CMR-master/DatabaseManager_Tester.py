@@ -9,14 +9,14 @@ from Ingestor import Ingestor
 sqlite_file = 'test.db'
 db = DatabaseManager(sqlite_file)
 
-CLEAR_ON_COMPLETION = True
+CLEAR_ON_COMPLETION = False
 
-filename = "DatabaseManagerTest_15.csv"
+filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
 ingestor = Ingestor(filename)
 ingestor.readCSV()
 
 tempHeaders = ingestor.getCSVHeaders()
-searchCritera = [tempHeaders[0],tempHeaders[1],tempHeaders[2],tempHeaders[4],tempHeaders[5],tempHeaders[6]]
+searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5],tempHeaders[6],tempHeaders[15],tempHeaders[16]]
 
 searchCriteraTwoD = ingestor.getHeaderIndex(searchCritera,tempHeaders)
 print("\nDictionary of search critera and their indexes in the csv")
@@ -28,7 +28,7 @@ print(ingestor.getRowAt(0))
 
 searchCritera = db.remove_spaces(searchCritera)
 
-new_table = 'Test_15'
+new_table = 'Divorce'
 print('\nCreating a new table using the search critera as headers')
 print('If the row already exists it will throw an error and continue')
 db.create_table_list(new_table,searchCritera,'string')
@@ -37,39 +37,26 @@ db.create_table_list(new_table,searchCritera,'string')
 print('\nAdding all the rows from the CSV file into new table')
 #for person in ingestor.getRows():
     #db.add_row_list(new_table, searchCritera, person)
-db.add_list_of_rows(new_table,searchCritera,ingestor.getRows())
-
-print('\nPrinting table headers')
-print(db.get_headers(new_table))
-
-print('\nPrinting all table entries')
-print(db.get_table(new_table))
-
-print("\nPrinting the names of all tables in the database")
-print(db.get_table_names())
+#db.add_list_of_rows(new_table,searchCritera,ingestor.getRows())
 
 print("\nGet row with address %s" % ingestor.getRowAt(2)[0])
-print(db.get_row_at(new_table,column_name=searchCritera[0],column_value=ingestor.getRowAt(2)[0]))
+print(db.get_row_at(new_table,'Site_Address',ingestor.getRowAt(2)[0]))
 
 print("\nGet row with address 1435 North St. Should return nothing")
-print(db.get_row_at(new_table,searchCritera[0],"1435 North St."))
+print(db.get_row_at(new_table,'Site_Address',"1435 North St."))
 
-test_row = 9
+print("\nGet row with row id 4")
+print(db.get_row_at(new_table,4))
 
-rowToBeDel = db.get_row_at(new_table,row_id=test_row)
-rowAfterToBeDel = db.get_row_at(new_table,row_id=test_row+1)
 
-print("\nGet row with row id %d" % test_row)
-print(rowToBeDel)
-
-print("\nGet row with row id %d" % (test_row+1))
-print(rowAfterToBeDel)
-
-print("\nDelete row with row id %d" % test_row)
-print(db.delete_row_at(new_table,row_id=test_row))
-
-print('\nIs the new row %d equal to the old row %d' % (test_row,test_row+1))
-print(rowAfterToBeDel == db.get_row_at(new_table,row_id=test_row))
+# print('\nPrinting table headers')
+# print(db.get_headers(new_table))
+#
+# print('\nPrinting all table entries')
+# print(db.get_table(new_table))
+#
+# print("\nPrinting the names of all tables in the database")
+# print(db.get_table_names())
 
 if CLEAR_ON_COMPLETION:
     print("\nClearing table")
