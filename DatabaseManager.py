@@ -128,7 +128,6 @@ class DatabaseManager:
             print('Error message:', er.args[0])
             return None
 
-
     def get_headers(self,table_name):
         """
         Return the colum headers for the table
@@ -157,30 +156,18 @@ class DatabaseManager:
             print('Error message:', er.args[0])
             return None
 
-    #         BEGIN TRANSACTION;
-    # CREATE TEMPORARY TABLE t1_backup(a,b);
-    # INSERT INTO t1_backup SELECT a,b FROM t1;
-    # DROP TABLE t1;
-    # CREATE TABLE t1(a,b);
-    # INSERT INTO t1 SELECT a,b FROM t1_backup;
-    # DROP TABLE t1_backup;
-    # COMMIT;
-
-
-
     def delete_row_at(self,table_name, row_id = -1):
         try:
             with self.conn:
-                headers = self.get_headers(table_name)
-
+                #Create a temporary table names temp with the data from
+                #the original table but skips the row at the row id
                 self.cursor.execute('CREATE TEMPORARY TABLE temp AS SELECT * FROM %s WHERE _rowid_ != ?' % (table_name) ,(row_id,))
-
-                #self.cursor.execute('CREATE TEMPORARY TABLE temp(%s)' % headersStr)
-                #self.cursor.execute('INSERT INTO temp SELECT * FROM %s WHERE _rowid_ != ?' % table_name ,(row_id,))
+                #Delete the old table
                 self.cursor.execute('DROP TABLE %s' % table_name)
-                #self.cursor.execute('CREATE TABLE %s' % table_name)
+                #Create a new table with the same name as the old table
+                #and copies all the data from temp
                 self.cursor.execute('CREATE TABLE %s AS SELECT * FROM temp' % table_name)
-                #self.cursor.execute('INSERT INTO %s SELECT * FROM temp' % table_name)
+                #Deletes the temp table
                 self.cursor.execute('DROP TABLE temp')
                 return True
         except Exception as er:
