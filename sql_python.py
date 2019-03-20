@@ -14,20 +14,20 @@ c = conn.cursor()
 
 def create_table(table_name, column_name, column_type):
     with conn:
-<<<<<<< HEAD
+#<<<<<<< HEAD
       #  if  not doesTableExist(table_name):
       c.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
-=======
+#=======
         if  not doesTableExist(table_name):
             c.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
             return True
         else:
             #Returns false if tabel already exists
             return False
-<<<<<<< HEAD
->>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
-=======
->>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
+#<<<<<<< HEAD
+#>>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
+#=======
+#>>>>>>> ed456d4f357c54e01ac5b27bb27ae549a03cb037
 
 def doesTableExist(table_name):
     try:
