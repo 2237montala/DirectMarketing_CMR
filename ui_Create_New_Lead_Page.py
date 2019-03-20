@@ -5,11 +5,21 @@
 # Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
-
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+class MainWindow (QtGui.QMainWindow):
+ 
+    def __init__ (self, parent = None):
+        super (MainWindow, self).__init__ ()
+        self.ui = Ui_MainWindow () 
+        self.ui.setupUi (self)
 
 class Ui_MainWindow(object):
+
+       
+        
+    
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1650, 950)
@@ -235,4 +245,15 @@ class Ui_MainWindow(object):
         self.menudd.setTitle(_translate("MainWindow", "dd"))
         self.actiondd.setText(_translate("MainWindow", "dd"))
 
+class ControlMainWindow(QtGui.QMainWindow):
+ def init(self, parent=None):
+     super(ControlMainWindow, self).init(parent)
+     self.ui = Ui_MainWindow()
+     self.ui.setupUi(self) 
 
+
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    mainWin = Ui_MainWindow()
+    mainWin.show()
+    sys.exit( app.exec_() )

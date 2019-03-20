@@ -18,7 +18,7 @@ def create_table(table_name, column_name, column_type):
       #  if  not doesTableExist(table_name):
       c.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
 #=======
-        if  not doesTableExist(table_name):
+        if not doesTableExist(table_name):
             c.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
             return True
         else:
