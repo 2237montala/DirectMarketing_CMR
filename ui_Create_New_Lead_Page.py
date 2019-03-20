@@ -5,20 +5,19 @@
 # Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
-import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5 import QtCore
+from PyQt5 import QtWidgets
+from PyQt5 import QtGui
 
-class MainWindow (QtGui.QMainWindow):
- 
-    def __init__ (self, parent = None):
-        super (MainWindow, self).__init__ ()
-        self.ui = Ui_MainWindow () 
-        self.ui.setupUi (self)
+import sys
+#import PyQt5
+
 
 class Ui_MainWindow(object):
-
-       
-        
+    def __init__(self):
+        super().__init__()
     
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -245,15 +244,15 @@ class Ui_MainWindow(object):
         self.menudd.setTitle(_translate("MainWindow", "dd"))
         self.actiondd.setText(_translate("MainWindow", "dd"))
 
-class ControlMainWindow(QtGui.QMainWindow):
- def init(self, parent=None):
-     super(ControlMainWindow, self).init(parent)
-     self.ui = Ui_MainWindow()
-     self.ui.setupUi(self) 
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    main = Ui_MainWindow()
+    #self.window = QWidget()
+    #mainWindow = QMainWindow()
+    mainWindow = QMainWindow()
+    main.setupUi(mainWindow)
+    main.retranslateUi(mainWindow)
+    mainWindow.show()
 
-
-if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    mainWin = Ui_MainWindow()
-    mainWin.show()
-    sys.exit( app.exec_() )
+    ex = main
+    app.exec_()
