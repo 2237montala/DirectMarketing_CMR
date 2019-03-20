@@ -142,9 +142,34 @@ class DatabaseManager:
             print('Error message:', er.args[0])
             return False
 
-    def get_row_at(self,table_name,address):
+    # def get_row_at(self,table_name,column_name, column_value):
+    #     try:
+    #         self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name), (column_value,))
+    #         return self.cursor.fetchall()
+    #     except Exception as er:
+    #         #General error message
+    #         print('Error message:', er.args[0])
+    #         return None
+    #
+    # def get_row_at(self,table_name,row_id):
+    #     try:
+    #         self.cursor.execute('SELECT * FROM %s WHERE rowid = ?' % (table_name), (column_value,))
+    #         return self.cursor.fetchall()
+    #     except Exception as er:
+    #         #General error message
+    #         print('Error message:', er.args[0])
+    #         return None
+
+    def get_row_at(self,table_name,column_name = None, column_value = None, row_id = -1):
         try:
-            #self.cursor.execute('SELECT * FROM (?) WHERE )
+            if row_id != -1:
+                #The user wants to use row id to get row
+                print("Using row id")
+                self.cursor.execute('SELECT * FROM %s WHERE _rowid_ = ?' % (table_name), (row_id,))
+            else:
+                #The user wants to use a specific column to get row
+                self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name), (column_value,))
+            return self.cursor.fetchall()
         except Exception as er:
             #General error message
             print('Error message:', er.args[0])

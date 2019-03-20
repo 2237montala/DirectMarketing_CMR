@@ -9,7 +9,7 @@ from Ingestor import Ingestor
 sqlite_file = 'test.db'
 db = DatabaseManager(sqlite_file)
 
-CLEAR_ON_COMPLETION = True
+CLEAR_ON_COMPLETION = False
 
 filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
 ingestor = Ingestor(filename)
@@ -39,14 +39,24 @@ print('\nAdding all the rows from the CSV file into new table')
     #db.add_row_list(new_table, searchCritera, person)
 #db.add_list_of_rows(new_table,searchCritera,ingestor.getRows())
 
-print('\nPrinting table headers')
-print(db.get_headers(new_table))
+print("\nGet row with address %s" % ingestor.getRowAt(2)[0])
+print(db.get_row_at(new_table,'Site_Address',ingestor.getRowAt(2)[0]))
 
-print('\nPrinting all table entries')
-print(db.get_table(new_table))
+print("\nGet row with address 1435 North St. Should return nothing")
+print(db.get_row_at(new_table,'Site_Address',"1435 North St."))
 
-print("\nPrinting the names of all tables in the database")
-print(db.get_table_names())
+print("\nGet row with row id 4")
+print(db.get_row_at(new_table,4))
+
+
+# print('\nPrinting table headers')
+# print(db.get_headers(new_table))
+#
+# print('\nPrinting all table entries')
+# print(db.get_table(new_table))
+#
+# print("\nPrinting the names of all tables in the database")
+# print(db.get_table_names())
 
 if CLEAR_ON_COMPLETION:
     print("\nClearing table")
