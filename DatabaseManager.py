@@ -4,6 +4,7 @@
 
 import sqlite3
 import re
+from _sqlite3 import Cursor
 
 #This means All characters that are A to Z or a to z or 0 to 9 or _ that
 #exist anywhere in the string
@@ -84,7 +85,7 @@ class DatabaseManager:
 
     def add_row_list(self, table_name, column_arr, row_arr):
         """
-        Adds a rows to the table with specified data. If first adds the value
+        Adds a rows to the table with specified data. It first adds the value
         related to the first column, then adds the rest by appending to it
         """
         with self.conn:
@@ -130,7 +131,7 @@ class DatabaseManager:
 
     def get_headers(self,table_name):
         """
-        Return the colum headers for the table
+        Return the column headers for the table
         """
         try:
             #self.cursor.execute('PRAGMA TABLE_INFO({})'.format(table_name))
@@ -146,11 +147,14 @@ class DatabaseManager:
         try:
             if row_id != -1:
                 #The user wants to use row id to get row
-                self.cursor.execute('SELECT * FROM %s WHERE _rowid_ = ?' % (table_name), (row_id,))
+                self.cursor.execute('SELECT * FROM %s WHERE _rowid_ = ?' % (table_name,), (row_id,))
             else:
                 #The user wants to use a specific column to get row
-                self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name), (column_value,))
-            return self.cursor.fetchall()
+#                 self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name), (column_value,))
+                self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name,), (column_value,))
+                return self.cursor.fetchall()
+#             for row in self.cursor:
+#                 return row
         except Exception as er:
             #General error message
             print('Error message:', er.args[0])
@@ -161,7 +165,7 @@ class DatabaseManager:
             with self.conn:
                 #Create a temporary table names temp with the data from
                 #the original table but skips the row at the row id
-                self.cursor.execute('CREATE TEMPORARY TABLE temp AS SELECT * FROM %s WHERE _rowid_ != ?' % (table_name) ,(row_id,))
+                self.cursor.execute('CREATE TEMPORARY TABLE temp AS SELECT * FROM %s WHERE _rowid_ != ?' % table_name ,(row_id,))
                 #Delete the old table
                 self.cursor.execute('DROP TABLE %s' % table_name)
                 #Create a new table with the same name as the old table
@@ -186,3 +190,56 @@ class DatabaseManager:
             return input_str
         else:
             raise Exception('Illegally formatted string')
+    
+    def update_row_cell_at(self, table_name, column_name = None, column_value = None, primary_key = None, new_row = None):
+#         if (primary_key != None):
+#             old_row = self.get_row_at(table_name, row_id = primary_key)
+#         else:
+#             old_row = self.get_row_at(table_name, column_name, column_value)
+#         column_arr =  self.get_headers(table_name)
+#         print(column_arr)
+# #         print(old_row)
+# #         print(new_row)
+#         print(self.get_table(table_name))
+# #         print(len(old_row))
+# #         print(len(new_row))
+#         if (len(old_row) ==  len(new_row)):
+#             try:
+#                 with self.conn:
+#                     for i in range(0,len(column_arr)):
+#                         print(column_arr[i])
+#                         print(new_row[i])
+#                         print(column_arr[0])
+#                         print(primary_key)
+#                         self.cursor.execute("UPDATE %s SET %s='%s' WHERE %s='%s'" % (table_name, '"{}"'.format(column_arr[i]), new_row[i], column_arr[0], primary_key))
+#                         return True
+#             except Exception as er:
+#                 #General error message
+#                 print('Error message:', er.args[0])
+#                 return False
+#         else:
+#             print('# of items in row doesn\'t match the # of items in current row' )
+#             return False
+##########
+
+# It ^^^^^^  doesn't work but am trying a different way of doing things 
+
+##########
+        column_arr =  self.get_headers(table_name)
+        try:
+            with self.conn:
+                if primary_key != None:
+                #The user wants to use row id to get row
+                    self.cursor.execute('SELECT * FROM %s WHERE _rowid_ = ?' % (table_name,), (primary_key,))
+                else:
+                #The user wants to use a specific column to get row
+#                 self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name), (column_value,))
+                    self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name,), (column_value,))
+                self.cursor.execute('UPDATE %s SET %s WHERE %s = ?' % (table_name, column_name, column_arr[0],), (primary_key,))
+                return True
+        except Exception as er:
+              #General error message
+            print('Error message:', er.args[0])
+            return False
+                    
+                
