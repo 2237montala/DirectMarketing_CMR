@@ -37,6 +37,8 @@ db.create_table_list(new_table,searchCritera,'string')
 print('\nAdding all the rows from the CSV file into new table')
 for person in ingestor.getRows():
     db.add_row_list(new_table, searchCritera, person)
+
+# print(db.get_header_index(new_table, "email"))
 # db.add_list_of_rows(new_table,searchCritera,ingestor.getRows())
   
 # print('\nPrinting table headers')
@@ -76,14 +78,16 @@ test_row = 9
 # print('\nIs the new row %d equal to the old row %d' % (test_row,test_row+1))
 # print(rowAfterToBeDel == db.get_row_at(new_table,row_id=test_row))
 
-updated_row1 = ["ahouse", "josh", "green", "ssd4fr33@montalbano.com", "228-192-2819", "$2.17"]
-updated_row2 = ["notahouse", "Josh", "Anderson", "SCAMUORME@GMAIL>COM", "1-800-CALLMEANTHONY", "$123.456"]
+updated_row1 = ["a house", "josh", "green", "ssd4fr33@montalbano.com", "228-192-2819", "$2.17"]
+# updated_row1 = db.remove_spaces(updated_row1)
+updated_row2 = ["not a house", "Josh", "Anderson", "SCAMUORME@GMAIL>COM", "1-800-CALLMEANTHONY", "$123.456"]
+# updated_row2 = db.remove_spaces(updated_row2)
 print("\nUpdate row with row id %d" % test_row)
 print(db.update_row_at(new_table,primary_key = test_row, new_row = updated_row1))
 
 print("\nUpdate row with given column_name and column_value")
 print(db.update_row_at(new_table,searchCritera[0], updated_row1[0], new_row = updated_row2))
-db.get_table(new_table)
+print(db.get_table(new_table))
 
 if CLEAR_ON_COMPLETION:
     print("\nClearing table")

@@ -143,7 +143,15 @@ class DatabaseManager:
             #General error message
             print('Error message:', er.args[0])
             return False
-
+        
+    def get_header_index(self, table_name, header):
+        i = 0
+        headers = self.get_headers(table_name)
+        for head in headers:
+            if head == header:
+                return i
+            i += 1
+        return False
     def get_row_at(self,table_name,column_name = None, column_value = None, row_id = -1):
         try:
             if row_id != -1:
@@ -206,7 +214,7 @@ class DatabaseManager:
     #                         print(column_arr[i])
     #                         print(new_row[i])
     #                         print(primary_key)
-                            self.cursor.execute("UPDATE %s SET %s='%s' WHERE _rowid_ ='%s'" % (table_name, column_arr[i], new_row[i], primary_key))
+                            self.cursor.execute("UPDATE %s SET %s='%s' WHERE _rowid_ = ?" % (table_name, column_arr[i], new_row[i]), (primary_key,))
                         return True
                 except Exception as er:
                     #General error message
@@ -227,7 +235,7 @@ class DatabaseManager:
                         for i in range(0, len(new_row)):
     #                         print(column_arr[i])
     #                         print(new_row[i])
-                            self.cursor.execute("UPDATE %s SET %s='%s' WHERE _rowid_ = '%s'" % (table_name, column_arr[i], new_row[i], rowid[0]))
+                            self.cursor.execute("UPDATE %s SET %s='%s' WHERE _rowid_ = ?" % (table_name, column_arr[i], new_row[i]), (rowid[0],))
                         return True
                 except Exception as er:
                     #General error message
