@@ -3,6 +3,7 @@ import sys
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+
 from DatabaseManager import DatabaseManager
 from file_browser import file_browser
 from csv_importer import csv_importer_popup
@@ -77,6 +78,8 @@ class GUI():
         if(file != None):
             self.csv_importer = csv_importer_popup("CSV Importer",file,self.tables,'test.db')
             self.csv_importer.show()
+            self.csv_importer.connect()
+            #window.connect(csv_importer, Qt.SIGNAL('triggered()'),self.update_table)
             #self.db.get_table_names()
 
 
