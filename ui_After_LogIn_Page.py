@@ -13,12 +13,21 @@ from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 
 import sys
+
+
 #import PyQt5
 
 
 class Ui_MainWindow(object):
+    
+    
+    
     def __init__(self):
         super().__init__()
+       
+        
+        
+        
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1650, 950)
@@ -35,6 +44,7 @@ class Ui_MainWindow(object):
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(700, 0, 100, 30))
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.clicked.connect(self.handleButton)
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_2.setGeometry(QtCore.QRect(600, 0, 100, 30))
         self.pushButton_2.setObjectName("pushButton_2")
@@ -109,6 +119,9 @@ class Ui_MainWindow(object):
         self.actionThings.setText(_translate("MainWindow", "Things"))
         self.actionddd.setText(_translate("MainWindow", "ddd"))
         self.actionkpdskkds.setText(_translate("MainWindow", "kpdskkds"))
+        
+    def handleButton(self):
+        print('Button Clicked!')
 
 
 if __name__ == '__main__':
