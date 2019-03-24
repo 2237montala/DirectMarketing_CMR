@@ -104,27 +104,30 @@ class csv_importer_popup(QWidget):
         if self.buttonGroups[0].checkedId() > -1:
             print("Radio button pressed")
             buttonID = self.buttonGroups[0].checkedId()
-            print('Button id %i' % buttonID)
+            print('Button %d' % buttonID)
             #Use a default list for importing
             searchCritera = self.ingestor.getHeaderIndex(DEFAULT_LISTS[buttonID],self.ingestor.getCSVHeaders())
             print(searchCritera)
 
             buttonText = self.buttonGroups[0].buttons()[buttonID].text()
+            print(buttonText)
             #buttonText = self.buttonGroups[0].id(self.buttonGroups[0].checkedId()).text()
 
             #Check which table coresponds with the button pressed
             for tableName in self.tablesInDB:
-                if buttonText == tableName:
+                print('%s == %s' % (buttonText.replace(' ','_'), tableName))
+                if buttonText.replace(' ','_') == tableName:
                     print(tableName)
                     #print(self.ingestor.getRowAt(0))
                     #Uses the ingestor to search the unfiltered rows using
                     #this search critera list
                     self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                     rows = self.ingestor.getRows()
-
+                    print(rows)
                     #Check if tables exists already
                     if not self.db.doesTableExist(tableName):
                         #If not the create it with the table name
+                        print("Creating new table %s" % tableName)
                         self.db.create_table_list(tableName,self.db.remove_spaces(DEFAULT_LISTS[buttonID]),'string')
 
                     #Add the searched rows to the table that was clicked
@@ -150,7 +153,7 @@ class csv_importer_popup(QWidget):
 if __name__ == '__main__':
 #     file = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
     file = "/Users/Ulysses/Downloads/The_lists/Divorce list 08.20.18 FIXED.csv"
-    tables = ['Absentee','Divorce','Lis Pendent','Probate']
+    tables = ['Absentee','Divorce','Lis_Pendents','Probate']
     app = QApplication([])
     ex = csv_importer_popup('Test',file,tables,'test.db',True)
     app.exec_()

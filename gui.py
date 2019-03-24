@@ -12,7 +12,7 @@ class GUI():
         super().__init__()
         self.db = DatabaseManager(db_file)
         self.curr_table = "Divorce"
-        self.tables = ['Absentee','Divorce','Lis Pendent','Probate']
+        self.tables = ['Absentee','Divorce','Lis_Pendents','Probate']
 
     def create_menu_bar(self):
         #Create a new menu bar
@@ -77,6 +77,8 @@ class GUI():
         if(file != None):
             self.csv_importer = csv_importer_popup("CSV Importer",file,self.tables,'test.db')
             self.csv_importer.show()
+            #self.db.get_table_names()
+
 
     def add_items(self,table,row_list):
         """
@@ -155,7 +157,7 @@ class GUI():
     def set_curr_table_name(self, new_table_name):
         self.curr_table = new_table_name
 
-    def print_action(self):
+    def switch_curr_table(self):
         print(self.menuBar.sender().text())
         self.set_curr_table_name(self.menuBar.sender().text())
 
@@ -163,7 +165,7 @@ class GUI():
     def add_menu_items(self,table_names,menu):
         for name in table_names:
             #menu.addAction(name,(lambda: self.print_action(name)))
-            menu.addAction(name,self.print_action)
+            menu.addAction(name,self.switch_curr_table)
             #, self.set_curr_table_name(name)
 
     # Main run method
@@ -181,3 +183,10 @@ class GUI():
         self.window.show()
 
         sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+    data_base_file = 'test.db'
+    app = GUI(data_base_file)
+    app.run(1650,800)
+    #app.update_table([],rows)
