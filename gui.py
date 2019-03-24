@@ -1,4 +1,6 @@
 #https://pythonspot.com/pyqt5/
+# How to covert pyQt designer file to python file
+# pyuic5 -o ui_form.py testing.ui
 import sys
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
