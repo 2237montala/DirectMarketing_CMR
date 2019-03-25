@@ -1,6 +1,4 @@
 #https://pythonspot.com/pyqt5/
-# How to covert pyQt designer file to python file
-# pyuic5 -o ui_form.py testing.ui
 import sys
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -10,7 +8,7 @@ from DatabaseManager import DatabaseManager
 from file_browser import file_browser
 from csv_importer import csv_importer_popup
 
-class GUI():
+class GUI(QObject):
     def __init__(self,db_file):
         super().__init__()
         self.db = DatabaseManager(db_file)
@@ -80,7 +78,6 @@ class GUI():
         if(file != None):
             self.csv_importer = csv_importer_popup("CSV Importer",file,self.tables,'test.db')
             self.csv_importer.show()
-            self.csv_importer.connect()
             #window.connect(csv_importer, Qt.SIGNAL('triggered()'),self.update_table)
             #self.db.get_table_names()
 
