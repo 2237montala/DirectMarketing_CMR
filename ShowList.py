@@ -16,7 +16,6 @@ from DatabaseManager import DatabaseManager
 from file_browser import file_browser
 from csv_importer import csv_importer_popup
 
-
 class Ui_MainWindow(object):
     def __init__(self,db_file):
         #super().__init__()
@@ -79,8 +78,6 @@ class Ui_MainWindow(object):
 
         #Menu Bar
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        ##self.menubar.setGeometry(QtCore.QRect(0, 0, 985, 26))
-
         self.menubar.setDefaultUp(False)
         self.menubar.setNativeMenuBar(True)
 
@@ -122,11 +119,9 @@ class Ui_MainWindow(object):
         and a list of column headers
         """
         print("updating table")
-        #print(row_list)
 
         #Get the table in the windows
         table = self.get_table()
-        #print(table.rowCount())
         #Set the number of rows and the number of column
         #Using the lists from parameters
         table.setRowCount(len(row_list))
@@ -220,7 +215,6 @@ class Ui_MainWindow(object):
         mainWindow.show()
 
         sys.exit(app.exec_())
-
 
 if __name__ == '__main__':
     data_base_file = 'test.db'
