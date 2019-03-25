@@ -11,7 +11,7 @@ db = DatabaseManager(sqlite_file)
 
 CLEAR_ON_COMPLETION = False
 
-filename = "DatabaseManagerTest_15.csv"
+filename = "Test_Files/DatabaseManagerTest_15.csv"
 ingestor = Ingestor(filename)
 ingestor.readCSV()
 
@@ -40,22 +40,22 @@ for person in ingestor.getRows():
 
 # print(db.get_header_index(new_table, "email"))
 # db.add_list_of_rows(new_table,searchCritera,ingestor.getRows())
-  
+
 # print('\nPrinting table headers')
 # print(db.get_headers(new_table))
-#  
+#
 # print('\nPrinting all table entries')
 # print(db.get_table(new_table))
-#  
+#
 # print("\nPrinting the names of all tables in the database")
 # print(db.get_table_names())
-#  
+#
 # print("\nGet row with address %s (columns)" % ingestor.getRowAt(2)[0])
 # print(db.get_row_at(new_table,column_name=searchCritera[0],column_value=ingestor.getRowAt(2)[0]))
-#  
+#
 # print("\nGet row with address using column and 1435 North St. Should return nothing")
 # print(db.get_row_at(new_table,searchCritera[0],"1435 North St."))
-#  
+#
 # print("\nGet row with address using column and 88730 Barby Park Should return something")
 # print(db.get_row_at(new_table,searchCritera[0],"88730 Barby Park"))
 
@@ -65,16 +65,16 @@ test_row = 9
 # print(len(rowToBeDel))
 # rowAfterToBeDel = db.get_row_at(new_table,row_id=test_row+1)
 # print(len(rowAfterToBeDel))
-# 
+#
 # print("\nGet row with row id %d" % test_row)
 # print(rowToBeDel)
-#  
+#
 # print("\nGet row with row id %d" % (test_row+1))
 # print(rowAfterToBeDel)
-#  
+#
 # print("\nDelete row with row id %d" % test_row)
 # print(db.delete_row_at(new_table,row_id=test_row))
-#  
+#
 # print('\nIs the new row %d equal to the old row %d' % (test_row,test_row+1))
 # print(rowAfterToBeDel == db.get_row_at(new_table,row_id=test_row))
 

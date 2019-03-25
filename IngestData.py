@@ -7,14 +7,14 @@
 from Ingestor import Ingestor
 
 def main():
-    filename = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
+    filename = 'Test_Files/DatabaseManagerTest_15.csv'
     ingestor = Ingestor(filename)
     ingestor.readCSV()
 
     print("Header of csv file")
     print(ingestor.getCSVHeaders())
     tempHeaders = ingestor.getCSVHeaders()
-    searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5],tempHeaders[6],tempHeaders[15],tempHeaders[16]]
+    searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5]]
 
     searchCritera = ingestor.getHeaderIndex(searchCritera,tempHeaders)
     print("\nDictionary of search critera and their indexes in the csv")
