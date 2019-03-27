@@ -79,21 +79,25 @@ class csv_importer_popup(QtWidgets.QDialog):
         #List of button groups
         self.buttonGroups = [commonHeaderGroup,header_button_group]
 
-        #Create the master layout which is a grid
-        layout = QGridLayout()
-        #Add widgets
-        #format of addWidget(widget,row,col,row span, col span)
+        #Create text field
+        self.tableNameField = QtWidgets.QLineEdit('Custom Table Name')
 
+        #Create buttons
         cancelButton = QPushButton('Cancel')
         importButton = QPushButton('Import')
 
         cancelButton.clicked.connect(self.closeWindow)
         importButton.clicked.connect(self.importCSV)
 
+        #Create the master layout which is a grid
+        layout = QGridLayout()
+        #Add widgets
+        #format of addWidget(widget,row,col,row span, col span)
         layout.addWidget(scrollArea,1,1,1,2)
-        layout.addWidget(commonHeaderGroupBox,2,1,1,2)
-        layout.addWidget(cancelButton,3,1)
-        layout.addWidget(importButton,3,2)
+        layout.addWidget(self.tableNameField,2,1,1,2)
+        layout.addWidget(commonHeaderGroupBox,3,1,1,2)
+        layout.addWidget(cancelButton,4,1)
+        layout.addWidget(importButton,4,2)
         self.setLayout(layout)
         self.resize(self.sizeHint())
 
@@ -147,7 +151,9 @@ class csv_importer_popup(QtWidgets.QDialog):
             for item in self.buttonGroups[1].buttons():
                 if item.isChecked():
                     print(item.text())
-            self.import_done(newTableName)
+
+            print(self.db.is_valid_string(self.tableNameField.text().replace(' ','_')))
+            #self.import_done()
 
             #What needs to happen after this
             #Get all the check boxes and give them to the csv Ingestor
@@ -159,7 +165,7 @@ class csv_importer_popup(QtWidgets.QDialog):
 #Makes a pop up window
 if __name__ == '__main__':
 #     file = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
-    file = ""
+    file = "Test_Files/DatabaseManagerTest_15.csv"
     tables = ['Absentee','Divorce','Lis_Pendents','Probate']
     app = QApplication([])
     csvTest = csv_importer_popup("Test Popup")
