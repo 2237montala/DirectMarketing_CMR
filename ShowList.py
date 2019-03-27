@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
+from PyQt5.QtCore import pyqtSlot
 import sys
 
 from DatabaseManager import DatabaseManager
@@ -184,14 +185,20 @@ class Ui_MainWindow(object):
         self.update_table(self.db.get_table(self.curr_table)
                          ,self.db.get_headers(self.curr_table))
 
+    @pyqtSlot(name = 'import_closed')
+    def slotTest(self):
+        print("importer closed")
+
+
     def open_csv_import(self):
         #https://stackoverflow.com/questions/4838890/python-pyqt-popup-window
         #Explained how to make another widget pop up
         #Key is to make a widget and use self.widget
         file = file_browser("File Browser").openFileNameDialog()
         if(file != None):
-            self.csv_importer = csv_importer_popup("CSV Importer",file,self.tables,'test.db')
-            self.csv_importer.show()
+            self.csv_importer = csv_importer_popup("CSV Importer",file,self.tables,'test.db',self.slotTest)
+            #self.csv_importer.setParent(self.mainWindow)
+            self.csv_importer.exec_()
             #window.connect(csv_importer, Qt.SIGNAL('triggered()'),self.update_table)
             #self.db.get_table_names()
 
@@ -210,9 +217,9 @@ class Ui_MainWindow(object):
 
     def run(self,width,height):
         app = QtWidgets.QApplication(sys.argv)
-        mainWindow = QMainWindow()
-        self.setupUi(mainWindow,width,height)
-        mainWindow.show()
+        self.mainWindow = QMainWindow()
+        self.setupUi(self.mainWindow,width,height)
+        self.mainWindow.show()
 
         sys.exit(app.exec_())
 

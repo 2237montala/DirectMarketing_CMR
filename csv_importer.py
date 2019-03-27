@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QCheckBox
 from PyQt5.QtWidgets import QGroupBox, QVBoxLayout,QScrollArea, QPushButton
 from PyQt5.QtWidgets import QRadioButton, QButtonGroup
+from PyQt5 import QtWidgets
+from PyQt5 import QtCore
 from Ingestor import Ingestor
 from DatabaseManager import DatabaseManager
 
@@ -10,11 +12,16 @@ LISTPENDENT_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1
 PROBATE_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 DEFAULT_LISTS=[ABSENTEE_DEFAULT_LIST,DIVORCE_DEFAULT_LIST,LISTPENDENT_DEFAULT_LIST,PROBATE_DEFAULT_LIST]
 
-class csv_importer_popup(QWidget):
-    def __init__(self,window_title,file_loc,tables,db_file_loc,debug=False):
+class csv_importer_popup(QtWidgets.QDialog):
+    testSignal = QtCore.pyqtSignal()
+
+    def __init__(self,window_title,file_loc,tables,db_file_loc,closed_function = None,debug=False):
         super().__init__()
         self.title = window_title
         self.setWindowTitle(self.title)
+
+        #Signal
+        self.testSignal.connect(closed_function)
 
 
         self.commonFileTypes = ['Absentee', 'Divorce', 'Lis Pendents','Probate']
@@ -80,7 +87,7 @@ class csv_importer_popup(QWidget):
         importButton = QPushButton('Import')
 
         cancelButton.clicked.connect(self.closeWindow)
-        importButton.clicked.connect(self.importCSV)
+        #importButton.clicked.connect(self.importCSV)
 
         layout.addWidget(scrollArea,1,1,1,2)
         layout.addWidget(commonHeaderGroupBox,2,1,1,2)
@@ -91,14 +98,14 @@ class csv_importer_popup(QWidget):
 
         if debug:
             #Only here so if you run this class something shows up
-            self.show()
+            self.exec_()
 
     def closeWindow(self):
         #Closes the window
-        self.close()
+        self.reject()
 
     def importCSV(self):
-        self.closeWindow()
+        self.accept()
 
         #If any of the radio buttons are check it will return a number > -1
         if self.buttonGroups[0].checkedId() > -1:
@@ -147,6 +154,8 @@ class csv_importer_popup(QWidget):
             #Get all the check boxes and give them to the csv Ingestor
             #Send the returned filtered data to the DatabaseManager and save
             #it to a new database that has a custom name
+
+        self.importCSV()
 
 #Running this file with run this part of the code
 #Makes a pop up window
