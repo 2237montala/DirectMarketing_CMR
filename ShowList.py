@@ -181,13 +181,8 @@ class Ui_MainWindow(object):
         """
         Updates table when button is pressed
         """
-        print("Button clicked")
         self.update_table(self.db.get_table(self.curr_table)
                          ,self.db.get_headers(self.curr_table))
-
-    @pyqtSlot(name = 'import_closed')
-    def slotTest(self):
-        print("importer closed")
 
 
     def open_csv_import(self):
@@ -196,11 +191,16 @@ class Ui_MainWindow(object):
         #Key is to make a widget and use self.widget
         file = file_browser("File Browser").openFileNameDialog()
         if(file != None):
-            self.csv_importer = csv_importer_popup("CSV Importer",file,self.tables,'test.db',self.slotTest)
-            #self.csv_importer.setParent(self.mainWindow)
+            self.csv_importer.run_popup(file,self.tables,'test.db')
+            #Runs to the window
             self.csv_importer.exec_()
-            #window.connect(csv_importer, Qt.SIGNAL('triggered()'),self.update_table)
-            #self.db.get_table_names()
+
+    def import_closed(self,str):
+        #This method is called when the import window closed
+        print('Refreshing table')
+        #Call the update menu action to refresh the table
+        self.set_curr_table_name(str)
+        self.update_menu_action()
 
     def set_curr_table_name(self, new_table_name):
         self.curr_table = new_table_name
@@ -219,8 +219,12 @@ class Ui_MainWindow(object):
         app = QtWidgets.QApplication(sys.argv)
         self.mainWindow = QMainWindow()
         self.setupUi(self.mainWindow,width,height)
-        self.mainWindow.show()
 
+        self.csv_importer = csv_importer_popup("CSV Importer")
+        #This links the import signal to the import close window
+        self.csv_importer.importDoneSignal.connect(self.import_closed)
+
+        self.mainWindow.show()
         sys.exit(app.exec_())
 
 if __name__ == '__main__':

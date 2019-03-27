@@ -1,3 +1,4 @@
+#https://blog.manash.me/quick-pyqt5-1-signal-and-slot-example-in-pyqt5-bf502ccaf11d <- used for import done signal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QCheckBox
 from PyQt5.QtWidgets import QGroupBox, QVBoxLayout,QScrollArea, QPushButton
 from PyQt5.QtWidgets import QRadioButton, QButtonGroup
@@ -13,18 +14,18 @@ PROBATE_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st O
 DEFAULT_LISTS=[ABSENTEE_DEFAULT_LIST,DIVORCE_DEFAULT_LIST,LISTPENDENT_DEFAULT_LIST,PROBATE_DEFAULT_LIST]
 
 class csv_importer_popup(QtWidgets.QDialog):
-    testSignal = QtCore.pyqtSignal()
+    importDoneSignal = QtCore.pyqtSignal('QString')
 
-    def __init__(self,window_title,file_loc,tables,db_file_loc,closed_function = None,debug=False):
+    def __init__(self,window_title):
         super().__init__()
         self.title = window_title
         self.setWindowTitle(self.title)
-
-        #Signal
-        self.testSignal.connect(closed_function)
-
-
         self.commonFileTypes = ['Absentee', 'Divorce', 'Lis Pendents','Probate']
+
+    def run_popup(self,file_loc,tables,db_file_loc):
+        #Signal
+        #self.testSignal.connect(closed_function)
+
         self.tablesInDB = tables
 
         #CSV file stuff
@@ -87,7 +88,7 @@ class csv_importer_popup(QtWidgets.QDialog):
         importButton = QPushButton('Import')
 
         cancelButton.clicked.connect(self.closeWindow)
-        #importButton.clicked.connect(self.importCSV)
+        importButton.clicked.connect(self.importCSV)
 
         layout.addWidget(scrollArea,1,1,1,2)
         layout.addWidget(commonHeaderGroupBox,2,1,1,2)
@@ -96,17 +97,16 @@ class csv_importer_popup(QtWidgets.QDialog):
         self.setLayout(layout)
         self.resize(self.sizeHint())
 
-        if debug:
-            #Only here so if you run this class something shows up
-            self.exec_()
+    def import_done(self,tableName):
+        print("Emiting %s signal name" % tableName)
+        self.importDoneSignal.emit(tableName)
+        self.accept()
 
     def closeWindow(self):
         #Closes the window
         self.reject()
 
     def importCSV(self):
-        self.accept()
-
         #If any of the radio buttons are check it will return a number > -1
         if self.buttonGroups[0].checkedId() > -1:
             print("Radio button pressed")
@@ -130,18 +130,16 @@ class csv_importer_popup(QtWidgets.QDialog):
                     #this search critera list
                     self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                     rows = self.ingestor.getRows()
-                    print(rows)
                     #Check if tables exists already
                     if not self.db.doesTableExist(tableName):
                         #If not the create it with the table name
-                        print("Creating new table %s" % tableName)
                         self.db.create_table_list(tableName,self.db.remove_spaces(DEFAULT_LISTS[buttonID]),'string')
 
                     #Add the searched rows to the table that was clicked
                     #The seach critera list has to have spaces removed so the db
                     #doesn't get confused
                     self.db.add_list_of_rows(tableName,self.db.remove_spaces(DEFAULT_LISTS[buttonID]),rows)
-                    print(self.db.get_table(tableName))
+                    self.import_done(tableName)
 
 
         else:
@@ -149,20 +147,22 @@ class csv_importer_popup(QtWidgets.QDialog):
             for item in self.buttonGroups[1].buttons():
                 if item.isChecked():
                     print(item.text())
+            self.import_done(newTableName)
 
             #What needs to happen after this
             #Get all the check boxes and give them to the csv Ingestor
             #Send the returned filtered data to the DatabaseManager and save
             #it to a new database that has a custom name
 
-        self.importCSV()
 
 #Running this file with run this part of the code
 #Makes a pop up window
 if __name__ == '__main__':
 #     file = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
-    file = "/Users/Ulysses/Downloads/The_lists/Divorce list 08.20.18 FIXED.csv"
+    file = ""
     tables = ['Absentee','Divorce','Lis_Pendents','Probate']
     app = QApplication([])
-    ex = csv_importer_popup('Test',file,tables,'test.db',True)
+    csvTest = csv_importer_popup("Test Popup")
+    csvTest.run_popup(file,tables,'test.db')
+    csvTest.show()
     app.exec_()
