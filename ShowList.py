@@ -6,6 +6,9 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+# Current List of Errors:
+# After importing once it doesn't do it again :( 
+
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
@@ -26,6 +29,7 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow,width,height):
         MainWindow.setObjectName("Direct Marketing CMR")
+        MainWindow.setWindowTitle("Direct Marketing CMR")
         MainWindow.resize(width , height)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -85,10 +89,10 @@ class Ui_MainWindow(object):
         fileMenu = self.menubar.addMenu("File")
         editMenu = self.menubar.addMenu("Edit")
         editMenu.addAction('Import CSV',self.open_csv_import)
-        viewMenu = self.menubar.addMenu("View")
+        self.viewMenu = self.menubar.addMenu("View")
         self.add_menu_items(self.db.get_table_names()
-                            ,viewMenu.addMenu("Switch Table"))
-        viewMenu.addAction("Update Table", self.update_menu_action)
+                            ,self.viewMenu.addMenu("Switch Table"))
+        self.viewMenu.addAction("Update Table", self.update_menu_action)
         searchMenu = self.menubar.addMenu("Search")
 
         MainWindow.setMenuBar(self.menubar)
@@ -101,7 +105,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Direct Marketing CMR"))
         self.checkBox_5.setText(_translate("MainWindow", "CheckBox"))
         self.checkBox.setText(_translate("MainWindow", "CheckBox"))
         self.checkBox_4.setText(_translate("MainWindow", "CheckBox"))
@@ -109,9 +113,9 @@ class Ui_MainWindow(object):
         self.checkBox_3.setText(_translate("MainWindow", "CheckBox"))
         self.checkBox_2.setText(_translate("MainWindow", "CheckBox"))
         self.pushButton.setText(_translate("MainWindow", "Search"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Absenty"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "Absentee"))
         self.comboBox.setItemText(1, _translate("MainWindow", "Fore Closure"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "Divorse"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "Divorce"))
         self.comboBox.setItemText(3, _translate("MainWindow", "Lis Pendents"))
 
     def update_table(self, row_list,header_list):
@@ -201,9 +205,11 @@ class Ui_MainWindow(object):
         #Call the update menu action to refresh the table
         self.set_curr_table_name(str)
         self.update_menu_action()
+        self.update_view_menu()
 
     def set_curr_table_name(self, new_table_name):
         self.curr_table = new_table_name
+        self.update_menu_action()
 
     def switch_curr_table(self):
         print(self.menubar.sender().text())
@@ -214,7 +220,14 @@ class Ui_MainWindow(object):
             #menu.addAction(name,(lambda: self.print_action(name)))
             menu.addAction(name,self.switch_curr_table)
             #, self.set_curr_table_name(name)
-
+    
+    def update_view_menu(self):
+        self.viewMenu.clear()
+        self.add_menu_items(self.db.get_table_names()
+                            ,self.viewMenu.addMenu("Switch Table"))
+        self.viewMenu.addAction("Update Table", self.update_menu_action)
+        
+        
     def run(self,width,height):
         app = QtWidgets.QApplication(sys.argv)
         self.mainWindow = QMainWindow()
