@@ -143,6 +143,10 @@ class csv_importer_popup(QtWidgets.QDialog):
                     #The seach critera list has to have spaces removed so the db
                     #doesn't get confused
                     self.db.add_list_of_rows(tableName,self.db.remove_spaces(DEFAULT_LISTS[buttonID]),rows)
+                    # progress bar (len(rows))
+                    # for row in rows
+                    #     add row to db
+                    #     increment the progress bar 1
                     self.import_done(tableName)
 
 

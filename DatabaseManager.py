@@ -217,9 +217,6 @@ class DatabaseManager:
                 try:
                     with self.conn:
                         for i in range(0, len(new_row)):
-    #                         print(column_arr[i])
-    #                         print(new_row[i])
-    #                         print(primary_key)
                             self.cursor.execute("UPDATE %s SET %s='%s' WHERE _rowid_ = ?" % (table_name, column_arr[i], new_row[i]), (primary_key,))
                         return True
                 except Exception as er:
@@ -250,12 +247,3 @@ class DatabaseManager:
             else:
                 print('# of items in row doesn\'t match the # of items in current row' )
                 return False
-#         print(column_arr)
-#         print("\n Old")
-#         print(old_row)
-#         print("\n New")
-#         print(new_row)
-#         print("\n All")
-#         print(self.get_table(table_name))
-#         print(len(old_row))
-#         print(len(new_row))
