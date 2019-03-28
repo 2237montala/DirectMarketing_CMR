@@ -80,8 +80,14 @@ class DatabaseManager:
             return False
 
     def add_list_of_rows(self,table_name,column_list,rows):
-        for row in rows:
-            self.add_row_list(table_name,column_list,row)
+        try:
+            for row in rows:
+                self.add_row_list(table_name,column_list,row)
+            return True
+        except Exception as er:
+            #General error message
+            print('Error message:', er.args[0])
+            return False
 
 
     def add_row_list(self, table_name, column_arr, row_arr):
@@ -143,7 +149,7 @@ class DatabaseManager:
             #General error message
             print('Error message:', er.args[0])
             return False
-        
+
     def get_header_index(self, table_name, header):
         i = 0
         headers = self.get_headers(table_name)
@@ -201,7 +207,7 @@ class DatabaseManager:
             return input_str
         else:
             raise Exception('Illegally formatted string')
-    
+
     def update_row_at(self, table_name, column_name = None, column_value = None, primary_key = None, new_row = None):
         column_arr =  self.get_headers(table_name)
         if (primary_key != None):
@@ -211,9 +217,6 @@ class DatabaseManager:
                 try:
                     with self.conn:
                         for i in range(0, len(new_row)):
-    #                         print(column_arr[i])
-    #                         print(new_row[i])
-    #                         print(primary_key)
                             self.cursor.execute("UPDATE %s SET %s='%s' WHERE _rowid_ = ?" % (table_name, column_arr[i], new_row[i]), (primary_key,))
                         return True
                 except Exception as er:
@@ -244,15 +247,3 @@ class DatabaseManager:
             else:
                 print('# of items in row doesn\'t match the # of items in current row' )
                 return False
-#         print(column_arr)
-#         print("\n Old")
-#         print(old_row)
-#         print("\n New")
-#         print(new_row)
-#         print("\n All")
-#         print(self.get_table(table_name))
-#         print(len(old_row))
-#         print(len(new_row))
-        
-                    
-                

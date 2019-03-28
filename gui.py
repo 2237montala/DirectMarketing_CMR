@@ -1,6 +1,4 @@
 #https://pythonspot.com/pyqt5/
-# How to covert pyQt designer file to python file
-# pyuic5 -o ui_form.py testing.ui
 import sys
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -10,12 +8,12 @@ from DatabaseManager import DatabaseManager
 from file_browser import file_browser
 from csv_importer import csv_importer_popup
 
-class GUI():
+class GUI(QObject):
     def __init__(self,db_file):
         super().__init__()
         self.db = DatabaseManager(db_file)
-        self.curr_table = "Divorce"
         self.tables = ['Absentee','Divorce','Lis_Pendents','Probate']
+        self.curr_table = self.tables[0]
 
     def create_menu_bar(self):
         #Create a new menu bar
@@ -52,8 +50,6 @@ class GUI():
 #         self.fileBrowserButton.clicked.connect(self.open_file_browser)
         self.fileBrowserButton.clicked.connect(self.open_csv_import)
 
-
-
         layout = QGridLayout()
         self.menuBar = self.create_menu_bar()
         #addWidget(widget,row,column,row span,col span)
@@ -80,10 +76,8 @@ class GUI():
         if(file != None):
             self.csv_importer = csv_importer_popup("CSV Importer",file,self.tables,'test.db')
             self.csv_importer.show()
-            self.csv_importer.connect()
             #window.connect(csv_importer, Qt.SIGNAL('triggered()'),self.update_table)
             #self.db.get_table_names()
-
 
     def add_items(self,table,row_list):
         """
@@ -166,7 +160,6 @@ class GUI():
         print(self.menuBar.sender().text())
         self.set_curr_table_name(self.menuBar.sender().text())
 
-
     def add_menu_items(self,table_names,menu):
         for name in table_names:
             #menu.addAction(name,(lambda: self.print_action(name)))
@@ -188,7 +181,6 @@ class GUI():
         self.window.show()
 
         sys.exit(app.exec_())
-
 
 if __name__ == '__main__':
     data_base_file = 'test.db'
