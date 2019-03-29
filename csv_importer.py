@@ -7,10 +7,10 @@ from PyQt5 import QtCore
 from Ingestor import Ingestor
 from DatabaseManager import DatabaseManager
 
-ABSENTEE_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
-DIVORCE_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
+ABSENTEE_DEFAULT_LIST=   ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
+DIVORCE_DEFAULT_LIST=    ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 LISTPENDENT_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
-PROBATE_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
+PROBATE_DEFAULT_LIST=    ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 DEFAULT_LISTS=[ABSENTEE_DEFAULT_LIST,DIVORCE_DEFAULT_LIST,LISTPENDENT_DEFAULT_LIST,PROBATE_DEFAULT_LIST]
 
 class csv_importer_popup(QtWidgets.QDialog):

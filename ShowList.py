@@ -202,6 +202,7 @@ class Ui_MainWindow(object):
         self.set_curr_table_name(str)
         self.update_menu_action()
 
+
     def set_curr_table_name(self, new_table_name):
         self.curr_table = new_table_name
 
