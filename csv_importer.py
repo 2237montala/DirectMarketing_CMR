@@ -7,15 +7,8 @@ from PyQt5 import QtCore
 from Ingestor import Ingestor
 from DatabaseManager import DatabaseManager
 
-<<<<<<< HEAD
 ABSENTEE_DEFAULT_LIST=   ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 DIVORCE_DEFAULT_LIST=    ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
-=======
-# ABSENTEE_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
-ABSENTEE_DEFAULT_LIST=['Street Address','first_name','last name','County',"1st Owner's First Name","1st Owner's Last Name"]
-# DIVORCE_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
-DIVORCE_DEFAULT_LIST=['Site Address','Site City','last_name','County',"1st Owner's First Name","1st Owner's Last Name"]
->>>>>>> 75014bb7f55b6887d0b8702efc441ab0aa32e2bf
 LISTPENDENT_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 PROBATE_DEFAULT_LIST=    ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 DEFAULT_LISTS=[ABSENTEE_DEFAULT_LIST,DIVORCE_DEFAULT_LIST,LISTPENDENT_DEFAULT_LIST,PROBATE_DEFAULT_LIST]
@@ -44,47 +37,37 @@ class csv_importer_popup(QtWidgets.QDialog):
 
         #Create the check box window
         #Create a group of buttons
-        header_button_group = QButtonGroup()
-        header_button_group.setExclusive(False)
-        header_button_group_box = QGroupBox('Select which headers you want to import')
+        self.header_button_group = QButtonGroup()
+        self.header_button_group.setExclusive(False)
+        self.header_button_group_box = QGroupBox('Select which headers you want to import')
         #Make the layout display the buttons vertically
-        header_button_group_layout = QVBoxLayout()
-        for header in self.ingestor.getCSVHeaders():
-            #Add each button to the layout from the csv file
-            checkbox = QCheckBox(header)
-            header_button_group.addButton(checkbox)
-            header_button_group_layout.addWidget(header_button_group.buttons()[-1])
-
+        self.header_button_group_layout = QVBoxLayout()
+        self.generate_checkboxes(self.ingestor.getCSVHeaders())
         #Make the window fit the longest word
-        header_button_group_layout.addStretch(1)
+        self.header_button_group_layout.addStretch(1)
         #set the button group's layout to the layout with the vertically
         #alligned button layout
-        header_button_group_box.setLayout(header_button_group_layout)
+        self.header_button_group_box.setLayout(self.header_button_group_layout)
 
         #Create a area that has a scroll bar
         scrollArea = QScrollArea()
-        scrollArea.setWidget(header_button_group_box)
+        scrollArea.setWidget(self.header_button_group_box)
         scrollArea.horizontalScrollBar().setEnabled(False)
 
-        commonHeaderGroup = QButtonGroup()
+        self.commonHeaderGroup = QButtonGroup()
         #Create a group of common headers buttons
-        commonHeaderGroupBox = QGroupBox('Select a default header setup')
+        self.commonHeaderGroupBox = QGroupBox('Select a default header setup')
         #Make the layout display the buttons vertically
-        commonHeaderGroupLayout = QVBoxLayout()
+        self.commonHeaderGroupLayout = QVBoxLayout()
         #For each common file types make a radio button
-        count = 0
-        for fileType in self.commonFileTypes:
-            radioButton = QRadioButton(fileType)
-            commonHeaderGroup.addButton(radioButton,count)
-            commonHeaderGroupLayout.addWidget(commonHeaderGroup.buttons()[-1])
-            count += 1
+        self.generate_radiobuttons(self.commonFileTypes)
         #Allow window to stretch to longest word
-        commonHeaderGroupLayout.addStretch(1)
+        self.commonHeaderGroupLayout.addStretch(1)
         #Set the groups layout to the one with the added buttons
-        commonHeaderGroupBox.setLayout(commonHeaderGroupLayout)
+        self.commonHeaderGroupBox.setLayout(self.commonHeaderGroupLayout)
 
         #List of button groups
-        self.buttonGroups = [commonHeaderGroup,header_button_group]
+        self.buttonGroups = [self.commonHeaderGroup,self.header_button_group]
 
         #Create text field
         self.tableNameField = QtWidgets.QLineEdit('Custom Table Name')
@@ -102,11 +85,27 @@ class csv_importer_popup(QtWidgets.QDialog):
         #format of addWidget(widget,row,col,row span, col span)
         layout.addWidget(scrollArea,1,1,1,2)
         layout.addWidget(self.tableNameField,2,1,1,2)
-        layout.addWidget(commonHeaderGroupBox,3,1,1,2)
+        layout.addWidget(self.commonHeaderGroupBox,3,1,1,2)
         layout.addWidget(cancelButton,4,1)
         layout.addWidget(importButton,4,2)
         self.setLayout(layout)
         self.resize(self.sizeHint())
+
+    def generate_checkboxes(self, button_name_list):
+        for button_name in button_name_list:
+            #Add each button to the layout from the csv file
+            checkbox = QCheckBox(button_name)
+            self.header_button_group.addButton(checkbox)
+            self.header_button_group_layout.addWidget(self.header_button_group.buttons()[-1])
+
+    def generate_radiobuttons(self,button_name_list):
+        count = 0
+        for button_name in button_name_list:
+            radioButton = QRadioButton(button_name)
+            self.commonHeaderGroup.addButton(radioButton,count)
+            self.commonHeaderGroupLayout.addWidget(self.commonHeaderGroup.buttons()[-1])
+            count += 1
+
 
     def import_done(self,tableName):
         print("Emiting %s signal name" % tableName)
@@ -133,7 +132,7 @@ class csv_importer_popup(QtWidgets.QDialog):
 
             #Check which table coresponds with the button pressed
             for tableName in self.tablesInDB:
-                print('%s == %s' % (buttonText.replace(' ','_'), tableName))
+                #print('%s == %s' % (buttonText.replace(' ','_'), tableName))
                 if buttonText.replace(' ','_') == tableName:
                     print(tableName)
                     #print(self.ingestor.getRowAt(0))
