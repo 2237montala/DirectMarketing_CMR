@@ -7,9 +7,20 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from UI_CreateAccount import Ui_CreateAccount
 
 class Ui_Form(object):
+    
+    def handleButton(self):
+        print('hello')
+        self.window = QtWidgets.QMainWindow()
+        print('hel')
+        self.ui = Ui_CreateAccount()
+        print('hell')
+        self.ui.setupUi1(self.window)
+        self.window.show()
+    
+    
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(1119, 774)
@@ -43,6 +54,7 @@ class Ui_Form(object):
         font.setPointSize(12)
         self.pushButton_CreateAccount.setFont(font)
         self.pushButton_CreateAccount.setObjectName("pushButton_CreateAccount")
+        self.pushButton_CreateAccount.clicked.connect(self.handleButton)
         self.pushButton_LogIn = QtWidgets.QPushButton(Form)
         self.pushButton_LogIn.setGeometry(QtCore.QRect(330, 460, 191, 51))
         font = QtGui.QFont()
@@ -72,7 +84,7 @@ class Ui_Form(object):
         self.pushButton_CreateAccount.setText(_translate("Form", "Create Account"))
         self.pushButton_LogIn.setText(_translate("Form", "LogIn"))
 
-
+        
 
 
 if __name__ == "__main__":

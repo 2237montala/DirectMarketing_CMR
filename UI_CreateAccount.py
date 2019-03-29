@@ -9,8 +9,8 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Form(object):
-    def setupUi(self, Form):
+class Ui_CreateAccount(object):
+    def setupUi1(self, Form):
         Form.setObjectName("Form")
         Form.resize(1118, 772)
         self.pushButton_BackToLogin = QtWidgets.QPushButton(Form)
