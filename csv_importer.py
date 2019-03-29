@@ -7,8 +7,15 @@ from PyQt5 import QtCore
 from Ingestor import Ingestor
 from DatabaseManager import DatabaseManager
 
+<<<<<<< HEAD
 ABSENTEE_DEFAULT_LIST=   ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 DIVORCE_DEFAULT_LIST=    ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
+=======
+# ABSENTEE_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
+ABSENTEE_DEFAULT_LIST=['Street Address','first_name','last name','County',"1st Owner's First Name","1st Owner's Last Name"]
+# DIVORCE_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
+DIVORCE_DEFAULT_LIST=['Site Address','Site City','last_name','County',"1st Owner's First Name","1st Owner's Last Name"]
+>>>>>>> 75014bb7f55b6887d0b8702efc441ab0aa32e2bf
 LISTPENDENT_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 PROBATE_DEFAULT_LIST=    ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 DEFAULT_LISTS=[ABSENTEE_DEFAULT_LIST,DIVORCE_DEFAULT_LIST,LISTPENDENT_DEFAULT_LIST,PROBATE_DEFAULT_LIST]

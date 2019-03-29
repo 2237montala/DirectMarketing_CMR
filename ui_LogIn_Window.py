@@ -16,10 +16,10 @@ import sys
 #import PyQt5
 
 
-class Ui_MainWindow(object):
-    def __init__(self):
-        super().__init__()
-    def setupUi(self, MainWindow):
+class Ui_LogIn(object):
+    #def __init__(self):
+     #   super().__init__()
+    def setupUi_LogIn(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1650, 950)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -53,10 +53,10 @@ class Ui_MainWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(MainWindow)
+        self.retranslateUi1(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi1(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Chicago Turnkey Properties"))
@@ -67,12 +67,12 @@ class Ui_MainWindow(object):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    main = Ui_MainWindow()
+    main = Ui_LogIn()
     #self.window = QWidget()
     #mainWindow = QMainWindow()
     mainWindow = QMainWindow()
-    main.setupUi(mainWindow)
-    main.retranslateUi(mainWindow)
+    main.setupUi_LogIn(mainWindow)
+    main.retranslateUi1(mainWindow)
     mainWindow.show()
 
     ex = main
