@@ -1,0 +1,103 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'ShowSortLists.ui'
+#
+# Created by: PyQt5 UI code generator 5.12
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(985, 751)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 0, 981, 701))
+        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setSpacing(2)
+        self.gridLayout.setObjectName("gridLayout")
+        self.checkBox_5 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_5.setObjectName("checkBox_5")
+        self.gridLayout.addWidget(self.checkBox_5, 2, 2, 1, 1)
+        self.checkBox = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox.setObjectName("checkBox")
+        self.gridLayout.addWidget(self.checkBox, 1, 1, 1, 1)
+        self.checkBox_4 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_4.setObjectName("checkBox_4")
+        self.gridLayout.addWidget(self.checkBox_4, 0, 1, 1, 1)
+        self.checkBox_6 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_6.setObjectName("checkBox_6")
+        self.gridLayout.addWidget(self.checkBox_6, 2, 1, 1, 1)
+        self.checkBox_3 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_3.setObjectName("checkBox_3")
+        self.gridLayout.addWidget(self.checkBox_3, 1, 2, 1, 1)
+        self.checkBox_2 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_2.setObjectName("checkBox_2")
+        self.gridLayout.addWidget(self.checkBox_2, 0, 2, 1, 1)
+        self.scrollArea = QtWidgets.QScrollArea(self.gridLayoutWidget)
+        self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setObjectName("scrollArea")
+        self.scrollAreaWidgetContents_2 = QtWidgets.QWidget()
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 977, 602))
+        self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents_2)
+        self.gridLayout.addWidget(self.scrollArea, 3, 0, 1, 4)
+        self.pushButton = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayout.addWidget(self.pushButton, 1, 3, 1, 1)
+        self.comboBox = QtWidgets.QComboBox(self.gridLayoutWidget)
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.gridLayout.addWidget(self.comboBox, 1, 0, 1, 1)
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 985, 26))
+        self.menubar.setDefaultUp(False)
+        self.menubar.setNativeMenuBar(True)
+        self.menubar.setObjectName("menubar")
+        self.menuFile = QtWidgets.QMenu(self.menubar)
+        self.menuFile.setObjectName("menuFile")
+        self.menuEdit = QtWidgets.QMenu(self.menubar)
+        self.menuEdit.setObjectName("menuEdit")
+        self.menuView = QtWidgets.QMenu(self.menubar)
+        self.menuView.setObjectName("menuView")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+        self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuEdit.menuAction())
+        self.menubar.addAction(self.menuView.menuAction())
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.checkBox_5.setText(_translate("MainWindow", "CheckBox"))
+        self.checkBox.setText(_translate("MainWindow", "CheckBox"))
+        self.checkBox_4.setText(_translate("MainWindow", "CheckBox"))
+        self.checkBox_6.setText(_translate("MainWindow", "CheckBox"))
+        self.checkBox_3.setText(_translate("MainWindow", "CheckBox"))
+        self.checkBox_2.setText(_translate("MainWindow", "CheckBox"))
+        self.pushButton.setText(_translate("MainWindow", "Search"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "Absenty"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "ForeClosure"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "Divorse"))
+        self.comboBox.setItemText(3, _translate("MainWindow", "New Item"))
+        self.menuFile.setTitle(_translate("MainWindow", "File"))
+        self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
+        self.menuView.setTitle(_translate("MainWindow", "View"))
+
+

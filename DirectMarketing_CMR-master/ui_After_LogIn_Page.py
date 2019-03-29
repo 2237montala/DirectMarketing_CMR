@@ -11,25 +11,27 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
-
+from ui_LogIn_Window import Ui_LogIn
 import sys
 
 
 #import PyQt5
 
 
-class Ui_After_LogIn_Page(object):
+class Ui_MainWindow(object):
     
     
-  
+    
+    def __init__(self):
+        super().__init__()
        
         
         
         
-    def setupUi(self, After_LogIn_Page):
-        After_LogIn_Page.setObjectName("MainWindow")
-        After_LogIn_Page.resize(1650, 950)
-        self.centralwidget = QtWidgets.QWidget(After_LogIn_Page)
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(1650, 950)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(0, 0, 825, 30))
@@ -70,23 +72,23 @@ class Ui_After_LogIn_Page(object):
         self.calendarWidget = QtWidgets.QCalendarWidget(self.centralwidget)
         self.calendarWidget.setGeometry(QtCore.QRect(150, 100, 1350, 750))
         self.calendarWidget.setObjectName("calendarWidget")
-        After_LogIn_Page.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar( After_LogIn_Page)
+        MainWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1650, 21))
         self.menubar.setObjectName("menubar")
         self.menuStuff = QtWidgets.QMenu(self.menubar)
         self.menuStuff.setObjectName("menuStuff")
         self.menudd = QtWidgets.QMenu(self.menubar)
         self.menudd.setObjectName("menudd")
-        After_LogIn_Page.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar( After_LogIn_Page)
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
-        After_LogIn_Page.setStatusBar(self.statusbar)
-        self.actionThings = QtWidgets.QAction( After_LogIn_Page)
+        MainWindow.setStatusBar(self.statusbar)
+        self.actionThings = QtWidgets.QAction(MainWindow)
         self.actionThings.setObjectName("actionThings")
-        self.actionddd = QtWidgets.QAction( After_LogIn_Page)
+        self.actionddd = QtWidgets.QAction(MainWindow)
         self.actionddd.setObjectName("actionddd")
-        self.actionkpdskkds = QtWidgets.QAction( After_LogIn_Page)
+        self.actionkpdskkds = QtWidgets.QAction(MainWindow)
         self.actionkpdskkds.setObjectName("actionkpdskkds")
         self.menuStuff.addAction(self.actionThings)
         self.menuStuff.addAction(self.actionddd)
@@ -95,12 +97,12 @@ class Ui_After_LogIn_Page(object):
         self.menubar.addAction(self.menuStuff.menuAction())
         self.menubar.addAction(self.menudd.menuAction())
 
-        self.retranslateUi( After_LogIn_Page)
-        QtCore.QMetaObject.connectSlotsByName( After_LogIn_Page)
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self,  After_LogIn_Page):
+    def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        After_LogIn_Page.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Chicago Turnkey Properties"))
         self.label_2.setText(_translate("MainWindow", "Welcome back, ________"))
         self.pushButton.setText(_translate("MainWindow", "Documents"))
@@ -120,11 +122,18 @@ class Ui_After_LogIn_Page(object):
         
     def handleButton(self):
         print('Button Clicked!')
+        self.window = QtWidgets.QtMainWindow()
+        print('Button Clicked!--------------------')
+        self.ui = ui_LogIn()
+        print('Button Clicked!')
+        self.ui.setupUi_LogIn(self.window)
+        print('Button Clicked!')
+        self.window.show()
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    main = Ui_After_LogIn_Page()
+    main = Ui_MainWindow()
     #self.window = QWidget()
     #mainWindow = QMainWindow()
     mainWindow = QMainWindow()
