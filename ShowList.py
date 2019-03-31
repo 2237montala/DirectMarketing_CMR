@@ -24,13 +24,16 @@ class Ui_MainWindow(object):
     def __init__(self,db_file):
         #super().__init__()
         self.db = DatabaseManager(db_file)
-        self.tables = ['Absentee','Divorce','Lis_Pendents','Probate']
-        self.curr_table = self.tables[0]
+        self.tables = self.db.get_table_names()
+        self.curr_table = ''
+        if(len(self.tables) > 0):
+            self.curr_table = self.tables[0]
+
 
     def setupUi(self, MainWindow,width,height):
         MainWindow.setObjectName("Direct Marketing CMR")
         MainWindow.setWindowTitle("Direct Marketing CMR")
-        MainWindow.resize(width , height)
+        MainWindow.resize(width , height+50)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -64,7 +67,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setObjectName("scrollArea")
 
         #Scroll Window
-        self.table = QtWidgets.QTableWidget(10,10)
+        self.table = QtWidgets.QTableWidget(30,10)
         #self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 977, 602))
         self.scrollArea.setWidget(self.table)
         self.gridLayout.addWidget(self.scrollArea, 3, 0, 1, 4)
@@ -228,7 +231,8 @@ class Ui_MainWindow(object):
 
     def update_view_menu(self):
         self.viewMenu.clear()
-        self.add_menu_items(self.db.get_table_names()
+        self.tables = self.db.get_table_names()
+        self.add_menu_items(self.tables
                             ,self.viewMenu.addMenu("Switch Table"))
         self.viewMenu.addAction("Update Table", self.update_menu_action)
 

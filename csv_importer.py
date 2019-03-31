@@ -20,7 +20,6 @@ class csv_importer_popup(QtWidgets.QDialog):
         super().__init__()
         self.title = window_title
         self.setWindowTitle(self.title)
-        self.commonFileTypes = ['Absentee', 'Divorce', 'Lis Pendents','Probate']
 
         self.tablesInDB = tables
         #Database manager stuff
@@ -39,12 +38,12 @@ class csv_importer_popup(QtWidgets.QDialog):
         self.generate_checkboxes(self.rows)
 
         #Create a area that has a scroll bar
-        self.scrollArea = QScrollArea()
-        self.scrollArea.setWidget(self.csvHeaderGroup_box)
-        self.scrollArea.horizontalScrollBar().setEnabled(False)
+        scrollArea = QScrollArea()
+        scrollArea.setWidget(self.csvHeaderGroup_box)
+        scrollArea.horizontalScrollBar().setEnabled(False)
 
         #Create the buttson for tables that already exist in the db
-        self.generate_radiobuttons(self.commonFileTypes)
+        self.generate_radiobuttons(self.tablesInDB)
 
         #List of button groups
         self.buttonGroups = [self.commonFileTypesGroup,self.csvHeaderGroup]
@@ -63,7 +62,7 @@ class csv_importer_popup(QtWidgets.QDialog):
         layout = QGridLayout()
         #Add widgets
         #format of addWidget(widget,row,col,row span, col span)
-        layout.addWidget(self.scrollArea,1,1,1,2)
+        layout.addWidget(scrollArea,1,1,1,2)
         layout.addWidget(self.tableNameField,2,1,1,2)
         layout.addWidget(self.commonFileTypesGroupBox,3,1,1,2)
         layout.addWidget(self.cancelButton,4,1)
@@ -112,6 +111,8 @@ class csv_importer_popup(QtWidgets.QDialog):
         self.reject()
 
     def importCSV(self):
+        self.importButton.setEnabled(False)
+        self.cancelButton.setEnabled(False)
         #Check if any radio buttons were presssed by checking if they were
         #checked and save the number in the button group
         button_number = -1
@@ -160,11 +161,29 @@ class csv_importer_popup(QtWidgets.QDialog):
 
         else:
             #default header option not choosen, so custom lists
+            requestedHeaders = []
             for item in self.buttonGroups[1].buttons():
                 if item.isChecked():
                     print(item.text())
+                    requestedHeaders.append(item.text())
 
-            print(self.db.is_valid_string(self.tableNameField.text().replace(' ','_')))
+            searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
+            print(searchCritera)
+
+            customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
+            print(customTableName)
+
+            self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
+            rows = self.ingestor.getRows()
+            print(rows)
+
+            if not self.db.doesTableExist(customTableName):
+                #If not the create it with the table name
+                print('%s doesn\'t exist. Creating' % customTableName)
+                self.db.create_table_list(customTableName,self.db.remove_spaces(requestedHeaders),'string')
+
+            self.db.add_list_of_rows(customTableName,self.db.remove_spaces(requestedHeaders),rows)
+            self.import_done(customTableName)
             #self.import_done()
 
             #What needs to happen after this
