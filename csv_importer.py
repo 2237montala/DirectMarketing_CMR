@@ -16,95 +16,90 @@ DEFAULT_LISTS=[ABSENTEE_DEFAULT_LIST,DIVORCE_DEFAULT_LIST,LISTPENDENT_DEFAULT_LI
 class csv_importer_popup(QtWidgets.QDialog):
     importDoneSignal = QtCore.pyqtSignal('QString')
 
-    def __init__(self,window_title):
+    def __init__(self,window_title,db_file_loc,tables):
         super().__init__()
         self.title = window_title
         self.setWindowTitle(self.title)
         self.commonFileTypes = ['Absentee', 'Divorce', 'Lis Pendents','Probate']
 
-    def run_popup(self,file_loc,tables,db_file_loc):
-        #Signal
-        #self.testSignal.connect(closed_function)
-
         self.tablesInDB = tables
+        #Database manager stuff
+        self.db = DatabaseManager(db_file_loc)
 
+        self.layout = QGridLayout()
+
+    def run_popup(self,file_loc):
         #CSV file stuff
         self.ingestor = Ingestor(file_loc)
         self.ingestor.readCSV()
 
-        #Database manager stuff
-        self.db = DatabaseManager(db_file_loc)
+        self.rows = self.ingestor.getCSVHeaders()
 
-        #Create the check box window
-        #Create a group of buttons
-        self.header_button_group = QButtonGroup()
-        self.header_button_group.setExclusive(False)
-        self.header_button_group_box = QGroupBox('Select which headers you want to import')
-        #Make the layout display the buttons vertically
-        self.header_button_group_layout = QVBoxLayout()
-        self.generate_checkboxes(self.ingestor.getCSVHeaders())
-        #Make the window fit the longest word
-        self.header_button_group_layout.addStretch(1)
-        #set the button group's layout to the layout with the vertically
-        #alligned button layout
-        self.header_button_group_box.setLayout(self.header_button_group_layout)
+        #Create buttons from the csv file headers that was just selected
+        self.generate_checkboxes(self.rows)
 
         #Create a area that has a scroll bar
-        scrollArea = QScrollArea()
-        scrollArea.setWidget(self.header_button_group_box)
-        scrollArea.horizontalScrollBar().setEnabled(False)
+        self.scrollArea = QScrollArea()
+        self.scrollArea.setWidget(self.csvHeaderGroup_box)
+        self.scrollArea.horizontalScrollBar().setEnabled(False)
 
-        self.commonHeaderGroup = QButtonGroup()
-        #Create a group of common headers buttons
-        self.commonHeaderGroupBox = QGroupBox('Select a default header setup')
-        #Make the layout display the buttons vertically
-        self.commonHeaderGroupLayout = QVBoxLayout()
-        #For each common file types make a radio button
+        #Create the buttson for tables that already exist in the db
         self.generate_radiobuttons(self.commonFileTypes)
-        #Allow window to stretch to longest word
-        self.commonHeaderGroupLayout.addStretch(1)
-        #Set the groups layout to the one with the added buttons
-        self.commonHeaderGroupBox.setLayout(self.commonHeaderGroupLayout)
 
         #List of button groups
-        self.buttonGroups = [self.commonHeaderGroup,self.header_button_group]
+        self.buttonGroups = [self.commonFileTypesGroup,self.csvHeaderGroup]
 
         #Create text field
         self.tableNameField = QtWidgets.QLineEdit('Custom Table Name')
 
         #Create buttons
-        cancelButton = QPushButton('Cancel')
-        importButton = QPushButton('Import')
+        self.cancelButton = QPushButton('Cancel')
+        self.importButton = QPushButton('Import')
 
-        cancelButton.clicked.connect(self.closeWindow)
-        importButton.clicked.connect(self.importCSV)
+        self.cancelButton.clicked.connect(self.closeWindow)
+        self.importButton.clicked.connect(self.importCSV)
 
         #Create the master layout which is a grid
         layout = QGridLayout()
         #Add widgets
         #format of addWidget(widget,row,col,row span, col span)
-        layout.addWidget(scrollArea,1,1,1,2)
+        layout.addWidget(self.scrollArea,1,1,1,2)
         layout.addWidget(self.tableNameField,2,1,1,2)
-        layout.addWidget(self.commonHeaderGroupBox,3,1,1,2)
-        layout.addWidget(cancelButton,4,1)
-        layout.addWidget(importButton,4,2)
+        layout.addWidget(self.commonFileTypesGroupBox,3,1,1,2)
+        layout.addWidget(self.cancelButton,4,1)
+        layout.addWidget(self.importButton,4,2)
         self.setLayout(layout)
         self.resize(self.sizeHint())
 
+
     def generate_checkboxes(self, button_name_list):
+        print(button_name_list)
+        self.csvHeaderGroup = QButtonGroup()
+        self.csvHeaderGroup_layout = QVBoxLayout()
+        self.csvHeaderGroup.setExclusive(False)
+        self.csvHeaderGroup_box = QGroupBox('Select which headers')
+        self.csvHeaderGroup_layout.addStretch(1)
         for button_name in button_name_list:
             #Add each button to the layout from the csv file
             checkbox = QCheckBox(button_name)
-            self.header_button_group.addButton(checkbox)
-            self.header_button_group_layout.addWidget(self.header_button_group.buttons()[-1])
+            self.csvHeaderGroup.addButton(checkbox)
+            self.csvHeaderGroup_layout.addWidget(self.csvHeaderGroup.buttons()[-1])
+
+        self.csvHeaderGroup_box.setLayout(self.csvHeaderGroup_layout)
 
     def generate_radiobuttons(self,button_name_list):
+        self.commonFileTypesGroup = QButtonGroup()
+        self.commonFileTypesGroupLayout = QVBoxLayout()
+        self.commonFileTypesGroupBox = QGroupBox('Select a default header setup')
+        self.commonFileTypesGroupLayout.addStretch(1)
         count = 0
         for button_name in button_name_list:
             radioButton = QRadioButton(button_name)
-            self.commonHeaderGroup.addButton(radioButton,count)
-            self.commonHeaderGroupLayout.addWidget(self.commonHeaderGroup.buttons()[-1])
+            self.commonFileTypesGroup.addButton(radioButton,count)
+            self.commonFileTypesGroupLayout.addWidget(self.commonFileTypesGroup.buttons()[-1])
             count += 1
+
+        self.commonFileTypesGroupBox.setLayout(self.commonFileTypesGroupLayout)
 
 
     def import_done(self,tableName):
@@ -117,16 +112,23 @@ class csv_importer_popup(QtWidgets.QDialog):
         self.reject()
 
     def importCSV(self):
-        #If any of the radio buttons are check it will return a number > -1
-        if self.buttonGroups[0].checkedId() > -1:
-            print("Radio button pressed")
-            buttonID = self.buttonGroups[0].checkedId()
-            print('Button %d' % buttonID)
-            #Use a default list for importing
-            searchCritera = self.ingestor.getHeaderIndex(DEFAULT_LISTS[buttonID],self.ingestor.getCSVHeaders())
+        #Check if any radio buttons were presssed by checking if they were
+        #checked and save the number in the button group
+        button_number = -1
+        count = 0
+        for radioButton in self.buttonGroups[0].buttons():
+            print(count)
+            if radioButton.isChecked():
+                print(radioButton.text())
+                button_number = count
+                break;
+            count += 1
+
+        if button_number > -1:
+            searchCritera = self.ingestor.getHeaderIndex(DEFAULT_LISTS[button_number],self.ingestor.getCSVHeaders())
             print(searchCritera)
 
-            buttonText = self.buttonGroups[0].buttons()[buttonID].text()
+            buttonText = self.buttonGroups[0].buttons()[button_number].text()
             print(buttonText)
             #buttonText = self.buttonGroups[0].id(self.buttonGroups[0].checkedId()).text()
 
@@ -143,12 +145,12 @@ class csv_importer_popup(QtWidgets.QDialog):
                     #Check if tables exists already
                     if not self.db.doesTableExist(tableName):
                         #If not the create it with the table name
-                        self.db.create_table_list(tableName,self.db.remove_spaces(DEFAULT_LISTS[buttonID]),'string')
+                        self.db.create_table_list(tableName,self.db.remove_spaces(DEFAULT_LISTS[button_number]),'string')
 
                     #Add the searched rows to the table that was clicked
                     #The seach critera list has to have spaces removed so the db
                     #doesn't get confused
-                    self.db.add_list_of_rows(tableName,self.db.remove_spaces(DEFAULT_LISTS[buttonID]),rows)
+                    self.db.add_list_of_rows(tableName,self.db.remove_spaces(DEFAULT_LISTS[button_number]),rows)
                     # progress bar (len(rows))
                     # for row in rows
                     #     add row to db
@@ -178,7 +180,7 @@ if __name__ == '__main__':
     file = "Test_Files/DatabaseManagerTest_15.csv"
     tables = ['Absentee','Divorce','Lis_Pendents','Probate']
     app = QApplication([])
-    csvTest = csv_importer_popup("Test Popup")
-    csvTest.run_popup(file,tables,'test.db')
+    csvTest = csv_importer_popup("Test Popup",'test.db',tables)
+    csvTest.run_popup(file)
     csvTest.show()
     app.exec_()
