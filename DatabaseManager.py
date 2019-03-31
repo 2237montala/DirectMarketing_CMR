@@ -100,8 +100,8 @@ class DatabaseManager:
         with self.conn:
             self.cursor.execute("INSERT OR IGNORE INTO %s (%s) VALUES(?)" % (table_name,'"{}"'.format(column_arr[0])), (row_arr[0],))
             for i in range(1,len(column_arr)):
-                #self.cursor.execute("UPDATE %s SET %s='%s' WHERE %s='%s'" % (table_name, '"{}"'.format(column_arr[i]), row_arr[i], column_arr[0], row_arr[0]))
-                self.cursor.execute("UPDATE %s SET %s=? WHERE %s=?" % (table_name, column_arr[i],column_arr[0]) , (row_arr[i], row_arr[0],))
+                self.cursor.execute("UPDATE %s SET %s=? WHERE %s=?" % (table_name, '"{}"'.format(column_arr[i]),column_arr[0]) , (row_arr[i], row_arr[0],))
+                #self.cursor.execute("UPDATE %s SET ?=? WHERE ?=?" % (table_name) , (column_arr[i],row_arr[i], column_arr[0],row_arr[0],))
 
 
     def clear_table(self, table_name):

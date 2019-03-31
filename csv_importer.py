@@ -11,7 +11,7 @@ ABSENTEE_DEFAULT_LIST=   ['Site Address','Site City','Site Zip Code','County',"1
 DIVORCE_DEFAULT_LIST=    ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 LISTPENDENT_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 PROBATE_DEFAULT_LIST=    ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
-DEFAULT_LISTS=[ABSENTEE_DEFAULT_LIST,DIVORCE_DEFAULT_LIST,LISTPENDENT_DEFAULT_LIST,PROBATE_DEFAULT_LIST]
+DEFAULT_LISTS = []
 
 class csv_importer_popup(QtWidgets.QDialog):
     importDoneSignal = QtCore.pyqtSignal('QString')
@@ -24,6 +24,18 @@ class csv_importer_popup(QtWidgets.QDialog):
         self.tablesInDB = tables
         #Database manager stuff
         self.db = DatabaseManager(db_file_loc)
+
+        #Create array with tables already in the db to be
+        #put in the common files radio button box
+        self.default_lists = []
+        for table in tables:
+            tempList = []
+            for columnName in self.db.get_headers(table):
+                tempList.append(columnName)
+            self.default_lists.append(tempList)
+
+        print(self.default_lists)
+
 
         self.layout = QGridLayout()
 
@@ -126,7 +138,7 @@ class csv_importer_popup(QtWidgets.QDialog):
             count += 1
 
         if button_number > -1:
-            searchCritera = self.ingestor.getHeaderIndex(DEFAULT_LISTS[button_number],self.ingestor.getCSVHeaders())
+            searchCritera = self.ingestor.getHeaderIndex(self.default_lists[button_number],self.ingestor.getCSVHeaders())
             print(searchCritera)
 
             buttonText = self.buttonGroups[0].buttons()[button_number].text()
@@ -146,12 +158,12 @@ class csv_importer_popup(QtWidgets.QDialog):
                     #Check if tables exists already
                     if not self.db.doesTableExist(tableName):
                         #If not the create it with the table name
-                        self.db.create_table_list(tableName,self.db.remove_spaces(DEFAULT_LISTS[button_number]),'string')
+                        self.db.create_table_list(tableName,self.db.remove_spaces(self.default_lists[button_number]),'string')
 
                     #Add the searched rows to the table that was clicked
                     #The seach critera list has to have spaces removed so the db
                     #doesn't get confused
-                    self.db.add_list_of_rows(tableName,self.db.remove_spaces(DEFAULT_LISTS[button_number]),rows)
+                    self.db.add_list_of_rows(tableName,self.db.remove_spaces(self.default_lists[button_number]),rows)
                     # progress bar (len(rows))
                     # for row in rows
                     #     add row to db
@@ -164,7 +176,7 @@ class csv_importer_popup(QtWidgets.QDialog):
             requestedHeaders = []
             for item in self.buttonGroups[1].buttons():
                 if item.isChecked():
-                    print(item.text())
+                    #print(item.text())
                     requestedHeaders.append(item.text())
 
             searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
@@ -175,7 +187,7 @@ class csv_importer_popup(QtWidgets.QDialog):
 
             self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
             rows = self.ingestor.getRows()
-            print(rows)
+            #print(rows)
 
             if not self.db.doesTableExist(customTableName):
                 #If not the create it with the table name
@@ -184,7 +196,6 @@ class csv_importer_popup(QtWidgets.QDialog):
 
             self.db.add_list_of_rows(customTableName,self.db.remove_spaces(requestedHeaders),rows)
             self.import_done(customTableName)
-            #self.import_done()
 
             #What needs to happen after this
             #Get all the check boxes and give them to the csv Ingestor
