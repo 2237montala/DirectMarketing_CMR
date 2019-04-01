@@ -41,5 +41,8 @@ def main():
 
     print("\nUpdating file to a csv with no name. Expected:false")
     print(ingestor.updateFileLoc(""))
+
+    print("\nUpdating file to a csv with location Test_Files/DatabaseManagerTest_1000.csv. Expected:true")
+    print(ingestor.updateFileLoc("Test_Files/DatabaseManagerTest_1000.csv"))
 #Run main method
 main()
