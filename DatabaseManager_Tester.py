@@ -9,7 +9,7 @@ from Ingestor import Ingestor
 sqlite_file = 'test.db'
 db = DatabaseManager(sqlite_file)
 
-CLEAR_ON_COMPLETION = False
+CLEAR_ON_COMPLETION = True
 
 filename = "Test_Files/DatabaseManagerTest_15.csv"
 ingestor = Ingestor(filename)
