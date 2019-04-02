@@ -7,7 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 # Current List of Errors:
-# After importing once it doesn't do it again :( 
+# After importing once it doesn't do it again :(
 
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtCore
@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
     def __init__(self,db_file):
         #super().__init__()
         self.db = DatabaseManager(db_file)
-        self.tables = ['Absentee','Divorce','Lis_Pendents','Probate']
+        self.tables = self.db.get_table_names()
         self.curr_table = self.tables[0]
 
     def setupUi(self, MainWindow,width,height):
@@ -123,7 +123,7 @@ class Ui_MainWindow(object):
         Updates the contents of the table using a list of rows
         and a list of column headers
         """
-        print("updating table")
+#         print("updating table")
 
         #Get the table in the windows
         table = self.get_table()
@@ -140,7 +140,7 @@ class Ui_MainWindow(object):
         #1 = stretch to max string length
         table.horizontalHeader().setSectionResizeMode(1)
         self.set_table(table)
-        print(self.get_table().rowCount())
+#         print(self.get_table().rowCount())
 
     def add_items(self,table,row_list):
         """

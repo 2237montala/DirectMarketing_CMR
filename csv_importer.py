@@ -6,6 +6,7 @@ from PyQt5 import QtWidgets
 from PyQt5 import QtCore
 from Ingestor import Ingestor
 from DatabaseManager import DatabaseManager
+from re import search
 
 # ABSENTEE_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 ABSENTEE_DEFAULT_LIST=['Street Address','first_name','last name','County',"1st Owner's First Name","1st Owner's Last Name"]
@@ -120,10 +121,9 @@ class csv_importer_popup(QtWidgets.QDialog):
             print('Button %d' % buttonID)
             #Use a default list for importing
             searchCritera = self.ingestor.getHeaderIndex(DEFAULT_LISTS[buttonID],self.ingestor.getCSVHeaders())
-            print(searchCritera)
-
+#             print(searchCritera)
             buttonText = self.buttonGroups[0].buttons()[buttonID].text()
-            print(buttonText)
+#             print(buttonText)
             #buttonText = self.buttonGroups[0].id(self.buttonGroups[0].checkedId()).text()
 
             #Check which table coresponds with the button pressed
@@ -139,7 +139,10 @@ class csv_importer_popup(QtWidgets.QDialog):
                     #Check if tables exists already
                     if not self.db.doesTableExist(tableName):
                         #If not the create it with the table name
+                        print("Table created")
                         self.db.create_table_list(tableName,self.db.remove_spaces(DEFAULT_LISTS[buttonID]),'string')
+                    else:
+                        print("Table not created")
 
                     #Add the searched rows to the table that was clicked
                     #The seach critera list has to have spaces removed so the db
@@ -154,12 +157,34 @@ class csv_importer_popup(QtWidgets.QDialog):
 
         else:
             #default header option not choosen, so custom lists
+            searchCritera = []
             for item in self.buttonGroups[1].buttons():
                 if item.isChecked():
                     print(item.text())
-
-            print(self.db.is_valid_string(self.tableNameField.text().replace(' ','_')))
-            #self.import_done()
+                    searchCritera.append(item.text())
+            print(searchCritera)
+            DEFAULT_LISTS.append(searchCritera)
+            newId = len(DEFAULT_LISTS) - 1
+            try:
+                self.ingestor.searchRows(DEFAULT_LISTS[newId],self.ingestor.getRows())
+                rows = self.ingestor.getRows()
+                print(rows)
+                for tableName in self.tablesInDB:
+                    new_table_name = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
+                    if new_table_name == tableName:
+                            print("That table already exists")
+                    else:
+                        if not self.db.doesTableExist(new_table_name):
+                            #If not the create it with the table name
+                            print("Table created")
+                            self.db.create_table_list(new_table_name,self.db.remove_spaces(DEFAULT_LISTS[newId]),'string')
+                        else:
+                            print("Table not created")
+                    self.db.add_list_of_rows(new_table_name,self.db.remove_spaces(DEFAULT_LISTS[newId]),rows)
+                    self.import_done(new_table_name)
+            except Exception as e:
+                print('Error message:', e.args[0])
+            return False
 
             #What needs to happen after this
             #Get all the check boxes and give them to the csv Ingestor
