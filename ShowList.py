@@ -25,12 +25,14 @@ class Ui_MainWindow(object):
         #super().__init__()
         self.db = DatabaseManager(db_file)
         self.tables = self.db.get_table_names()
-        self.curr_table = self.tables[0]
+        self.curr_table = ''
+        if(len(self.tables) > 0):
+            self.curr_table = self.tables[0]
 
     def setupUi(self, MainWindow,width,height):
         MainWindow.setObjectName("Direct Marketing CMR")
         MainWindow.setWindowTitle("Direct Marketing CMR")
-        MainWindow.resize(width , height)
+        MainWindow.resize(width , height+50)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
@@ -64,7 +66,9 @@ class Ui_MainWindow(object):
         self.scrollArea.setObjectName("scrollArea")
 
         #Scroll Window
-        self.table = QtWidgets.QTableWidget(10,10)
+        self.table = QtWidgets.QTableWidget(30,10)
+        #self.table.cellActivated.connect(self.table_item_clicked)
+        self.table.doubleClicked.connect(self.table_item_clicked)
         #self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 977, 602))
         self.scrollArea.setWidget(self.table)
         self.gridLayout.addWidget(self.scrollArea, 3, 0, 1, 4)
@@ -162,7 +166,7 @@ class Ui_MainWindow(object):
                 value = str(value)
 
             item = QtWidgets.QTableWidgetItem(value)
-            item.setFlags(QtCore.Qt.ItemIsEnabled)
+            #item.setFlags(QtCore.Qt.ItemIsEnabled)
             #0x0080 align vertical centered
             #0x0004 align horizontally centered
             item.setTextAlignment(0x0080 | 0x0004)
@@ -195,7 +199,11 @@ class Ui_MainWindow(object):
         #Key is to make a widget and use self.widget
         file = file_browser("File Browser").openFileNameDialog()
         if(file != None):
-            self.csv_importer.run_popup(file,self.tables,'test.db')
+
+            self.csv_importer = csv_importer_popup("CSV Importer",'test.db',self.tables)
+            #This links the import signal to the import close window
+            self.csv_importer.importDoneSignal.connect(self.import_closed)
+            self.csv_importer.run_popup(file)
             #Runs to the window
             self.csv_importer.exec_()
 
@@ -204,8 +212,9 @@ class Ui_MainWindow(object):
         print('Refreshing table')
         #Call the update menu action to refresh the table
         self.set_curr_table_name(str)
-        self.update_menu_action()
+        #self.update_menu_action()
         self.update_view_menu()
+
 
     def set_curr_table_name(self, new_table_name):
         self.curr_table = new_table_name
@@ -220,22 +229,26 @@ class Ui_MainWindow(object):
             #menu.addAction(name,(lambda: self.print_action(name)))
             menu.addAction(name,self.switch_curr_table)
             #, self.set_curr_table_name(name)
-    
+
     def update_view_menu(self):
         self.viewMenu.clear()
-        self.add_menu_items(self.db.get_table_names()
+        self.tables = self.db.get_table_names()
+        self.add_menu_items(self.tables
                             ,self.viewMenu.addMenu("Switch Table"))
         self.viewMenu.addAction("Update Table", self.update_menu_action)
-        
-        
+
+    def table_item_clicked(self):
+        print('cell double clicked')
+        #print(self.get_table().selectedItems().text())
+        for currentQTableWidgetItem in self.table.selectedItems():
+            print("seasd")
+            #print(currentQTableWidgetItem.row(), currentQTableWidgetItem.column(), currentQTableWidgetItem.text())
+
+
     def run(self,width,height):
         app = QtWidgets.QApplication(sys.argv)
         self.mainWindow = QMainWindow()
         self.setupUi(self.mainWindow,width,height)
-
-        self.csv_importer = csv_importer_popup("CSV Importer")
-        #This links the import signal to the import close window
-        self.csv_importer.importDoneSignal.connect(self.import_closed)
 
         self.mainWindow.show()
         sys.exit(app.exec_())
