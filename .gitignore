@@ -8,4 +8,4 @@ __pycache__/csv_importer.cpython-37.pyc
 __pycache__/file_browser.cpython-37.pyc
 __pycache__/csv_importer.cpython-37.pyc
 *.pyc
-test.db
+*.db
