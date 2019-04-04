@@ -24,10 +24,10 @@ class Ui_MainWindow(object):
     def __init__(self,db_file):
         #super().__init__()
         self.db = DatabaseManager(db_file)
-        self.tables = self.db.get_table_names()
+        self.table_in_db = self.db.get_table_names()
         self.curr_table = ''
-        if(len(self.tables) > 0):
-            self.curr_table = self.tables[0]
+        if(len(self.table_in_db) > 0):
+            self.curr_table = self.table_in_db[0]
 
     def setupUi(self, MainWindow,width,height):
         MainWindow.setObjectName("Direct Marketing CMR")
@@ -76,11 +76,11 @@ class Ui_MainWindow(object):
         self.pushButton.setObjectName("pushButton")
         self.gridLayout.addWidget(self.pushButton, 1, 3, 1, 1)
         self.comboBox = QtWidgets.QComboBox(self.gridLayoutWidget)
+
+        #Create combo box with the ability to switch tables
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
+        self.add_combo_box_items(self.db.get_table_names(),self.comboBox)
+        self.comboBox.activated.connect(self.switch_curr_table_comboBox)
         self.gridLayout.addWidget(self.comboBox, 1, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -116,10 +116,6 @@ class Ui_MainWindow(object):
         self.checkBox_3.setText(_translate("MainWindow", "CheckBox"))
         self.checkBox_2.setText(_translate("MainWindow", "CheckBox"))
         self.pushButton.setText(_translate("MainWindow", "Search"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Absentee"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "Fore Closure"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "Divorce"))
-        self.comboBox.setItemText(3, _translate("MainWindow", "Lis Pendents"))
 
     def update_table(self, row_list,header_list):
         """
@@ -202,7 +198,7 @@ class Ui_MainWindow(object):
         file = file_browser("File Browser").openFileNameDialog()
         if(file != None):
 
-            self.csv_importer = csv_importer_popup("CSV Importer",'test.db',self.tables)
+            self.csv_importer = csv_importer_popup("CSV Importer",'test.db',self.table_in_db)
             #This links the import signal to the import close window
             self.csv_importer.importDoneSignal.connect(self.import_closed)
             self.csv_importer.run_popup(file)
@@ -214,37 +210,70 @@ class Ui_MainWindow(object):
         print('Refreshing table')
         #Call the update menu action to refresh the table
         self.set_curr_table_name(str)
-        #self.update_menu_action()
         self.update_view_menu()
+        self.update_combobox()
+        self.update_menu_action()
 
 
     def set_curr_table_name(self, new_table_name):
         self.curr_table = new_table_name
-        self.update_menu_action()
 
-    def switch_curr_table(self):
+    def switch_curr_table_menubar(self):
+        """
+        When a view -> switch table option is clicked it changes the current
+        Table to the option's text and refreshes the table
+        """
         print(self.menubar.sender().text())
         self.set_curr_table_name(self.menubar.sender().text())
+        self.update_menu_action()
+
+    def switch_curr_table_comboBox(self,selectedItem):
+        """
+        When a combo box option is clicked it changes the current
+        Table to the option's text and refreshes the table
+        """
+        print(self.table_in_db[selectedItem])
+        self.set_curr_table_name(self.table_in_db[selectedItem])
+        self.update_menu_action()
+
+
 
     def add_menu_items(self,table_names,menu):
         for name in table_names:
-            #menu.addAction(name,(lambda: self.print_action(name)))
-            menu.addAction(name,self.switch_curr_table)
-            #, self.set_curr_table_name(name)
+            menu.addAction(name,self.switch_curr_table_menubar)
+
+    def add_combo_box_items(self,table_names,comboBox):
+        for name in table_names:
+            comboBox.addItem(name)
+
 
     def update_view_menu(self):
+        """
+        Updates the options in the view -> switch table menu to display
+        any new tables that were added during an import
+        """
         self.viewMenu.clear()
-        self.tables = self.db.get_table_names()
-        self.add_menu_items(self.tables
+        self.table_in_db = self.db.get_table_names()
+        self.add_menu_items(self.table_in_db
                             ,self.viewMenu.addMenu("Switch Table"))
         self.viewMenu.addAction("Update Table", self.update_menu_action)
 
+    def update_combobox(self):
+        """
+        Updates the options in the switch table combo box to display
+        any new tables that were added during an import
+        """
+        self.comboBox.clear()
+        self.add_combo_box_items(self.table_in_db,self.comboBox)
+
+
     def table_item_clicked(self,row,column):
-        print(row)
-        print(column)
+        #The double clicked signal returns the row and column of the
+        #double clicked item. It will automatically pass those into the method
+        #if the paramaters are row and column
         selectedRow = self.db.get_row_at(table_name=self.curr_table,row_id = row+1)
         print(selectedRow)
-
+        #Here you would call a method to show the profile page
 
     def run(self,width,height):
         app = QtWidgets.QApplication(sys.argv)
