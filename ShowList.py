@@ -67,8 +67,7 @@ class Ui_MainWindow(object):
 
         #Scroll Window
         self.table = QtWidgets.QTableWidget(30,10)
-        #self.table.cellActivated.connect(self.table_item_clicked)
-        self.table.doubleClicked.connect(self.table_item_clicked)
+        self.table.cellDoubleClicked.connect(self.table_item_clicked)
         #self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 977, 602))
         self.scrollArea.setWidget(self.table)
         self.gridLayout.addWidget(self.scrollArea, 3, 0, 1, 4)
@@ -143,6 +142,7 @@ class Ui_MainWindow(object):
         #Resizes the cells to fit text without clipping
         #1 = stretch to max string length
         table.horizontalHeader().setSectionResizeMode(1)
+        table.setSelectionBehavior(QtWidgets.QTableView.SelectRows);
         self.set_table(table)
 #         print(self.get_table().rowCount())
 
@@ -166,7 +166,9 @@ class Ui_MainWindow(object):
                 value = str(value)
 
             item = QtWidgets.QTableWidgetItem(value)
-            #item.setFlags(QtCore.Qt.ItemIsEnabled)
+            #item.setFlags(QtCore.Qt.ItemIsEditable)
+            item.setFlags(QtCore.Qt.ItemIsEnabled)
+            #item.setFlags(QtCore.Qt.ItemIsSelectable)
             #0x0080 align vertical centered
             #0x0004 align horizontally centered
             item.setTextAlignment(0x0080 | 0x0004)
@@ -237,12 +239,11 @@ class Ui_MainWindow(object):
                             ,self.viewMenu.addMenu("Switch Table"))
         self.viewMenu.addAction("Update Table", self.update_menu_action)
 
-    def table_item_clicked(self):
-        print('cell double clicked')
-        #print(self.get_table().selectedItems().text())
-        for currentQTableWidgetItem in self.table.selectedItems():
-            print("seasd")
-            #print(currentQTableWidgetItem.row(), currentQTableWidgetItem.column(), currentQTableWidgetItem.text())
+    def table_item_clicked(self,row,column):
+        print(row)
+        print(column)
+        selectedRow = self.db.get_row_at(table_name=self.curr_table,row_id = row+1)
+        print(selectedRow)
 
 
     def run(self,width,height):
