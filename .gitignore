@@ -2,10 +2,5 @@
 .project
 .pydevproject
 .settings/org.eclipse.core.resources.prefs
-__pycache__/csv_importer.cpython-37.pyc
-__pycache__/DatabaseManager.cpython-37.pyc
-__pycache__/csv_importer.cpython-37.pyc
-__pycache__/file_browser.cpython-37.pyc
-__pycache__/csv_importer.cpython-37.pyc
 *.pyc
 *.db
