@@ -166,6 +166,21 @@ class csv_importer_popup(QtWidgets.QDialog):
                     self.import_with_progress_bar(tableName,self.ingestor.getRows(),self.default_lists[button_number])
                     self.import_done(tableName)
         else:
+            try:
+                customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
+                print(customTableName)
+            except:
+                choice  = QtWidgets.QMessageBox.critical(self, 'Table Name Error',
+                                            "Table name can only have letters numbers, and underscores",
+                                            QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+                if choice == QtWidgets.QMessageBox.Cancel:
+                    #User pressed cancl
+                    self.closeWindow()
+                else:
+                    #Users want to try a new name
+                    self.importButton.setEnabled(True)
+                    self.cancelButton.setEnabled(True)
+
             #default header option not choosen, so custom lists
             requestedHeaders = []
             for item in self.buttonGroups[1].buttons():
@@ -175,9 +190,6 @@ class csv_importer_popup(QtWidgets.QDialog):
 
             searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
             print(searchCritera)
-
-            customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
-            print(customTableName)
 
             self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
             #rows = self.ingestor.getRows()
@@ -191,6 +203,7 @@ class csv_importer_popup(QtWidgets.QDialog):
             self.import_with_progress_bar(customTableName,self.ingestor.getRows(),requestedHeaders)
             #self.db.add_list_of_rows(customTableName,self.db.remove_spaces(requestedHeaders),rows)
             self.import_done(customTableName)
+
 
 
     def import_with_progress_bar(self,tableName,rows_to_be_added,column_headers):
