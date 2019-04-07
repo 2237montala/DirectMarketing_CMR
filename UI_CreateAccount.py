@@ -5,9 +5,9 @@
 # Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-from UI_LogIn_Page import*
+from UI_LogIn_Page import Ui_LogIn_Page
+
 
 class Ui_CreateAccount(object):
     
@@ -25,14 +25,9 @@ class Ui_CreateAccount(object):
         self.ui = Ui_LogIn_Page()
         print("hello 4")
         self.ui.setupUi3(self.window)
-        print("hello 5")
-        #if self.window.setHidden():
-          #  self.window.repaint()
-         #   print("hello 69")
-        #else:
+        
         self.window.show()
         print("hello 6")
-        Form1.update()
         Form1.hide()
         print("hello 7")
     
@@ -153,7 +148,6 @@ class Ui_CreateAccount(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    
     Form1 = QtWidgets.QWidget()
     ui = Ui_CreateAccount()
     ui.setupUi1(Form1)

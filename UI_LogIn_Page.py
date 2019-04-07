@@ -5,13 +5,12 @@
 # Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-from UI_CreateAccount import*
+from UI_CreateAccount import *
 from ui_After_LogIn_Page import*
-from PyQt5.Qt import QLineEdit
+from PyQt5.Qt import QLineEdit, QMainWindow
 
-class Ui_LogIn_Page(object):
+class Ui_LogIn_Page(QMainWindow):
 
     
     def Handle_CreateAccount(self):

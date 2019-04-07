@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding/ShowList.py=utf-8
 encoding/UI_CreateAccount.py=utf-8
 encoding/UI_LogIn_Page.py=utf-8
 encoding/ui_After_LogIn_Page.py=utf-8
@@ -6,5 +7,6 @@ encoding/ui_Create_New_Lead_Page.py=utf-8
 encoding/ui_Current_Leads_Page.py=utf-8
 encoding/ui_LogIn_Window.py=utf-8
 encoding/ui_Possible_Leads_Page.py=utf-8
+encoding/ui_ProfilePage.py=utf-8
 encoding/ui_SHowSortLists.py=utf-8
 encoding/ui_Search_For_Leads_Page.py=utf-8
