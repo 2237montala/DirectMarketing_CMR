@@ -12,7 +12,7 @@ from PyQt5.Qt import QLineEdit, QMainWindow
 
 class Ui_LogIn_Page(QMainWindow):
 
-    
+
     def Handle_CreateAccount(self):
         print("hello 1")
         self.window = QtWidgets.QMainWindow()
@@ -21,14 +21,14 @@ class Ui_LogIn_Page(QMainWindow):
         self.window.show()
         Form.hide()
         print("hello tester")
-        
+
     def Handle_LogIn(self):
         self.window = QtWidgets.QMainWindow()
         self.ui = ui_After_LogIn_Page()
         self.ui.setupUi2(self.window)
         self.window.show()
         Form.hide()
-    
+
     def setupUi3(self, Form):
         print("Hello whats up has to show twice")
         Form.setObjectName("Form")
@@ -54,22 +54,22 @@ class Ui_LogIn_Page(QMainWindow):
         self.UserName_TXTfield = QtWidgets.QLineEdit(Form)
         self.UserName_TXTfield.setGeometry(QtCore.QRect(390, 230, 411, 51))
         self.UserName_TXTfield.setObjectName("UserName_TXTfield")
-        
+
         font = self.UserName_TXTfield.font()
         font.setPointSize(15) # sets the size to 27
         self.UserName_TXTfield.setFont(font)
- 
-        
+
+
         self.Password_TXTfield = QtWidgets.QLineEdit(Form)
         self.Password_TXTfield.setGeometry(QtCore.QRect(390, 350, 411, 51))
         self.Password_TXTfield.setObjectName("Password_TXTfield")
-        
+
         font = self.Password_TXTfield.font()
         font.setPointSize(15) # sets the size to 27
         self.Password_TXTfield.setFont(font)
-        
+
         self.Password_TXTfield.setEchoMode(QLineEdit.Password)
-        
+
         self.pushButton_CreateAccount = QtWidgets.QPushButton(Form)
         self.pushButton_CreateAccount.setGeometry(QtCore.QRect(560, 460, 191, 51))
         font = QtGui.QFont()
@@ -107,13 +107,13 @@ class Ui_LogIn_Page(QMainWindow):
         self.pushButton_CreateAccount.setText(_translate("Form", "Create Account"))
         self.pushButton_LogIn.setText(_translate("Form", "LogIn"))
 
-        
+
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    
+
     Form = QtWidgets.QWidget()
     ui = Ui_LogIn_Page()
     ui.setupUi3(Form)

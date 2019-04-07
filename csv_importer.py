@@ -6,6 +6,7 @@ from PyQt5 import QtWidgets
 from PyQt5 import QtCore
 from Ingestor import Ingestor
 from DatabaseManager import DatabaseManager
+from re import search
 
 ABSENTEE_DEFAULT_LIST=   ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
 DIVORCE_DEFAULT_LIST=    ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
@@ -70,6 +71,9 @@ class csv_importer_popup(QtWidgets.QDialog):
         self.cancelButton.clicked.connect(self.closeWindow)
         self.importButton.clicked.connect(self.importCSV)
 
+        #Create progress Bar
+        self.progressBar = QtWidgets.QProgressBar()
+
         #Create the master layout which is a grid
         layout = QGridLayout()
         #Add widgets
@@ -77,8 +81,9 @@ class csv_importer_popup(QtWidgets.QDialog):
         layout.addWidget(scrollArea,1,1,1,2)
         layout.addWidget(self.tableNameField,2,1,1,2)
         layout.addWidget(self.commonFileTypesGroupBox,3,1,1,2)
-        layout.addWidget(self.cancelButton,4,1)
-        layout.addWidget(self.importButton,4,2)
+        layout.addWidget(self.progressBar,4,1,1,2)
+        layout.addWidget(self.cancelButton,5,1)
+        layout.addWidget(self.importButton,5,2)
         self.setLayout(layout)
         self.resize(self.sizeHint())
 
@@ -139,39 +144,43 @@ class csv_importer_popup(QtWidgets.QDialog):
 
         if button_number > -1:
             searchCritera = self.ingestor.getHeaderIndex(self.default_lists[button_number],self.ingestor.getCSVHeaders())
-            print(searchCritera)
+            #print(searchCritera)
 
             buttonText = self.buttonGroups[0].buttons()[button_number].text()
-            print(buttonText)
+            #print(buttonText)
             #buttonText = self.buttonGroups[0].id(self.buttonGroups[0].checkedId()).text()
 
             #Check which table coresponds with the button pressed
             for tableName in self.tablesInDB:
                 #print('%s == %s' % (buttonText.replace(' ','_'), tableName))
                 if buttonText.replace(' ','_') == tableName:
-                    print(tableName)
-                    #print(self.ingestor.getRowAt(0))
+                    #print(tableName)
                     #Uses the ingestor to search the unfiltered rows using
                     #this search critera list
                     self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
-                    rows = self.ingestor.getRows()
                     #Check if tables exists already
                     if not self.db.doesTableExist(tableName):
                         #If not the create it with the table name
                         self.db.create_table_list(tableName,self.db.remove_spaces(self.default_lists[button_number]),'string')
 
-                    #Add the searched rows to the table that was clicked
-                    #The seach critera list has to have spaces removed so the db
-                    #doesn't get confused
-                    self.db.add_list_of_rows(tableName,self.db.remove_spaces(self.default_lists[button_number]),rows)
-                    # progress bar (len(rows))
-                    # for row in rows
-                    #     add row to db
-                    #     increment the progress bar 1
+                    self.import_with_progress_bar(tableName,self.ingestor.getRows(),self.default_lists[button_number])
                     self.import_done(tableName)
-
-
         else:
+            try:
+                customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
+                print(customTableName)
+            except:
+                choice  = QtWidgets.QMessageBox.critical(self, 'Table Name Error',
+                                            "Table name can only have letters numbers, and underscores",
+                                            QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+                if choice == QtWidgets.QMessageBox.Cancel:
+                    #User pressed cancl
+                    self.closeWindow()
+                else:
+                    #Users want to try a new name
+                    self.importButton.setEnabled(True)
+                    self.cancelButton.setEnabled(True)
+
             #default header option not choosen, so custom lists
             requestedHeaders = []
             for item in self.buttonGroups[1].buttons():
@@ -182,11 +191,8 @@ class csv_importer_popup(QtWidgets.QDialog):
             searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
             print(searchCritera)
 
-            customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
-            print(customTableName)
-
             self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
-            rows = self.ingestor.getRows()
+            #rows = self.ingestor.getRows()
             #print(rows)
 
             if not self.db.doesTableExist(customTableName):
@@ -194,13 +200,28 @@ class csv_importer_popup(QtWidgets.QDialog):
                 print('%s doesn\'t exist. Creating' % customTableName)
                 self.db.create_table_list(customTableName,self.db.remove_spaces(requestedHeaders),'string')
 
-            self.db.add_list_of_rows(customTableName,self.db.remove_spaces(requestedHeaders),rows)
+            self.import_with_progress_bar(customTableName,self.ingestor.getRows(),requestedHeaders)
+            #self.db.add_list_of_rows(customTableName,self.db.remove_spaces(requestedHeaders),rows)
             self.import_done(customTableName)
 
-            #What needs to happen after this
-            #Get all the check boxes and give them to the csv Ingestor
-            #Send the returned filtered data to the DatabaseManager and save
-            #it to a new database that has a custom name
+
+
+    def import_with_progress_bar(self,tableName,rows_to_be_added,column_headers):
+        """
+        Adds the ingestor rows to the db one row at a time so the progress
+        bar will show the progress
+        """
+        #Set the max value of the progess bar to the number of rows to be add
+        self.progressBar.setMaximum(len(rows_to_be_added))
+        #self.db.add_list_of_rows(tableName,self.db.remove_spaces(self.default_lists[button_number]),rows)
+        count = 0
+        for row in rows_to_be_added:
+            #For ever row to be added add it to the db and increment the progress
+            #bar value by 1
+            count += 1
+            self.db.add_row_list(tableName,self.db.remove_spaces(column_headers),row)
+            self.progressBar.setValue(count)
+
 
 
 #Running this file with run this part of the code
