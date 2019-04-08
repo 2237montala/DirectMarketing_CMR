@@ -78,6 +78,7 @@ class Ui_MainWindow(object):
 
         self.pushButton = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.clicked.connect(self.get_search_key)
         self.gridLayout.addWidget(self.pushButton, 1, 3, 1, 1)
         self.comboBox = QtWidgets.QComboBox(self.gridLayoutWidget)
 
@@ -109,7 +110,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
+    
+    #Names all the objects in our QWidget Window
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Direct Marketing CMR"))
@@ -228,7 +230,6 @@ class Ui_MainWindow(object):
         When a view -> switch table option is clicked it changes the current
         Table to the option's text and refreshes the table
         """
-        print(self.menubar.sender().text())
         self.set_curr_table_name(self.menubar.sender().text())
         self.update_menu_action()
 
@@ -276,15 +277,25 @@ class Ui_MainWindow(object):
         #The double clicked signal returns the row and column of the
         #double clicked item. It will automatically pass those into the method
         #if the paramaters are row and column
-        selectedRow = self.db.get_row_at(table_name=self.curr_table,row_id = row+1)
+        selectedRow = self.db.get_row_at(table_name = self.curr_table, row_id = row + 1)
         print(selectedRow)
         #Here you would call a method to show the profile page
-
+    
+    def get_search_key(self):
+        print("CLICKED")
+        key = self.searchBar.displayText()
+        print(key)
+        self.search_table(key)
+         
+    def search_table(self, search_key):
+        rows = self.db.search_table(search_key, self.curr_table)
+        print(rows)
+        return rows
+    
     def run(self,width,height):
         app = QtWidgets.QApplication(sys.argv)
         self.mainWindow = QMainWindow()
         self.setupUi(self.mainWindow,width,height)
-
         self.mainWindow.show()
         sys.exit(app.exec_())
 
