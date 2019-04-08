@@ -24,6 +24,7 @@ class DatabaseManager:
         try:
             with self.conn:
               if not self.doesTableExist(table_name):
+                  column_name = column_name.replace("'","\'")
                   self.cursor.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
                   self.conn.commit()
                   return True
@@ -62,6 +63,7 @@ class DatabaseManager:
         """
         self.create_table(table_name,column_name_list[0],column_type)
         for i in range(1,len(column_name_list)):
+            column_name = column_name.replace("'","\'")
             self.add_column(table_name,column_name_list[i],'string')
 
 
@@ -72,6 +74,7 @@ class DatabaseManager:
         try:
             #.format is used to turn certain inputs into a string so SQL doesn't
             #get mad for special characters
+            column_name = column_name.replace("'","\'")
             self.cursor.execute("ALTER TABLE %s ADD COLUMN %s %s" % (table_name,'"{}"'.format(column_name) ,column_type))
             return True
         except Exception as er:
@@ -107,7 +110,7 @@ class DatabaseManager:
     def clear_table(self, table_name):
         """
         Clears all the values in the table. I don't know if it keeps the column
-        headers or not
+        headers or not   ------- "YES IT DOES KEEP THE COLUMN HEADERS" - ULY 4/8/2019
         """
         with self.conn:
                 self.cursor.execute("DELETE FROM %s" % table_name)
@@ -172,6 +175,7 @@ class DatabaseManager:
                 #The user wants to use a specific column to get row
                 print("Get row w/ column")
 #                 self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name), (column_value,))
+                column_name = column_name.replace("'","\'")
                 self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name,), (column_value,))
 #                 return self.cursor.fetchall()
             for row in self.cursor:
@@ -232,6 +236,7 @@ class DatabaseManager:
                 return False
         else:
             print("using column method")
+            column_name = column_name.replace("'","\'")
             old_row = self.get_row_at(table_name, column_name, column_value)
             if (len(old_row) == len(new_row)):
                 try:
@@ -251,3 +256,33 @@ class DatabaseManager:
             else:
                 print('# of items in row doesn\'t match the # of items in current row' )
                 return False
+            
+    def search_table(self, searchCriteria, table_name):
+        columns = self.get_headers(table_name)
+        print(columns)
+        print(searchCriteria)
+        searchCriteria = ("%" + searchCriteria + "%")
+        print(searchCriteria)
+        try:
+            with self.conn:
+                rows = []
+                for header in columns:
+                    print(header)
+                    header = header.replace("'","\'")
+                    print(header)
+                    self.cursor.execute("SELECT * FROM %s WHERE %s LIKE ?" % (table_name, header), (searchCriteria,))
+                    row = self.cursor.fetchall()
+                    if row == [] :
+                        print("No Row Found at %s" % (header))
+                    else:
+                        for r in row:
+                            rows.append(r)
+                        print(rows)
+                return rows
+                    
+                    
+        except Exception as e:
+            print("Error Message:", e.args[0])
+            return False
+                    
+                
