@@ -94,5 +94,7 @@ if CLEAR_ON_COMPLETION:
     db.clear_table(new_table)
     print("\nPrinting table to show it is cleared")
     db.get_table(new_table)
+
+    db.delete_table(new_table)
 else:
     print("\nClear on completion is false")

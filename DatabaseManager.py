@@ -9,7 +9,7 @@ from Ingestor import Ingestor
 
 #This means All characters that are A to Z or a to z or 0 to 9 or _ that
 #exist anywhere in the string
-VALID_CHARS = '^[A-Za-z0-9_]*$'
+VALID_CHARS = '^[A-Za-z0-9_ ]*$'
 
 
 class DatabaseManager:
@@ -24,7 +24,6 @@ class DatabaseManager:
         try:
             with self.conn:
               if not self.doesTableExist(table_name):
-                  column_name = column_name.replace("'","\'")
                   self.cursor.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
                   self.conn.commit()
                   return True
@@ -47,10 +46,6 @@ class DatabaseManager:
             else:
                 #print("Table already exists")
                 return False
-        except sqlite3.Error as er:
-            #Catches sql errors
-            print('Error message:', er.args[0])
-            return False
         except Exception as er:
             #General error message
             print('Error message:', er.args[0])
@@ -114,6 +109,10 @@ class DatabaseManager:
         """
         with self.conn:
                 self.cursor.execute("DELETE FROM %s" % table_name)
+
+    def delete_table(self,table_name):
+        with self.conn:
+            self.cursor.execute("DROP TABLE %s" % table_name)
 
     def get_table(self, table_name):
         """
