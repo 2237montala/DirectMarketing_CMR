@@ -20,72 +20,75 @@ from DatabaseManager import DatabaseManager
 from file_browser import file_browser
 from csv_importer import csv_importer_popup
 
-class Ui_MainWindow(object):
+class Ui_MainWindow(QtWidgets.QWidget):
     def __init__(self,db_file):
-        #super().__init__()
+        super().__init__()
         self.db = DatabaseManager(db_file)
         self.table_in_db = self.db.get_table_names()
         self.curr_table = ''
         if(len(self.table_in_db) > 0):
             self.curr_table = self.table_in_db[0]
 
-    def setupUi(self, MainWindow,width,height):
-        MainWindow.setObjectName("Direct Marketing CMR")
-        MainWindow.setWindowTitle("Direct Marketing CMR")
-        MainWindow.resize(width , height+50)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 0, width, height))
-        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
-        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
+
+    def setup_main_widget(self,width,height):
+        #self.centralwidget = QtWidgets.QWidget()
+        #self.centralwidget.setObjectName("centralwidget")
+        #self = QtWidgets.QWidget()
+        self.setGeometry(QtCore.QRect(0, 0, width, height))
+        self.setObjectName("gridLayoutWidget")
+        self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setSpacing(2)
         self.gridLayout.setObjectName("gridLayout")
-        self.checkBox_5 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_5 = QtWidgets.QCheckBox(self)
         self.checkBox_5.setObjectName("checkBox_5")
         self.gridLayout.addWidget(self.checkBox_5, 2, 2, 1, 1)
-        self.checkBox = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox = QtWidgets.QCheckBox(self)
         self.checkBox.setObjectName("checkBox")
         self.gridLayout.addWidget(self.checkBox, 1, 1, 1, 1)
-        self.checkBox_4 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_4 = QtWidgets.QCheckBox(self)
         self.checkBox_4.setObjectName("checkBox_4")
         self.gridLayout.addWidget(self.checkBox_4, 0, 1, 1, 1)
-        self.checkBox_6 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_6 = QtWidgets.QCheckBox(self)
         self.checkBox_6.setObjectName("checkBox_6")
         self.gridLayout.addWidget(self.checkBox_6, 2, 1, 1, 1)
-        self.checkBox_3 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_3 = QtWidgets.QCheckBox(self)
         self.checkBox_3.setObjectName("checkBox_3")
         self.gridLayout.addWidget(self.checkBox_3, 1, 2, 1, 1)
-        self.checkBox_2 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+        self.checkBox_2 = QtWidgets.QCheckBox(self)
         self.checkBox_2.setObjectName("checkBox_2")
         self.gridLayout.addWidget(self.checkBox_2, 0, 2, 1, 1)
-        self.scrollArea = QtWidgets.QScrollArea(self.gridLayoutWidget)
+        self.scrollArea = QtWidgets.QScrollArea(self)
         #self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
 
         #Scroll Window
-        self.table = QtWidgets.QTableWidget(30,10)
+        self.table = QtWidgets.QTableWidget(20,10)
         self.table.cellDoubleClicked.connect(self.table_item_clicked)
         #self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 977, 602))
         self.scrollArea.setWidget(self.table)
         self.gridLayout.addWidget(self.scrollArea, 3, 0, 1, 4)
 
-        self.pushButton = QtWidgets.QPushButton(self.gridLayoutWidget)
+        self.pushButton = QtWidgets.QPushButton(self)
         self.pushButton.setObjectName("pushButton")
         self.gridLayout.addWidget(self.pushButton, 1, 3, 1, 1)
-        self.comboBox = QtWidgets.QComboBox(self.gridLayoutWidget)
+        self.comboBox = QtWidgets.QComboBox(self)
 
         #Create combo box with the ability to switch tables
         self.comboBox.setObjectName("comboBox")
         self.add_combo_box_items(self.db.get_table_names(),self.comboBox)
         self.comboBox.activated.connect(self.switch_curr_table_comboBox)
         self.gridLayout.addWidget(self.comboBox, 1, 0, 1, 1)
-        MainWindow.setCentralWidget(self.centralwidget)
 
+
+        #
+        self.retranslateUi()
+        # QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def setup_menu_bar(self):
         #Menu Bar
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar = QtWidgets.QMenuBar()
         self.menubar.setDefaultUp(False)
         self.menubar.setNativeMenuBar(True)
 
@@ -98,17 +101,11 @@ class Ui_MainWindow(object):
         self.viewMenu.addAction("Update Table", self.update_menu_action)
         searchMenu = self.menubar.addMenu("Search")
 
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
+        return self.menubar
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Direct Marketing CMR"))
+        #MainWindow.setWindowTitle(_translate("MainWindow", "Direct Marketing CMR"))
         self.checkBox_5.setText(_translate("MainWindow", "CheckBox"))
         self.checkBox.setText(_translate("MainWindow", "CheckBox"))
         self.checkBox_4.setText(_translate("MainWindow", "CheckBox"))
@@ -117,13 +114,12 @@ class Ui_MainWindow(object):
         self.checkBox_2.setText(_translate("MainWindow", "CheckBox"))
         self.pushButton.setText(_translate("MainWindow", "Search"))
 
+
     def update_table(self, row_list,header_list):
         """
         Updates the contents of the table using a list of rows
         and a list of column headers
         """
-#         print("updating table")
-
         #Get the table in the windows
         table = self.get_table()
         #Set the number of rows and the number of column
@@ -275,15 +271,19 @@ class Ui_MainWindow(object):
         print(selectedRow)
         #Here you would call a method to show the profile page
 
-    def run(self,width,height):
-        app = QtWidgets.QApplication(sys.argv)
-        self.mainWindow = QMainWindow()
-        self.setupUi(self.mainWindow,width,height)
-
-        self.mainWindow.show()
-        sys.exit(app.exec_())
-
 if __name__ == '__main__':
     data_base_file = 'test.db'
-    app = Ui_MainWindow(data_base_file)
-    app.run(1600,900)
+    app = QtWidgets.QApplication(sys.argv)
+    mainWindow = QtWidgets.QMainWindow()
+    mainWindow.resize(1600 , 900+50)
+    leadsTable = Ui_MainWindow(data_base_file)
+    leadsTable.setup_main_widget(1600,900)
+
+    mainWindow.setCentralWidget(leadsTable)
+
+    menuBar = leadsTable.setup_menu_bar()
+    mainWindow.setMenuBar(menuBar)
+
+    mainWindow.show()
+
+    sys.exit(app.exec_())
