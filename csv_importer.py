@@ -8,12 +8,6 @@ from Ingestor import Ingestor
 from DatabaseManager import DatabaseManager
 from re import search
 
-ABSENTEE_DEFAULT_LIST=   ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
-DIVORCE_DEFAULT_LIST=    ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
-LISTPENDENT_DEFAULT_LIST=['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
-PROBATE_DEFAULT_LIST=    ['Site Address','Site City','Site Zip Code','County',"1st Owner's First Name","1st Owner's Last Name"]
-DEFAULT_LISTS = []
-
 class csv_importer_popup(QtWidgets.QDialog):
     importDoneSignal = QtCore.pyqtSignal('QString')
 
@@ -216,7 +210,7 @@ class csv_importer_popup(QtWidgets.QDialog):
         #self.db.add_list_of_rows(tableName,self.db.remove_spaces(self.default_lists[button_number]),rows)
         count = 0
         for row in rows_to_be_added:
-            #For ever row to be added add it to the db and increment the progress
+            #For every row to be added add it to the db and increment the progress
             #bar value by 1
             count += 1
             self.db.add_row_list(tableName,self.db.remove_spaces(column_headers),row)

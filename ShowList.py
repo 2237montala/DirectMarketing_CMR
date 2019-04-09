@@ -38,8 +38,9 @@ class Ui_MainWindow(QtWidgets.QWidget):
         self.setObjectName("gridLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout.setSpacing(2)
+        self.gridLayout.setSpacing(5)
         self.gridLayout.setObjectName("gridLayout")
+<<<<<<< HEAD
         self.checkBox_5 = QtWidgets.QCheckBox(self)
         self.checkBox_5.setObjectName("checkBox_5")
         self.gridLayout.addWidget(self.checkBox_5, 2, 2, 1, 1)
@@ -59,6 +60,31 @@ class Ui_MainWindow(QtWidgets.QWidget):
         self.checkBox_2.setObjectName("checkBox_2")
         self.gridLayout.addWidget(self.checkBox_2, 0, 2, 1, 1)
         self.scrollArea = QtWidgets.QScrollArea(self)
+=======
+        self.searchBar = QtWidgets.QLineEdit(self.gridLayoutWidget)
+        self.searchBar.setObjectName("Search:")
+        self.gridLayout.addWidget(self.searchBar, 1, 2 ,1, 1)
+        self.searchBar.setMaximumWidth(500)
+#         self.checkBox_5 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+#         self.checkBox_5.setObjectName("checkBox_5")
+#         self.gridLayout.addWidget(self.checkBox_5, 2, 2, 1, 1)
+#         self.checkBox = QtWidgets.QCheckBox(self.gridLayoutWidget)
+#         self.checkBox.setObjectName("checkBox")
+#         self.gridLayout.addWidget(self.checkBox, 1, 1, 1, 1)
+#         self.checkBox_4 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+#         self.checkBox_4.setObjectName("checkBox_4")
+#         self.gridLayout.addWidget(self.checkBox_4, 0, 1, 1, 1)
+#         self.checkBox_6 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+#         self.checkBox_6.setObjectName("checkBox_6")
+#         self.gridLayout.addWidget(self.checkBox_6, 2, 1, 1, 1)
+#         self.checkBox_3 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+#         self.checkBox_3.setObjectName("checkBox_3")
+#         self.gridLayout.addWidget(self.checkBox_3, 1, 2, 1, 1)
+#         self.checkBox_2 = QtWidgets.QCheckBox(self.gridLayoutWidget)
+#         self.checkBox_2.setObjectName("checkBox_2")
+#         self.gridLayout.addWidget(self.checkBox_2, 0, 2, 1, 1)
+        self.scrollArea = QtWidgets.QScrollArea(self.gridLayoutWidget)
+>>>>>>> 8914bf8502fc8df5cfe98677ed0ce0fc0ba2a092
         #self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
@@ -72,6 +98,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
 
         self.pushButton = QtWidgets.QPushButton(self)
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.clicked.connect(self.get_search_key)
         self.gridLayout.addWidget(self.pushButton, 1, 3, 1, 1)
         self.comboBox = QtWidgets.QComboBox(self)
 
@@ -103,6 +130,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
 
         return self.menubar
 
+<<<<<<< HEAD
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         #MainWindow.setWindowTitle(_translate("MainWindow", "Direct Marketing CMR"))
@@ -112,6 +140,22 @@ class Ui_MainWindow(QtWidgets.QWidget):
         self.checkBox_6.setText(_translate("MainWindow", "CheckBox"))
         self.checkBox_3.setText(_translate("MainWindow", "CheckBox"))
         self.checkBox_2.setText(_translate("MainWindow", "CheckBox"))
+=======
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+    
+    #Names all the objects in our QWidget Window
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "Direct Marketing CMR"))
+        self.searchBar.setText(_translate("MainWindow", "Search Entry"))
+#         self.checkBox_5.setText(_translate("MainWindow", "CheckBox"))
+#         self.checkBox.setText(_translate("MainWindow", "CheckBox"))
+#         self.checkBox_4.setText(_translate("MainWindow", "CheckBox"))
+#         self.checkBox_6.setText(_translate("MainWindow", "CheckBox"))
+#         self.checkBox_3.setText(_translate("MainWindow", "CheckBox"))
+#         self.checkBox_2.setText(_translate("MainWindow", "CheckBox"))
+>>>>>>> 8914bf8502fc8df5cfe98677ed0ce0fc0ba2a092
         self.pushButton.setText(_translate("MainWindow", "Search"))
 
 
@@ -219,7 +263,6 @@ class Ui_MainWindow(QtWidgets.QWidget):
         When a view -> switch table option is clicked it changes the current
         Table to the option's text and refreshes the table
         """
-        print(self.menubar.sender().text())
         self.set_curr_table_name(self.menubar.sender().text())
         self.update_menu_action()
 
@@ -267,9 +310,30 @@ class Ui_MainWindow(QtWidgets.QWidget):
         #The double clicked signal returns the row and column of the
         #double clicked item. It will automatically pass those into the method
         #if the paramaters are row and column
-        selectedRow = self.db.get_row_at(table_name=self.curr_table,row_id = row+1)
+        selectedRow = self.db.get_row_at(table_name = self.curr_table, row_id = row + 1)
         print(selectedRow)
         #Here you would call a method to show the profile page
+<<<<<<< HEAD
+=======
+    
+    def get_search_key(self):
+        print("CLICKED")
+        key = self.searchBar.displayText()
+        print(key)
+        self.search_table(key)
+         
+    def search_table(self, search_key):
+        rows = self.db.search_table(search_key, self.curr_table)
+        print(rows)
+        return rows
+    
+    def run(self,width,height):
+        app = QtWidgets.QApplication(sys.argv)
+        self.mainWindow = QMainWindow()
+        self.setupUi(self.mainWindow,width,height)
+        self.mainWindow.show()
+        sys.exit(app.exec_())
+>>>>>>> 8914bf8502fc8df5cfe98677ed0ce0fc0ba2a092
 
 if __name__ == '__main__':
     data_base_file = 'test.db'
