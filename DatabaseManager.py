@@ -63,7 +63,7 @@ class DatabaseManager:
         """
         self.create_table(table_name,column_name_list[0],column_type)
         for i in range(1,len(column_name_list)):
-            column_name = column_name.replace("'","\'")
+            #column_name = column_name.replace("'","\'")
             self.add_column(table_name,column_name_list[i],'string')
 
 
@@ -74,7 +74,7 @@ class DatabaseManager:
         try:
             #.format is used to turn certain inputs into a string so SQL doesn't
             #get mad for special characters
-            column_name = column_name.replace("'","\'")
+            #column_name = column_name.replace("'","\'")
             self.cursor.execute("ALTER TABLE %s ADD COLUMN %s %s" % (table_name,'"{}"'.format(column_name) ,column_type))
             return True
         except Exception as er:
@@ -256,21 +256,19 @@ class DatabaseManager:
             else:
                 print('# of items in row doesn\'t match the # of items in current row' )
                 return False
-            
+
     def search_table(self, searchCriteria, table_name):
         columns = self.get_headers(table_name)
         print(columns)
         print(searchCriteria)
         searchCriteria = ("%" + searchCriteria + "%")
-        print(searchCriteria)
         try:
             with self.conn:
                 rows = []
                 for header in columns:
-                    print(header)
-                    header = header.replace("'","\'")
-                    print(header)
-                    self.cursor.execute("SELECT * FROM %s WHERE %s LIKE ?" % (table_name, header), (searchCriteria,))
+                    #print(header)
+                    #Use '"{}"'.format() to allow for special characters in column names
+                    self.cursor.execute("SELECT * FROM %s WHERE %s LIKE ?" % (table_name, '"{}"'.format(header)), (searchCriteria,))
                     row = self.cursor.fetchall()
                     if row == [] :
                         print("No Row Found at %s" % (header))
@@ -279,10 +277,6 @@ class DatabaseManager:
                             rows.append(r)
                         print(rows)
                 return rows
-                    
-                    
         except Exception as e:
             print("Error Message:", e.args[0])
-            return False
-                    
-                
+            return None
