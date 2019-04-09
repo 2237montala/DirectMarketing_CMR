@@ -56,7 +56,8 @@ class csv_importer_popup(QtWidgets.QDialog):
         self.buttonGroups = [self.commonFileTypesGroup,self.csvHeaderGroup]
 
         #Create text field
-        self.tableNameField = QtWidgets.QLineEdit('Custom Table Name')
+        self.tableNameField = QtWidgets.QLineEdit()
+        self.tableNameField.setPlaceholderText("Enter Custom Table Name")
 
         #Create buttons
         self.cancelButton = QPushButton('Cancel')
@@ -100,7 +101,7 @@ class csv_importer_popup(QtWidgets.QDialog):
     def generate_radiobuttons(self,button_name_list):
         self.commonFileTypesGroup = QButtonGroup()
         self.commonFileTypesGroupLayout = QVBoxLayout()
-        self.commonFileTypesGroupBox = QGroupBox('Select a default header setup')
+        self.commonFileTypesGroupBox = QGroupBox('Select a preexisting table')
         self.commonFileTypesGroupLayout.addStretch(1)
         count = 0
         for button_name in button_name_list:
@@ -161,6 +162,9 @@ class csv_importer_popup(QtWidgets.QDialog):
                     self.import_done(tableName)
         else:
             try:
+                if self.tableNameField.text() == '':
+                    raise Exception()
+
                 customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
                 print(customTableName)
             except:
