@@ -12,23 +12,17 @@ from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 from ui_LogIn_Window import Ui_LogIn
-import sys
+from UI_LogIn_Page import*
 
 
 #import PyQt5
 
 
-class Ui_MainWindow(object):
-    
-    
-    
-    def __init__(self):
-        super().__init__()
-       
+class Ui_After_LogIn_Page(object):
         
         
         
-    def setupUi(self, MainWindow):
+    def setupUi2(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1650, 950)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -132,8 +126,9 @@ class Ui_MainWindow(object):
 
 
 if __name__ == '__main__':
+    import sys
     app = QApplication(sys.argv)
-    main = Ui_MainWindow()
+    main = Ui_After_LogIn_Page()
     #self.window = QWidget()
     #mainWindow = QMainWindow()
     mainWindow = QMainWindow()

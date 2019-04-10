@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'LogIn_Page.ui'
+#
+# Created by: PyQt5 UI code generator 5.12
+#
+# WARNING! All changes made in this file will be lost!
 from PyQt5 import QtCore, QtGui, QtWidgets
 from UI_CreateAccount import *
 from ui_After_LogIn_Page import*
@@ -5,70 +12,23 @@ from PyQt5.Qt import QLineEdit, QMainWindow
 
 class Ui_LogIn_Page(QMainWindow):
 
-    
+
     def Handle_CreateAccount(self):
-        Form.hide()
         print("hello 1")
         self.window = QtWidgets.QMainWindow()
         self.ui = Ui_CreateAccount()
         self.ui.setupUi1(self.window)
         self.window.show()
+        Form.hide()
         print("hello tester")
-        
+
     def Handle_LogIn(self):
-        LoginInfo=([0]*2)
-       
-        Username = self.UserName_TXTfield.text()
-        password = self.Password_TXTfield.text()        
-        #print(Username)
-        #check to ssee if username matches and if it does check to see if the password is a match
-        #f = open("username_password.txt", "r")
-        #print('file opened')
-        #f1 = f.readlines()
-        #f1= list()
-        #for x in f1:
-         #   print (x)
-          #  userInfo=[x]
-           # print(userInfo)
-        #print(userInfo)
-        #linelist = [line.rstrip('\n') for line in open("username_password.txt")]
-        #print(linelist[1])
-        #for x in len(linelist):
-         #   if LoginInfo[0] == linelist[x]:
-          #      if Login[1] == linelist[x+1]:
-           #         print("check worked")
-        f=open("username_password.txt",'r')
-        UserInfo = {}
-        #with open("username_password.txt") as f: 
-        for line in f:
-            x=line.split(";")
-            a=x[0]
-            b=x[1]
-            UserInfo[a]=b
-               # items= lines.split()
-               # usernames, passwords = line.strip().split(';')
-                #UserInfo[
-                #usernames.strip()]=passwords.strip()
-            #f.close()egett
-        #print(UserInfo)
-        if UserInfo[Username]==password:
-            print('match found')
-            self.window = QtWidgets.QMainWindow()
-            print("test 1")
-            self.ui = Ui_After_LogIn_Page()
-            print("test 2")
-            self.ui.setupUi2(self.window)
-            print("test 3")
-            self.window.show()
-            print("test 4")
-            Form.hide()
-            print("test 5")
-        #if LoginInfo[0] == UserInfo[x][0]:
-           #if LoginInfo[1] == UserInfo[x][1]:
-               #print("correct")
-        #print('lines read')
-        #print('no matches')
-    
+        self.window = QtWidgets.QMainWindow()
+        self.ui = ui_After_LogIn_Page()
+        self.ui.setupUi2(self.window)
+        self.window.show()
+        Form.hide()
+
     def setupUi3(self, Form):
         print("Hello whats up has to show twice")
         Form.setObjectName("Form")
@@ -94,22 +54,22 @@ class Ui_LogIn_Page(QMainWindow):
         self.UserName_TXTfield = QtWidgets.QLineEdit(Form)
         self.UserName_TXTfield.setGeometry(QtCore.QRect(390, 230, 411, 51))
         self.UserName_TXTfield.setObjectName("UserName_TXTfield")
-        
+
         font = self.UserName_TXTfield.font()
         font.setPointSize(15) # sets the size to 27
         self.UserName_TXTfield.setFont(font)
- 
-        
+
+
         self.Password_TXTfield = QtWidgets.QLineEdit(Form)
         self.Password_TXTfield.setGeometry(QtCore.QRect(390, 350, 411, 51))
         self.Password_TXTfield.setObjectName("Password_TXTfield")
-        
+
         font = self.Password_TXTfield.font()
         font.setPointSize(15) # sets the size to 27
         self.Password_TXTfield.setFont(font)
-        
+
         self.Password_TXTfield.setEchoMode(QLineEdit.Password)
-        
+
         self.pushButton_CreateAccount = QtWidgets.QPushButton(Form)
         self.pushButton_CreateAccount.setGeometry(QtCore.QRect(560, 460, 191, 51))
         font = QtGui.QFont()
@@ -148,13 +108,14 @@ class Ui_LogIn_Page(QMainWindow):
         self.pushButton_LogIn.setText(_translate("Form", "LogIn"))
 
 
+
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    
+
     Form = QtWidgets.QWidget()
     ui = Ui_LogIn_Page()
     ui.setupUi3(Form)
     Form.show()
     sys.exit(app.exec_())
-

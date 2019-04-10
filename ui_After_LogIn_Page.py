@@ -11,13 +11,14 @@ from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
-
+from ui_LogIn_Window import Ui_LogIn
 import sys
 
 
 #import PyQt5
 
 
+<<<<<<< HEAD
 class Ui_After_LogIn_Page(object):
     
     
@@ -30,6 +31,16 @@ class Ui_After_LogIn_Page(object):
         After_LogIn_Page.setObjectName("MainWindow")
         After_LogIn_Page.resize(1650, 950)
         self.centralwidget = QtWidgets.QWidget(After_LogIn_Page)
+=======
+class ui_After_LogIn_Page(object):
+    
+   
+        
+    def setupUi2(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(1650, 950)
+        self.centralwidget = QtWidgets.QWidget(MainWindow)
+>>>>>>> 8dd98511040fea55db4f0d1a688f0cd10bc84aec
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(0, 0, 825, 30))
@@ -120,15 +131,26 @@ class Ui_After_LogIn_Page(object):
         
     def handleButton(self):
         print('Button Clicked!')
+        self.window = QtWidgets.QtMainWindow()
+        print('Button Clicked!--------------------')
+        self.ui = ui_LogIn()
+        print('Button Clicked!')
+        self.ui.setupUi_LogIn(self.window)
+        print('Button Clicked!')
+        self.window.show()
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+<<<<<<< HEAD
     main = Ui_After_LogIn_Page()
+=======
+    main = ui_After_LogIn_Page()
+>>>>>>> 8dd98511040fea55db4f0d1a688f0cd10bc84aec
     #self.window = QWidget()
     #mainWindow = QMainWindow()
     mainWindow = QMainWindow()
-    main.setupUi(mainWindow)
+    main.setupUi2(mainWindow)
     main.retranslateUi(mainWindow)
     mainWindow.show()
 

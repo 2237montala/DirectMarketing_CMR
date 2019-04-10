@@ -9,7 +9,7 @@ from Ingestor import Ingestor
 
 #This means All characters that are A to Z or a to z or 0 to 9 or _ that
 #exist anywhere in the string
-VALID_CHARS = '^[A-Za-z0-9_]*$'
+VALID_CHARS = '^[A-Za-z0-9_ ]*$'
 
 
 class DatabaseManager:
@@ -46,10 +46,6 @@ class DatabaseManager:
             else:
                 #print("Table already exists")
                 return False
-        except sqlite3.Error as er:
-            #Catches sql errors
-            print('Error message:', er.args[0])
-            return False
         except Exception as er:
             #General error message
             print('Error message:', er.args[0])
@@ -62,6 +58,7 @@ class DatabaseManager:
         """
         self.create_table(table_name,column_name_list[0],column_type)
         for i in range(1,len(column_name_list)):
+            #column_name = column_name.replace("'","\'")
             self.add_column(table_name,column_name_list[i],'string')
 
 
@@ -72,6 +69,7 @@ class DatabaseManager:
         try:
             #.format is used to turn certain inputs into a string so SQL doesn't
             #get mad for special characters
+            #column_name = column_name.replace("'","\'")
             self.cursor.execute("ALTER TABLE %s ADD COLUMN %s %s" % (table_name,'"{}"'.format(column_name) ,column_type))
             return True
         except Exception as er:
@@ -95,18 +93,26 @@ class DatabaseManager:
         Adds a rows to the table with specified data. It first adds the value
         related to the first column, then adds the rest by appending to it
         """
+
+        #Crashes if there is a comma in the field
         with self.conn:
             self.cursor.execute("INSERT OR IGNORE INTO %s (%s) VALUES(?)" % (table_name,'"{}"'.format(column_arr[0])), (row_arr[0],))
             for i in range(1,len(column_arr)):
-                self.cursor.execute("UPDATE %s SET %s='%s' WHERE %s='%s'" % (table_name, '"{}"'.format(column_arr[i]), row_arr[i], column_arr[0], row_arr[0]))
+                self.cursor.execute("UPDATE %s SET %s=? WHERE %s=?" % (table_name, '"{}"'.format(column_arr[i]),column_arr[0]) , (row_arr[i], row_arr[0],))
+                #self.cursor.execute("UPDATE %s SET ?=? WHERE ?=?" % (table_name) , (column_arr[i],row_arr[i], column_arr[0],row_arr[0],))
+
 
     def clear_table(self, table_name):
         """
         Clears all the values in the table. I don't know if it keeps the column
-        headers or not
+        headers or not   ------- "YES IT DOES KEEP THE COLUMN HEADERS" - ULY 4/8/2019
         """
         with self.conn:
                 self.cursor.execute("DELETE FROM %s" % table_name)
+
+    def delete_table(self,table_name):
+        with self.conn:
+            self.cursor.execute("DROP TABLE %s" % table_name)
 
     def get_table(self, table_name):
         """
@@ -168,6 +174,7 @@ class DatabaseManager:
                 #The user wants to use a specific column to get row
                 print("Get row w/ column")
 #                 self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name), (column_value,))
+                column_name = column_name.replace("'","\'")
                 self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name,), (column_value,))
 #                 return self.cursor.fetchall()
             for row in self.cursor:
@@ -228,6 +235,7 @@ class DatabaseManager:
                 return False
         else:
             print("using column method")
+            column_name = column_name.replace("'","\'")
             old_row = self.get_row_at(table_name, column_name, column_value)
             if (len(old_row) == len(new_row)):
                 try:
@@ -247,3 +255,27 @@ class DatabaseManager:
             else:
                 print('# of items in row doesn\'t match the # of items in current row' )
                 return False
+
+    def search_table(self, searchCriteria, table_name):
+        columns = self.get_headers(table_name)
+        print(columns)
+        print(searchCriteria)
+        searchCriteria = ("%" + searchCriteria + "%")
+        try:
+            with self.conn:
+                rows = []
+                for header in columns:
+                    #print(header)
+                    #Use '"{}"'.format() to allow for special characters in column names
+                    self.cursor.execute("SELECT * FROM %s WHERE %s LIKE ?" % (table_name, '"{}"'.format(header)), (searchCriteria,))
+                    row = self.cursor.fetchall()
+                    if row == [] :
+                        print("No Row Found at %s" % (header))
+                    else:
+                        for r in row:
+                            rows.append(r)
+                        print(rows)
+                return rows
+        except Exception as e:
+            print("Error Message:", e.args[0])
+            return None
