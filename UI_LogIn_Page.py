@@ -7,21 +7,20 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
 
-    
+
     def Handle_CreateAccount(self):
-        Form.hide()
+        self.hide()
         print("hello 1")
-        self.window = QtWidgets.QMainWindow()
-        self.ui = Ui_CreateAccount()
-        self.ui.setupUi1(self.window)
+        self.createAccountWidget = Ui_CreateAccount()
+        self.createAccountWidget.setup()
         self.window.show()
         print("hello tester")
-        
+
     def Handle_LogIn(self):
         LoginInfo=([0]*2)
-       
+
         Username = self.UserName_TXTfield.text()
-        password = self.Password_TXTfield.text()        
+        password = self.Password_TXTfield.text()
         #print(Username)
         #check to ssee if username matches and if it does check to see if the password is a match
         #f = open("username_password.txt", "r")
@@ -41,7 +40,7 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
            #         print("check worked")
         f=open("username_password.txt",'r')
         UserInfo = {}
-        #with open("username_password.txt") as f: 
+        #with open("username_password.txt") as f:
         for line in f:
             x=line.split(";")
             a=x[0]
@@ -59,67 +58,67 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
             print("test 1")
             self.ui = Ui_After_LogIn_Page()
             print("test 2")
-            self.ui.setupUi2(self.window)
+            self.ui.setup2(self.window)
             print("test 3")
             self.window.show()
             print("test 4")
-            Form.hide()
+            self.hide()
             print("test 5")
         #if LoginInfo[0] == UserInfo[x][0]:
            #if LoginInfo[1] == UserInfo[x][1]:
                #print("correct")
         #print('lines read')
         #print('no matches')
-    
-    def setupUi3(self, Form):
+
+    def setup(self):
         print("Hello whats up has to show twice")
-        Form.setObjectName("Form")
-        Form.resize(1119, 774)
-        self.label = QtWidgets.QLabel(Form)
+        self.setObjectName()
+        self.resize(1119, 774)
+        self.label = QtWidgets.QLabel(self)
         self.label.setGeometry(QtCore.QRect(240, 140, 571, 57))
         font = QtGui.QFont()
         font.setPointSize(28)
         self.label.setFont(font)
         self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(Form)
+        self.label_2 = QtWidgets.QLabel(self)
         self.label_2.setGeometry(QtCore.QRect(240, 230, 131, 41))
         font = QtGui.QFont()
         font.setPointSize(16)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
-        self.label_3 = QtWidgets.QLabel(Form)
+        self.label_3 = QtWidgets.QLabel(self)
         self.label_3.setGeometry(QtCore.QRect(240, 360, 151, 31))
         font = QtGui.QFont()
         font.setPointSize(16)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
-        self.UserName_TXTfield = QtWidgets.QLineEdit(Form)
+        self.UserName_TXTfield = QtWidgets.QLineEdit(self)
         self.UserName_TXTfield.setGeometry(QtCore.QRect(390, 230, 411, 51))
         self.UserName_TXTfield.setObjectName("UserName_TXTfield")
-        
+
         font = self.UserName_TXTfield.font()
         font.setPointSize(15) # sets the size to 27
         self.UserName_TXTfield.setFont(font)
- 
-        
-        self.Password_TXTfield = QtWidgets.QLineEdit(Form)
+
+
+        self.Password_TXTfield = QtWidgets.QLineEdit(self)
         self.Password_TXTfield.setGeometry(QtCore.QRect(390, 350, 411, 51))
         self.Password_TXTfield.setObjectName("Password_TXTfield")
-        
+
         font = self.Password_TXTfield.font()
         font.setPointSize(15) # sets the size to 27
         self.Password_TXTfield.setFont(font)
-        
+
         self.Password_TXTfield.setEchoMode(QLineEdit.Password)
-        
-        self.pushButton_CreateAccount = QtWidgets.QPushButton(Form)
+
+        self.pushButton_CreateAccount = QtWidgets.QPushButton(self)
         self.pushButton_CreateAccount.setGeometry(QtCore.QRect(560, 460, 191, 51))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.pushButton_CreateAccount.setFont(font)
         self.pushButton_CreateAccount.setObjectName("pushButton_CreateAccount")
         self.pushButton_CreateAccount.clicked.connect(self.Handle_CreateAccount)
-        self.pushButton_LogIn = QtWidgets.QPushButton(Form)
+        self.pushButton_LogIn = QtWidgets.QPushButton(self)
         self.pushButton_LogIn.setGeometry(QtCore.QRect(330, 460, 191, 51))
         self.pushButton_LogIn.clicked.connect(self.Handle_LogIn)
         font = QtGui.QFont()
@@ -127,12 +126,12 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
         self.pushButton_LogIn.setFont(font)
         self.pushButton_LogIn.setObjectName("pushButton_LogIn")
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi()
+        QtCore.QMetaObject.connectSlotsByName(self)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        self.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(_translate("Form", "Chicago Turnkey Properties"))
         self.label_2.setText(_translate("Form", "Username:"))
         self.label_3.setText(_translate("Form", "Password:"))
@@ -143,10 +142,9 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    
-    Form = QtWidgets.QWidget()
-    ui = Ui_LogIn_Page()
-    ui.setupUi3(Form)
-    Form.show()
-    sys.exit(app.exec_())
+    mainWindow = QtWidgets.QMainWindow()
 
+    ui = Ui_LogIn_Page()
+    ui.setup()
+    ui.show()
+    sys.exit(app.exec_())

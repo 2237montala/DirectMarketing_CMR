@@ -8,6 +8,10 @@ from Ingestor import Ingestor
 from DatabaseManager import DatabaseManager
 from re import search
 
+#Phone number
+#status
+#interested
+
 class csv_importer_popup(QtWidgets.QDialog):
     importDoneSignal = QtCore.pyqtSignal('QString')
 
@@ -33,7 +37,7 @@ class csv_importer_popup(QtWidgets.QDialog):
 
 
         self.layout = QGridLayout()
-        
+
     def run_popup(self,file_loc):
         #CSV file stuff
         self.ingestor = Ingestor(file_loc)
@@ -183,18 +187,18 @@ class csv_importer_popup(QtWidgets.QDialog):
                                 if item.isChecked():
                                     #print(item.text())
                                     requestedHeaders.append(item.text())
-                         
+
                             searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
                             print(searchCritera)
-                         
+
                             self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                             rows = self.ingestor.getRows()
                             print(rows)
-                             
+
                             if not self.db.doesTableExist(customTableName):
                                 #If not the create it with the table name
                                 print('%s doesn\'t exist. Creating' % customTableName)
-                                self.db.create_table_list(customTableName,self.db.remove_spaces(requestedHeaders),'string') 
+                                self.db.create_table_list(customTableName,self.db.remove_spaces(requestedHeaders),'string')
                             self.import_with_progress_bar(customTableName, self.ingestor.getRows(),requestedHeaders)
                             #self.db.add_list_of_rows(customTableName,self.db.remove_spaces(requestedHeaders),rows)
                             self.import_done(customTableName)
@@ -204,7 +208,7 @@ class csv_importer_popup(QtWidgets.QDialog):
                             return False
                     else:
                         raise Exception()
-                
+
             except:
                 ErrorBox = QtWidgets.QMessageBox()
                 choice  = ErrorBox.critical(self, 'Table Name Error',
@@ -216,8 +220,8 @@ class csv_importer_popup(QtWidgets.QDialog):
                     ErrorBox.accept()
                     self.importButton.setEnabled(True)
                     self.cancelButton.setEnabled(True)
-        
- 
+
+
 
     def import_with_progress_bar(self,tableName,rows_to_be_added,column_headers):
         """

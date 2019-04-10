@@ -6,7 +6,6 @@
 #
 # WARNING! All changes made in this file will be lost!
 from PyQt5 import QtCore, QtGui, QtWidgets
-from UI_LogIn_Page import*
 #import numpy as np
 
 class Ui_CreateAccount(QtWidgets.QWidget):
@@ -39,7 +38,7 @@ class Ui_CreateAccount(QtWidgets.QWidget):
         print("hello 7")
 
 
-    def setupUi1(self, Form):
+    def setup(self, Form):
         Form.setObjectName("Form")
         Form.resize(1118, 772)
         self.pushButton_BackToLogin = QtWidgets.QPushButton(Form)
