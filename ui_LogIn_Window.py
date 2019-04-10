@@ -12,14 +12,28 @@ from PyQt5 import QtCore
 from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 
+from ui_After_LogIn_Page import Ui_After_LogIn_Page
 import sys
 #import PyQt5
 
 
+<<<<<<< HEAD
+class Ui_MainWindow(object):
+    
+    def loginClicked(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Ui_After_LogIn_Page()
+        self.ui.setupUi(self.window)
+        self.window.show()
+        print('correct')
+    
+    def setupUi(self, MainWindow):
+=======
 class Ui_LogIn(object):
     #def __init__(self):
      #   super().__init__()
     def setupUi_LogIn(self, MainWindow):
+>>>>>>> 8dd98511040fea55db4f0d1a688f0cd10bc84aec
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1650, 950)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -42,6 +56,7 @@ class Ui_LogIn(object):
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(700, 600, 200, 50))
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.clicked.connect(self.loginClicked)
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(650, 300, 400, 50))
         self.lineEdit.setObjectName("lineEdit")
@@ -63,7 +78,7 @@ class Ui_LogIn(object):
         self.label_2.setText(_translate("MainWindow", "Username"))
         self.label_3.setText(_translate("MainWindow", "Password"))
         self.pushButton.setText(_translate("MainWindow", "Log In"))
-
+        
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

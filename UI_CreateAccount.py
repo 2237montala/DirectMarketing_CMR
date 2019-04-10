@@ -6,18 +6,25 @@
 #
 # WARNING! All changes made in this file will be lost!
 from PyQt5 import QtCore, QtGui, QtWidgets
-from UI_LogIn_Page import Ui_LogIn_Page
-
+from UI_LogIn_Page import*
+#import numpy as np
 
 class Ui_CreateAccount(QtWidgets.QWidget):
 
     def Handle_BackToLogin (self):
-        UserInfo=[0]*4
+        UserInfo=([0]*4)
 
         UserInfo[0] = self.UserName_TXTfield_CA.text()
         UserInfo[1] = self.Password_TXTfield_CA.text()
         UserInfo[2] = self.FirstName_TXTfield.text()
         UserInfo[3] = self.LastName_TXTfield.text()
+        f=open("username_password.txt","a+")
+        print("file opened")
+        for i in range(2):
+            f.write(UserInfo[i] + ";")
+
+        f.write("\n")
+        f.close
 
         print("hello 2")
         self.window = QtWidgets.QMainWindow()
@@ -76,6 +83,7 @@ class Ui_CreateAccount(QtWidgets.QWidget):
         font.setPointSize(15) # sets the size to 27
         self.Password_TXTfield_CA.setFont(font)
 
+        #self.Password_TXTfield_CA.setEchoMode(QLineEdit.Password)
 
         self.label_4 = QtWidgets.QLabel(Form)
         self.label_4.setGeometry(QtCore.QRect(280, 360, 141, 31))
