@@ -9,29 +9,29 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from UI_LogIn_Page import Ui_LogIn_Page
 
 
-class Ui_CreateAccount(object):
-    
+class Ui_CreateAccount(QtWidgets.QWidget):
+
     def Handle_BackToLogin (self):
         UserInfo=[0]*4
-       
+
         UserInfo[0] = self.UserName_TXTfield_CA.text()
         UserInfo[1] = self.Password_TXTfield_CA.text()
         UserInfo[2] = self.FirstName_TXTfield.text()
         UserInfo[3] = self.LastName_TXTfield.text()
-        
+
         print("hello 2")
         self.window = QtWidgets.QMainWindow()
         print("hello 3")
         self.ui = Ui_LogIn_Page()
         print("hello 4")
         self.ui.setupUi3(self.window)
-        
+
         self.window.show()
         print("hello 6")
         Form1.hide()
         print("hello 7")
-    
-    
+
+
     def setupUi1(self, Form):
         Form.setObjectName("Form")
         Form.resize(1118, 772)
@@ -57,11 +57,11 @@ class Ui_CreateAccount(object):
         self.UserName_TXTfield_CA = QtWidgets.QLineEdit(Form)
         self.UserName_TXTfield_CA.setGeometry(QtCore.QRect(420, 410, 411, 51))
         self.UserName_TXTfield_CA.setObjectName("UserName_TXTfield_CA")
-        
+
         font = self.UserName_TXTfield_CA.font()
         font.setPointSize(15) # sets the size to 27
         self.UserName_TXTfield_CA.setFont(font)
-        
+
         self.label_2 = QtWidgets.QLabel(Form)
         self.label_2.setGeometry(QtCore.QRect(270, 410, 141, 41))
         font = QtGui.QFont()
@@ -71,12 +71,12 @@ class Ui_CreateAccount(object):
         self.Password_TXTfield_CA = QtWidgets.QLineEdit(Form)
         self.Password_TXTfield_CA.setGeometry(QtCore.QRect(420, 470, 411, 51))
         self.Password_TXTfield_CA.setObjectName("Password_TXTfield_CA")
-        
+
         font = self.Password_TXTfield_CA.font()
         font.setPointSize(15) # sets the size to 27
         self.Password_TXTfield_CA.setFont(font)
 
-        
+
         self.label_4 = QtWidgets.QLabel(Form)
         self.label_4.setGeometry(QtCore.QRect(280, 360, 141, 31))
         font = QtGui.QFont()
@@ -92,19 +92,19 @@ class Ui_CreateAccount(object):
         self.FirstName_TXTfield = QtWidgets.QLineEdit(Form)
         self.FirstName_TXTfield.setGeometry(QtCore.QRect(420, 290, 411, 51))
         self.FirstName_TXTfield.setObjectName("FirstName_TXTfield")
-        
+
         font = self.FirstName_TXTfield.font()
         font.setPointSize(15) # sets the size to 27
         self.FirstName_TXTfield.setFont(font)
-        
+
         self.LastName_TXTfield = QtWidgets.QLineEdit(Form)
         self.LastName_TXTfield.setGeometry(QtCore.QRect(420, 350, 411, 51))
         self.LastName_TXTfield.setObjectName("LastName_TXTfield")
-        
+
         font = self.LastName_TXTfield.font()
         font.setPointSize(15) # sets the size to 27
         self.LastName_TXTfield.setFont(font)
-        
+
         self.retranslateUi(Form)
         Form.customContextMenuRequested['QPoint'].connect(self.pushButton_BackToLogin.click)
         QtCore.QMetaObject.connectSlotsByName(Form)
