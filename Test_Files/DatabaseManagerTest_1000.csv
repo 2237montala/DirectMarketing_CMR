@@ -20,7 +20,7 @@ Street Address,first_name,last_name,Long,email,phone Number,Loan Amount,Lat
 5962 Shelley Park,Rosalind,Beckenham,-13.1149327,rbeckenhami@zdnet.com,+232 (586) 437-5461,$93817.83,8.9392884
 5 Glacier Hill Avenue,Lin,Rame,-8.598522,lramej@yellowbook.com,+351 (817) 936-5712,$76224.01,41.1846313
 46 Havey Trail,Ganny,Salisbury,123.0760876,gsalisburyk@archive.org,+62 (841) 326-5785,$41970.85,-8.4375675
-67520 Tomscot Circle,Denny,Yerrell,-88.3032755,dyerrelll@issuu.com,+504 (313) 554-7273,$46492.51,14.8465342
+67520 Tomscot Circle,Denny,Yerrell,-88.3032755,dyerrelll@issuu.com,+504 (313) 554-7273,Zola,14.8465342
 93945 Dayton Terrace,Ramona,Syers,47.9021415,rsyersm@yandex.ru,+7 (107) 386-0109,$85525.19,56.6332138
 2250 Lien Pass,Pearle,Peepall,113.038578,ppeepalln@t.co,+86 (994) 261-7488,$7577.69,28.190756
 1 Express Park,Nicky,Battrick,15.9230156,nbattricko@businessinsider.com,+385 (258) 150-8678,$27092.45,43.586316
@@ -49,7 +49,7 @@ Street Address,first_name,last_name,Long,email,phone Number,Loan Amount,Lat
 8672 New Castle Hill,Rachele,Hanscombe,15.0737321,rhanscombe1b@stanford.edu,+386 (475) 503-1765,$54164.73,46.280897
 0 Mariners Cove Street,Ky,Dobel,105.5532993,kdobel1c@nationalgeographic.com,+62 (821) 132-7487,$27272.19,-7.0071351
 4 Commercial Pass,Sharon,Pohlke,9.113797,spohlke1d@geocities.com,+39 (791) 976-8781,$89618.03,39.2186229
-2 Mosinee Way,Hillyer,Barthrup,-43.360096,hbarthrup1e@storify.com,+55 (704) 106-6615,$92541.83,-3.7415256
+2 Mosinee Way,Karla,Barthrup,-43.360096,hbarthrup1e@storify.com,+55 (704) 106-6615,$92541.83,-3.7415256
 6524 Banding Hill,Bastian,Warn,52.3550104,bwarn1f@wiley.com,+7 (865) 674-3378,$96985.47,55.9015576
 4878 Eagle Crest Point,Timmy,Brisseau,27.760764,tbrisseau1g@mozilla.org,+359 (561) 859-3394,$31089.47,42.2431463
 3 Golf Course Lane,Olag,Colbran,-104.6821048,ocolbran1h@nymag.com,+1 (303) 857-4281,$91190.72,39.8786639
@@ -119,7 +119,7 @@ Street Address,first_name,last_name,Long,email,phone Number,Loan Amount,Lat
 7 Melby Place,Corbet,Sorensen,-84.1005807,csorensen39@cbc.ca,+506 (262) 202-5280,$46996.25,9.7016493
 77 Northport Avenue,Harrie,Bartozzi,28.8660119,hbartozzi3a@un.org,+380 (231) 294-3619,$12157.66,51.3870782
 51 Mosinee Center,Netta,Gatrill,20.0509216,ngatrill3b@miitbeian.gov.cn,+27 (825) 595-3907,$31103.34,-33.8298782
-18 International Road,Latashia,Taggert,126.6283278,ltaggert3c@gnu.org,+82 (400) 454-6392,$34998.24,36.8936109
+18 International Road,Latashia,Taggert,121.0299006,ltaggert3c@gnu.org,+82 (400) 454-6392,$34998.24,36.8936109
 37 Transport Point,Doll,Readie,113.050581,dreadie3d@alexa.com,+86 (314) 285-6675,$10033.13,34.454443
 2510 Melby Avenue,Rolland,Rallinshaw,-100.2417875,rrallinshaw3e@altervista.org,+52 (413) 779-3373,$66697.36,25.6845646
 32641 Mayer Place,Terry,Gerge,121.406995,tgerge3f@businessinsider.com,+86 (818) 506-7500,$74397.58,29.655143
@@ -203,7 +203,7 @@ Street Address,first_name,last_name,Long,email,phone Number,Loan Amount,Lat
 63389 Westend Avenue,Bari,Rove,107.4035157,brove5l@bizjournals.com,+62 (249) 261-0200,$67597.20,-7.0309341
 8727 Commercial Drive,Vincent,McCay,106.9762193,vmccay5m@chicagotribune.com,+86 (759) 457-8033,$2813.26,29.7440687
 8704 Talisman Trail,Roch,Reisen,119.85254,rreisen5n@blinklist.com,+86 (883) 453-4484,$47745.31,32.910459
-8423 Talisman Terrace,Clair,Placido,41.1199008,cplacido5o@businessweek.com,+7 (594) 805-6744,$60224.70,45.0052663
+8423 Talisman Terrace,Zola,Placido,41.1199008,cplacido5o@businessweek.com,+7 (594) 805-6744,$60224.70,45.0052663
 20 Spohn Street,Nydia,Parfitt,105.7751383,nparfitt5p@slashdot.org,+86 (192) 587-5329,$80188.89,34.5750415
 2737 Erie Hill,Tremaine,Cecere,23.6720959,tcecere5q@mapquest.com,+30 (619) 600-3747,$71175.80,38.4251725
 539 Chinook Way,Ariel,King,-75.7863836,aking5r@hp.com,+51 (435) 593-0472,$4226.08,-12.2800422
@@ -387,7 +387,7 @@ Street Address,first_name,last_name,Long,email,phone Number,Loan Amount,Lat
 05824 Columbus Alley,Johna,Smalcombe,-121.2969674,jsmalcombeap@wufoo.com,+1 (209) 749-8667,$10550.78,38.0434058
 2435 Stephen Court,Gene,Kettridge,86.6235938,gkettridgeaq@domainmarket.com,+7 (934) 868-4788,$88085.00,56.1966377
 6 Hermina Pass,Ines,Harnes,-62.2800813,iharnesar@java.com,+54 (725) 783-0751,$71108.07,-38.6699757
-5233 Basil Alley,Sunny,Fossey,125.04667,sfosseyas@ifeng.com,+850 (310) 467-9555,$61803.73,40.38944
+5233 Basil Alley,Sunny,Zola,125.04667,sfosseyas@ifeng.com,+850 (310) 467-9555,$61803.73,40.38944
 21 Kipling Road,Auguste,Ramlot,159.9541642,aramlotat@marriott.com,+7 (108) 178-5880,$28344.55,59.0842105
 9 Hooker Court,Roxi,Sergeant,121.341969,rsergeantau@prweb.com,+86 (942) 374-9920,$30250.55,30.741991
 1063 Portage Place,York,Harris,15.1735854,yharrisav@topsy.com,+46 (845) 937-5703,$30385.99,60.1512028

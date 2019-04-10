@@ -16,16 +16,17 @@ import webbrowser
 #from ShowList import ShowList 
 
 class Ui_Form(QWidget):
+
     CheckEdit = True
     header = ["Adress:", "City:", "Zip Code:", "State:"]
     information = ["517 Madison Ave", "Glencoe", "60022","Illinois"]
+
     def __init__(self):
-        
         super().__init__()
         self.setupUi()
-        
-    
-    
+
+
+
     def setupUi(self):
         self.setObjectName("Form")
         self.resize(1122, 847)
@@ -72,25 +73,24 @@ class Ui_Form(QWidget):
         item.setFlags(QtCore.Qt.ItemIsEnabled)
         self.House_Info.setVerticalHeaderItem(2, item)
         item = QtWidgets.QTableWidgetItem()
-        self.House_Info.setVerticalHeaderItem(3, item)
+        self.house_info.setVerticalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
-        self.House_Info.setVerticalHeaderItem(4, item)
+        self.house_info.setVerticalHeaderItem(2, item)
         item = QtWidgets.QTableWidgetItem()
-        self.House_Info.setVerticalHeaderItem(5, item)
+        self.house_info.setVerticalHeaderItem(3, item)
         item = QtWidgets.QTableWidgetItem()
-        self.House_Info.setVerticalHeaderItem(6, item)
+        self.house_info.setVerticalHeaderItem(4, item)
         item = QtWidgets.QTableWidgetItem()
-        self.House_Info.setVerticalHeaderItem(7, item)
+        self.house_info.setVerticalHeaderItem(5, item)
         item = QtWidgets.QTableWidgetItem()
-        self.House_Info.setVerticalHeaderItem(8, item)
+        self.house_info.setVerticalHeaderItem(6, item)
         item = QtWidgets.QTableWidgetItem()
-        self.House_Info.setVerticalHeaderItem(9, item)
+        self.house_info.setVerticalHeaderItem(7, item)
         item = QtWidgets.QTableWidgetItem()
-        self.House_Info.setVerticalHeaderItem(10, item)
+        self.house_info.setVerticalHeaderItem(8, item)
         item = QtWidgets.QTableWidgetItem()
-        self.House_Info.setVerticalHeaderItem(11, item)
+        self.house_info.setVerticalHeaderItem(9, item)
         item = QtWidgets.QTableWidgetItem()
-        
         self.House_Info.setVerticalHeaderItem(12, item)
         item = QtWidgets.QTableWidgetItem()
         self.House_Info.setHorizontalHeaderItem(0, item)
@@ -100,30 +100,41 @@ class Ui_Form(QWidget):
         self.Owner_info.setObjectName("Owner_info")
         self.Owner_info.setColumnCount(1)
         self.Owner_info.setRowCount(11)
+        item = QtWidgets.QTableWidgetItem()
+        self.house_info.setVerticalHeaderItem(12, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.house_info.setHorizontalHeaderItem(0, item)
+        # item = QtWidgets.QTableWidgetItem()
+        # brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
+        # brush.setStyle(QtCore.Qt.NoBrush)
+        # item.setForeground(brush)
+        # self.house_info.setItem(0, 0, item)
+        self.house_info.horizontalHeader().setDefaultSectionSize(300)
+        self.owner_info = QtWidgets.QTableWidget(self)
+        self.owner_info.setGeometry(QtCore.QRect(560, 80, 521, 441))
+        self.owner_info.setObjectName("owner_info")
+        self.owner_info.setColumnCount(1)
+        self.owner_info.setRowCount(11)
+        item = QtWidgets.QTableWidgetItem()
+        self.owner_info.setVerticalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.owner_info.setVerticalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.owner_info.setVerticalHeaderItem(2, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.owner_info.setVerticalHeaderItem(3, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.owner_info.setVerticalHeaderItem(4, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.owner_info.setVerticalHeaderItem(5, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.owner_info.setVerticalHeaderItem(6, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.owner_info.setVerticalHeaderItem(7, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.owner_info.setVerticalHeaderItem(8, item)
+        item = QtWidgets.QTableWidgetItem()
 
-        item = QtWidgets.QTableWidgetItem()
-        self.Owner_info.setVerticalHeaderItem(0, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Owner_info.setVerticalHeaderItem(1, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Owner_info.setVerticalHeaderItem(2, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Owner_info.setVerticalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Owner_info.setVerticalHeaderItem(4, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Owner_info.setVerticalHeaderItem(5, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Owner_info.setVerticalHeaderItem(6, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Owner_info.setVerticalHeaderItem(7, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Owner_info.setVerticalHeaderItem(8, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Owner_info.setVerticalHeaderItem(9, item)
-        item = QtWidgets.QTableWidgetItem()
-        self.Owner_info.setVerticalHeaderItem(10, item)
-        item = QtWidgets.QTableWidgetItem()
         self.Owner_info.setHorizontalHeaderItem(0, item)
 
         
@@ -210,61 +221,58 @@ class Ui_Form(QWidget):
         self.label_7.setText(_translate("Form", "House Information:"))
         self.label_11.setText(_translate("Form", "Property Information"))
         self.pushButton.setText(_translate("Form", "Edit Information"))
-        item = self.House_Info.verticalHeaderItem(0)
+        item = self.house_info.verticalHeaderItem(0)
         item.setText(_translate("Form", "Adress:"))
-        item = self.House_Info.verticalHeaderItem(1)
+        item = self.house_info.verticalHeaderItem(1)
         item.setText(_translate("Form", "City:"))
-        item = self.House_Info.verticalHeaderItem(2)
+        item = self.house_info.verticalHeaderItem(2)
         item.setText(_translate("Form", "Zip Code:"))
-        item = self.House_Info.verticalHeaderItem(3)
+        item = self.house_info.verticalHeaderItem(3)
         item.setText(_translate("Form", "State:"))
-        item = self.House_Info.verticalHeaderItem(4)
+        item = self.house_info.verticalHeaderItem(4)
         item.setText(_translate("Form", "Property Type:"))
-        item = self.House_Info.verticalHeaderItem(5)
+        item = self.house_info.verticalHeaderItem(5)
         item.setText(_translate("Form", "Building Size:"))
-        item = self.House_Info.verticalHeaderItem(6)
+        item = self.house_info.verticalHeaderItem(6)
         item.setText(_translate("Form", "Lot Size(SqFt):"))
-        item = self.House_Info.verticalHeaderItem(7)
+        item = self.house_info.verticalHeaderItem(7)
         item.setText(_translate("Form", "Baths:"))
-        item = self.House_Info.verticalHeaderItem(8)
+        item = self.house_info.verticalHeaderItem(8)
         item.setText(_translate("Form", "Bedrooms:"))
-        item = self.House_Info.verticalHeaderItem(9)
+        item = self.house_info.verticalHeaderItem(9)
         item.setText(_translate("Form", "APN:"))
-        item = self.House_Info.verticalHeaderItem(10)
+        item = self.house_info.verticalHeaderItem(10)
         item.setText(_translate("Form", "Year Built:"))
-        item = self.House_Info.verticalHeaderItem(11)
+        item = self.house_info.verticalHeaderItem(11)
         item.setText(_translate("Form", "Number of Units:"))
-        item = self.House_Info.verticalHeaderItem(12)
+        item = self.house_info.verticalHeaderItem(12)
         item.setText(_translate("Form", "Primary Garage Type:"))
-        item = self.House_Info.horizontalHeaderItem(0)
+        item = self.house_info.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Information", "Hello"))
-       
         item = self.Owner_info.verticalHeaderItem(0)
         item.setText(_translate("Form", "First Name:"))
-        item = self.Owner_info.verticalHeaderItem(1)
+        item = self.owner_info.verticalHeaderItem(1)
         item.setText(_translate("Form", "Last Name:"))
-        item = self.Owner_info.verticalHeaderItem(2)
+        item = self.owner_info.verticalHeaderItem(2)
         item.setText(_translate("Form", "Mailing Adress:"))
-        item = self.Owner_info.verticalHeaderItem(3)
+        item = self.owner_info.verticalHeaderItem(3)
         item.setText(_translate("Form", "Mailing City:"))
-        item = self.Owner_info.verticalHeaderItem(4)
+        item = self.owner_info.verticalHeaderItem(4)
         item.setText(_translate("Form", "Mailing Zip Code:"))
-        item = self.Owner_info.verticalHeaderItem(5)
+        item = self.owner_info.verticalHeaderItem(5)
         item.setText(_translate("Form", "Mailing State:"))
-        item = self.Owner_info.verticalHeaderItem(6)
+        item = self.owner_info.verticalHeaderItem(6)
         item.setText(_translate("Form", "Loan to Value Ratio:"))
-        item = self.Owner_info.verticalHeaderItem(7)
+        item = self.owner_info.verticalHeaderItem(7)
         item.setText(_translate("Form", "Total Outstanding Loans:"))
-        item = self.Owner_info.verticalHeaderItem(8)
+        item = self.owner_info.verticalHeaderItem(8)
         item.setText(_translate("Form", "Amount of Delinquent Taxes:"))
-        item = self.Owner_info.verticalHeaderItem(9)
+        item = self.owner_info.verticalHeaderItem(9)
         item.setText(_translate("Form", "Owner Occuppied:"))
-        item = self.Owner_info.verticalHeaderItem(10)
-        item.setText(_translate("Form", "Purchased Prise:"))
-        
+        item = self.owner_info.verticalHeaderItem(10)
+        item.setText(_translate("Form", "Purchased Prise:"))        
         item = self.Owner_info.horizontalHeaderItem(0)
-        item.setText(_translate("Form", "Information"))
-        
+        item.setText(_translate("Form", "Information"))        
         __sortingEnabled = self.Owner_info.isSortingEnabled()
         self.Owner_info.setSortingEnabled(True)
         self.Owner_info.setSortingEnabled(__sortingEnabled)
@@ -339,6 +347,7 @@ class Ui_Form(QWidget):
             self.Owner_info.setItem(count,0,item)
             count=count+1
             '''
+
 
         
     def Handle_edit (self):
@@ -437,9 +446,13 @@ class Ui_Form(QWidget):
         
 if __name__ == '__main__':                      # 
     import sys  
+
     app = QApplication(sys.argv)
     window = Ui_Form()
+
+    column_test_data = ['Address','City','Baths','First Name','Last Name','Bedrooms']
+    row_test_data =    ['123 Street','Townville','3','Steve','Smith','16']
+
+    window.update_text_boxes(column_test_data,row_test_data)
     window.show()
     sys.exit(app.exec_())
-
-
