@@ -15,7 +15,6 @@ from PyQt5 import QtWidgets
 from PyQt5 import QtGui
 from PyQt5.QtCore import pyqtSlot
 import sys
-
 from DatabaseManager import DatabaseManager
 from file_browser import file_browser
 from csv_importer import csv_importer_popup
@@ -272,7 +271,14 @@ class Ui_MainWindow(object):
         #double clicked item. It will automatically pass those into the method
         #if the paramaters are row and column
         selectedRow = self.db.get_row_at(table_name=self.curr_table,row_id = row+1)
+        columHeaders = self.db.get_headers(self.curr_table)
+        Table_name= self.curr_table
         print(selectedRow)
+        print(Table_name)
+        print(selectedRow)
+        #self.ui_ProfilePage().filltable(columHeaders, selectedRow, Table_name)
+        return selectedRow, columHeaders, Table_name
+        
         #Here you would call a method to show the profile page
 
     def run(self,width,height):

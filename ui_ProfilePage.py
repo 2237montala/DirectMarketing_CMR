@@ -6,12 +6,19 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.Qt import QWidget, QApplication
+from PyQt5 import QtCore, QtGui, QtWidgets, Qt
+from distutils.log import info
+help(QtCore.Qt)
+from PyQt5.Qt import QWidget, QApplication, QAbstractItemView, QTableWidgetItem
+from _sqlite3 import Row
 
+import webbrowser
+#from ShowList import ShowList 
 
 class Ui_Form(QWidget):
-    
+    CheckEdit = True
+    header = ["Adress:", "City:", "Zip Code:", "State:"]
+    information = ["517 Madison Ave", "Glencoe", "60022","Illinois"]
     def __init__(self):
         
         super().__init__()
@@ -46,18 +53,23 @@ class Ui_Form(QWidget):
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.pushButton = QtWidgets.QPushButton(self)
+        self.pushButton.clicked.connect(self.Handle_edit)
         self.pushButton.setGeometry(QtCore.QRect(990, 0, 121, 28))
         self.pushButton.setObjectName("pushButton")
         self.House_Info = QtWidgets.QTableWidget(self)
         self.House_Info.setGeometry(QtCore.QRect(40, 80, 491, 441))
         self.House_Info.setObjectName("House_Info")
+
         self.House_Info.setColumnCount(1)
         self.House_Info.setRowCount(13)
         item = QtWidgets.QTableWidgetItem()
         self.House_Info.setVerticalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
+        #item.setFlags(item.flags() != QtCore.Qt.ItemIsEditable)
+        item.setFlags(QtCore.Qt.ItemIsEnabled)
         self.House_Info.setVerticalHeaderItem(1, item)
         item = QtWidgets.QTableWidgetItem()
+        item.setFlags(QtCore.Qt.ItemIsEnabled)
         self.House_Info.setVerticalHeaderItem(2, item)
         item = QtWidgets.QTableWidgetItem()
         self.House_Info.setVerticalHeaderItem(3, item)
@@ -78,6 +90,7 @@ class Ui_Form(QWidget):
         item = QtWidgets.QTableWidgetItem()
         self.House_Info.setVerticalHeaderItem(11, item)
         item = QtWidgets.QTableWidgetItem()
+        
         self.House_Info.setVerticalHeaderItem(12, item)
         item = QtWidgets.QTableWidgetItem()
         self.House_Info.setHorizontalHeaderItem(0, item)
@@ -87,6 +100,7 @@ class Ui_Form(QWidget):
         self.Owner_info.setObjectName("Owner_info")
         self.Owner_info.setColumnCount(1)
         self.Owner_info.setRowCount(11)
+
         item = QtWidgets.QTableWidgetItem()
         self.Owner_info.setVerticalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -111,7 +125,10 @@ class Ui_Form(QWidget):
         self.Owner_info.setVerticalHeaderItem(10, item)
         item = QtWidgets.QTableWidgetItem()
         self.Owner_info.setHorizontalHeaderItem(0, item)
+
+        
         item = QtWidgets.QTableWidgetItem()
+
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.HorPattern)
         item.setForeground(brush)
@@ -119,8 +136,7 @@ class Ui_Form(QWidget):
         item = QtWidgets.QTableWidgetItem()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.NoBrush)
-        item.setForeground(brush)
-        self.Owner_info.setItem(1, 0, item)
+
         self.Owner_info.horizontalHeader().setDefaultSectionSize(300)
         self.label_8 = QtWidgets.QLabel(self)
         self.label_8.setGeometry(QtCore.QRect(40, 540, 171, 16))
@@ -137,22 +153,22 @@ class Ui_Form(QWidget):
         font.setPointSize(10)
         self.label_9.setFont(font)
         self.label_9.setObjectName("label_9")
-        self.Button_NOresponse = QtWidgets.QRadioButton(self)
+        self.Button_NOresponse = QtWidgets.QCheckBox(self)
         self.Button_NOresponse.setGeometry(QtCore.QRect(740, 590, 131, 20))
         self.Button_NOresponse.setObjectName("Button_NOresponse")
-        self.Respond_person = QtWidgets.QRadioButton(self)
+        self.Respond_person = QtWidgets.QCheckBox(self)
         self.Respond_person.setGeometry(QtCore.QRect(890, 590, 141, 20))
         self.Respond_person.setObjectName("Respond_person")
-        self.Button_responded = QtWidgets.QRadioButton(self)
+        self.Button_responded = QtWidgets.QCheckBox(self)
         self.Button_responded.setGeometry(QtCore.QRect(630, 590, 95, 20))
         self.Button_responded.setObjectName("Button_responded")
-        self.Very_interested = QtWidgets.QRadioButton(self)
+        self.Very_interested = QtWidgets.QCheckBox(self)
         self.Very_interested.setGeometry(QtCore.QRect(630, 640, 111, 20))
         self.Very_interested.setObjectName("Very_interested")
-        self.Interested = QtWidgets.QRadioButton(self)
+        self.Interested = QtWidgets.QCheckBox(self)
         self.Interested.setGeometry(QtCore.QRect(770, 640, 95, 20))
         self.Interested.setObjectName("Interested")
-        self.Not_interested = QtWidgets.QRadioButton(self)
+        self.Not_interested = QtWidgets.QCheckBox(self)
         self.Not_interested.setGeometry(QtCore.QRect(890, 640, 111, 20))
         self.Not_interested.setObjectName("Not_interested")
         self.label = QtWidgets.QLabel(self)
@@ -163,11 +179,27 @@ class Ui_Form(QWidget):
         self.label_2.setObjectName("label_2")
         self.pushButton_2 = QtWidgets.QPushButton(self)
         self.pushButton_2.setGeometry(QtCore.QRect(880, 0, 93, 28))
-        self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_2.setObjectName("Save")
+        self.pushButton_2.clicked.connect(self.Handle_Save)
         self.pushButton_3 = QtWidgets.QPushButton(self)
         self.pushButton_3.setGeometry(QtCore.QRect(770, 0, 93, 28))
         self.pushButton_3.setObjectName("pushButton_3")
-
+        
+        self.pushButton_Zillow = QtWidgets.QPushButton(self)
+        self.pushButton_Zillow.setGeometry(QtCore.QRect(500, 700,  300, 80))
+        self.pushButton_Zillow.setObjectName("Save")
+        self.pushButton_Zillow.clicked.connect(self.searchAdressZillow)
+        self.pushButton_Redfin = QtWidgets.QPushButton(self)
+        self.pushButton_Redfin.setGeometry(QtCore.QRect(810, 700, 300, 80))
+        self.pushButton_Redfin.setObjectName("pushButton_3")
+        
+        self.Very_interested.setEnabled(False)
+        self.Interested.setEnabled(False)
+        self.Not_interested.setEnabled(False)
+        self.Respond_person.setEnabled(False)
+        self.Button_NOresponse.setEnabled(False)
+        self.Button_responded.setEnabled(False)
+        
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
@@ -206,6 +238,7 @@ class Ui_Form(QWidget):
         item.setText(_translate("Form", "Primary Garage Type:"))
         item = self.House_Info.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Information", "Hello"))
+       
         item = self.Owner_info.verticalHeaderItem(0)
         item.setText(_translate("Form", "First Name:"))
         item = self.Owner_info.verticalHeaderItem(1)
@@ -228,10 +261,12 @@ class Ui_Form(QWidget):
         item.setText(_translate("Form", "Owner Occuppied:"))
         item = self.Owner_info.verticalHeaderItem(10)
         item.setText(_translate("Form", "Purchased Prise:"))
+        
         item = self.Owner_info.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Information"))
+        
         __sortingEnabled = self.Owner_info.isSortingEnabled()
-        self.Owner_info.setSortingEnabled(False)
+        self.Owner_info.setSortingEnabled(True)
         self.Owner_info.setSortingEnabled(__sortingEnabled)
         self.label_8.setText(_translate("Form", "Additional Comments:"))
         self.label_9.setText(_translate("Form", "Status:"))
@@ -243,12 +278,165 @@ class Ui_Form(QWidget):
         self.Not_interested.setText(_translate("Form", "Not Interested"))
         self.label.setText(_translate("Form", "Status: "))
         self.label_2.setText(_translate("Form", "Interested:"))
-        self.pushButton_2.setText(_translate("Form", "PushButton"))
+        self.pushButton_2.setText(_translate("Form", "Save Edit"))
         self.pushButton_3.setText(_translate("Form", "PushButton"))
+        self.pushButton_Zillow.setText(_translate("Form", "Search Property In Zillow"))
+        self.pushButton_Redfin.setText(_translate("Form", "Search Property In Red Fin"))
+        self.filltable(self.header, self.information)
+        
+    def filltable(self, headers, info):
+        #Parameters: header, information, nameOfList
+        #Selected_info = self.sl.table_item_clicked().selectedRow
+        #Table_Headers = self.sl.table_item_clicked().columHeaders
 
+        
+        count =0
+        self.header = headers
+        self.information = info
+
+        while count != self.House_Info.rowCount():
+            count2 = len(headers)
+            for x in range(0, count2):
+                if headers[x] == self.House_Info.verticalHeaderItem(count).text():
+                   item = QtWidgets.QTableWidgetItem(info[x])
+                   
+                   if self.CheckEdit:
+                       item.setFlags(QtCore.Qt.ItemIsEditable)
+                       
+                   self.House_Info.setItem(count,0, item)
+                   count=count+1
+                   break
+                elif x+1 == count2:
+                    count = count+1
+                    break
+            '''
+            count=count+1
+            
+            item= QtWidgets.QTableWidgetItem()
+            item.setText("You did it")
+            self.House_Info.setItem(count,0, item)
+            count=count+1
+            '''
+        count =0
+        while count != self.Owner_info.rowCount():
+            count2 = len(headers)
+            for x in range(0, count2):
+                if headers[x] == self.Owner_info.verticalHeaderItem(count).text():
+                   item = QtWidgets.QTableWidgetItem(info[x])
+                   
+                   if self.CheckEdit:
+                    item.setFlags(QtCore.Qt.ItemIsEditable)
+                    
+                   self.Owner_info.setItem(count,0, item)
+                   count=count+1
+                   break
+                elif x+1 == count2:
+                    count = count+1
+                    break
+            '''
+            item= QtWidgets.QTableWidgetItem()
+            item.setText("You did it")
+            self.Owner_info.setItem(count,0,item)
+            count=count+1
+            '''
+
+        
+    def Handle_edit (self):
+        self.CheckEdit = False
+        print("hello")
+        self.filltable(self.header, self.information)
+        #for x in range(0, )
+        self.Very_interested.setEnabled(True)
+        self.Interested.setEnabled(True)
+        self.Not_interested.setEnabled(True)
+        self.Respond_person.setEnabled(True)
+        self.Button_NOresponse.setEnabled(True)
+        self.Button_responded.setEnabled(True)
+        
+        
+    def Handle_Save (self):
+        self.CheckEdit = True
+        print("hello")
+        
+        count =0
+        while count != self.House_Info.rowCount():
+            count2 = len(self.header)
+            for x in range(0, count2):
+                if self.header[x] == self.House_Info.verticalHeaderItem(count).text():
+                   self.information[x] = self.House_Info.item(count,0).text()
+                   count=count+1
+                   break
+                elif x+1 == count2:
+                    count = count+1
+                    break
+
+        count =0
+        while count != self.Owner_info.rowCount():
+            count2 = len(self.header)
+            for x in range(0, count2):
+                if self.header[x] == self.Owner_info.verticalHeaderItem(count).text():
+                   self.information[x] = self.Owner_info.item(count,0).text()
+                   count=count+1
+                   break
+                elif x+1 == count2:
+                    count = count+1
+                    break
+        self.Very_interested.setEnabled(False)
+        self.Interested.setEnabled(False)
+        self.Not_interested.setEnabled(False)
+        self.Respond_person.setEnabled(False)
+        self.Button_NOresponse.setEnabled(False)
+        self.Button_responded.setEnabled(False)
+        self.filltable(self.header, self.information)
+        
+        '''
+        here the method would call the data base to save any changes.
+        '''
+
+    def searchAdressZillow (self):
+        Adress="/"
+        count = len(self.header)
+        for x in range(0, count):
+            if self.header[x] == "Adress:":
+                HoldD = self.information[x].split(" ")
+                print(HoldD)
+                for y in range(0, len(HoldD)):
+                    if y==len(HoldD)-1:
+                        Adress=Adress+HoldD[y]
+                    else:
+                        Adress=Adress+HoldD[y]+"-"
+                print(Adress)
+        for x in range(0, count):
+            if self.header[x] == "City:":
+                Adress = Adress+",-"+self.information[x]
+        for x in range(0, count):
+            if self.header[x] == "Zip Code:":
+                Adress = Adress+"-"+self.information[x]
+        for x in range(0, count):
+            if self.header[x] == "State:":
+                Adress = Adress+"-"+self.information[x]
+            print('lol')
+        
+      
+        print(Adress)
+        Adress = "https://www.zillow.com/homes/for_sale"+Adress+"_rb/"
+        print(Adress)
+        url = Adress
+        print(url)
+        # for MacOS
+        #chrome_path = 'open -a /Applications/Google\ Chrome.app %s'
+        
+        # Linux
+        # chrome_path = '/usr/bin/google-chrome %s'
+        
+        # for Windows
+        chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
+        webbrowser.get(chrome_path).open(url)
+    #def searchAdressOtherPage(self):
+        #fjf
+        
 if __name__ == '__main__':                      # 
-    import sys 
-    print("LOEREE") 
+    import sys  
     app = QApplication(sys.argv)
     window = Ui_Form()
     window.show()
