@@ -33,7 +33,7 @@ class csv_importer_popup(QtWidgets.QDialog):
 
 
         self.layout = QGridLayout()
-
+        
     def run_popup(self,file_loc):
         #CSV file stuff
         self.ingestor = Ingestor(file_loc)
@@ -127,17 +127,23 @@ class csv_importer_popup(QtWidgets.QDialog):
         self.cancelButton.setEnabled(False)
         #Check if any radio buttons were presssed by checking if they were
         #checked and save the number in the button group
-        button_number = -1
+        radio_button_number = -1
+        special_button_number = -1
         count = 0
         for radioButton in self.buttonGroups[0].buttons():
-            print(count)
             if radioButton.isChecked():
                 print(radioButton.text())
-                button_number = count
+                radio_button_number = count
+                break;
+            count += 1
+        for specialButton in self.buttonGroups[1].buttons():
+            if specialButton.isChecked():
+                print(specialButton.text())
+                special_button_number = count
                 break;
             count += 1
 
-        if button_number > -1:
+        if radio_button_number > -1:
             searchCritera = self.ingestor.getHeaderIndex(self.default_lists[button_number],self.ingestor.getCSVHeaders())
             #print(searchCritera)
 
@@ -160,49 +166,58 @@ class csv_importer_popup(QtWidgets.QDialog):
 
                     self.import_with_progress_bar(tableName,self.ingestor.getRows(),self.default_lists[button_number])
                     self.import_done(tableName)
+#         elif special_button_number > -1:
         else:
             try:
                 if self.tableNameField.text() == '':
                     raise Exception()
-
-                customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
-                print(customTableName)
-            except:
-                choice  = QtWidgets.QMessageBox.critical(self, 'Table Name Error',
-                                            "Table name can only have letters numbers, and underscores",
-                                            QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
-                if choice == QtWidgets.QMessageBox.Cancel:
-                    #User pressed cancl
-                    self.closeWindow()
                 else:
-                    #Users want to try a new name
+                    customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
+                    print(customTableName)
+                    print(special_button_number)
+                    if special_button_number > -1:
+                        #default header option not choosen, so custom lists
+                        try:
+                            requestedHeaders = []
+                            for item in self.buttonGroups[1].buttons():
+                                if item.isChecked():
+                                    #print(item.text())
+                                    requestedHeaders.append(item.text())
+                         
+                            searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
+                            print(searchCritera)
+                         
+                            self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
+                            rows = self.ingestor.getRows()
+                            print(rows)
+                             
+                            if not self.db.doesTableExist(customTableName):
+                                #If not the create it with the table name
+                                print('%s doesn\'t exist. Creating' % customTableName)
+                                self.db.create_table_list(customTableName,self.db.remove_spaces(requestedHeaders),'string') 
+                            self.import_with_progress_bar(customTableName, self.ingestor.getRows(),requestedHeaders)
+                            #self.db.add_list_of_rows(customTableName,self.db.remove_spaces(requestedHeaders),rows)
+                            self.import_done(customTableName)
+                        except Exception as er:
+                            #General error message
+                            print('Error message:', er.args[0])
+                            return False
+                    else:
+                        raise Exception()
+                
+            except:
+                ErrorBox = QtWidgets.QMessageBox()
+                choice  = ErrorBox.critical(self, 'Table Name Error',
+                                            "Table name can only have letters numbers, and underscores",
+                                            ErrorBox.Ok)
+                if choice == ErrorBox.Ok:
+                    #User wants to try a new name
+                    print("Closing")
+                    ErrorBox.accept()
                     self.importButton.setEnabled(True)
                     self.cancelButton.setEnabled(True)
-
-            #default header option not choosen, so custom lists
-            requestedHeaders = []
-            for item in self.buttonGroups[1].buttons():
-                if item.isChecked():
-                    #print(item.text())
-                    requestedHeaders.append(item.text())
-
-            searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
-            print(searchCritera)
-
-            self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
-            #rows = self.ingestor.getRows()
-            #print(rows)
-
-            if not self.db.doesTableExist(customTableName):
-                #If not the create it with the table name
-                print('%s doesn\'t exist. Creating' % customTableName)
-                self.db.create_table_list(customTableName,self.db.remove_spaces(requestedHeaders),'string')
-
-            self.import_with_progress_bar(customTableName,self.ingestor.getRows(),requestedHeaders)
-            #self.db.add_list_of_rows(customTableName,self.db.remove_spaces(requestedHeaders),rows)
-            self.import_done(customTableName)
-
-
+        
+ 
 
     def import_with_progress_bar(self,tableName,rows_to_be_added,column_headers):
         """
