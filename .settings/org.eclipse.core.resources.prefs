@@ -1,18 +1,14 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=8dd98511040fea55db4f0d1a688f0cd10bc84aec
 eclipse.preferences.version=1
-<<<<<<< HEAD
-=======
 encoding/ShowList.py=utf-8
 encoding/UI_CreateAccount.py=utf-8
 encoding/UI_LogIn_Page.py=utf-8
->>>>>>> 8dd98511040fea55db4f0d1a688f0cd10bc84aec
 encoding/ui_After_LogIn_Page.py=utf-8
 encoding/ui_Create_New_Lead_Page.py=utf-8
 encoding/ui_Current_Leads_Page.py=utf-8
-encoding/ui_LogIn_Window.py=utf-8
 encoding/ui_Possible_Leads_Page.py=utf-8
-<<<<<<< HEAD
-=======
 encoding/ui_ProfilePage.py=utf-8
 encoding/ui_SHowSortLists.py=utf-8
->>>>>>> 8dd98511040fea55db4f0d1a688f0cd10bc84aec
 encoding/ui_Search_For_Leads_Page.py=utf-8

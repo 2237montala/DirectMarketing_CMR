@@ -18,8 +18,8 @@ import webbrowser
 class Ui_Form(QWidget):
 
     CheckEdit = True
-    header = ["Adress:", "City:", "Zip Code:", "State:"]
-    information = ["517 Madison Ave", "Glencoe", "60022","Illinois"]
+    header = ["Adress:", "City:", "Zip Code:", "State:","Status"]
+    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","1"]
 
     def __init__(self):
         super().__init__()
@@ -321,10 +321,37 @@ class Ui_Form(QWidget):
 
                    self.house_info.setItem(count,0, item)
                    count=count+1
+                   
+                   
                    break
+                elif headers[x]=="Interested":
+                    print("status")
+                    if info[x] == "0":
+                        self.Very_interested.setChecked(True)
+                    elif info[x] == "1":
+                        self.Interested.setChecked(True)
+                    elif info[x] == "2":
+                        self.Not_interested.setChecked(True)
+                    count =count+1
+                elif headers[x] == "Status":
+                    print("interested")
+                    if info[x] == "0":
+                        self.Respond_person.setChecked(True)
+                    elif info[x] == "1":
+                        self.Button_NOresponse.setChecked(True)       
+                    elif info[x] == "2":
+                        self.Button_responded.setChecked(True)
+                    count =count+1
                 elif x+1 == count2:
                     count = count+1
                     break
+                
+
+        
+
+
+ 
+        
             '''
             count=count+1
 
