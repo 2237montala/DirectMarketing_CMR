@@ -3,7 +3,7 @@ Created on Apr 1, 2019
 
 @author: Alberto Fernandez
 '''
-import PyQt5, sys 
+import PyQt5, sys
 from UI_CreateAccount import *
 from UI_Login_Page import *
 
@@ -17,4 +17,3 @@ class INITIALIZE:
 
 def main():
     program = INITIALIZE()
-
