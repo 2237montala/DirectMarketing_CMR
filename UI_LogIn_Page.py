@@ -9,7 +9,6 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
 
 
     def Handle_CreateAccount(self):
-        self.hide()
         print("hello 1")
         self.createAccountWidget = Ui_CreateAccount()
         self.createAccountWidget.setup()
@@ -17,41 +16,22 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
         print("hello tester")
 
     def Handle_LogIn(self):
+        print("button pressed")
         LoginInfo=([0]*2)
-
         Username = self.UserName_TXTfield.text()
         password = self.Password_TXTfield.text()
-        #print(Username)
-        #check to ssee if username matches and if it does check to see if the password is a match
-        #f = open("username_password.txt", "r")
-        #print('file opened')
-        #f1 = f.readlines()
-        #f1= list()
-        #for x in f1:
-         #   print (x)
-          #  userInfo=[x]
-           # print(userInfo)
-        #print(userInfo)
-        #linelist = [line.rstrip('\n') for line in open("username_password.txt")]
-        #print(linelist[1])
-        #for x in len(linelist):
-         #   if LoginInfo[0] == linelist[x]:
-          #      if Login[1] == linelist[x+1]:
-           #         print("check worked")
+        print('read')
         f=open("username_password.txt",'r')
+        print('file opened')
         UserInfo = {}
-        #with open("username_password.txt") as f:
         for line in f:
             x=line.split(";")
             a=x[0]
             b=x[1]
             UserInfo[a]=b
-               # items= lines.split()
-               # usernames, passwords = line.strip().split(';')
-                #UserInfo[
-                #usernames.strip()]=passwords.strip()
-            #f.close()egett
-        #print(UserInfo)
+        print('dict made')
+        print(UserInfo)
+        
         if UserInfo[Username]==password:
             print('match found')
             self.window = QtWidgets.QMainWindow()
@@ -64,15 +44,10 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
             print("test 4")
             self.hide()
             print("test 5")
-        #if LoginInfo[0] == UserInfo[x][0]:
-           #if LoginInfo[1] == UserInfo[x][1]:
-               #print("correct")
-        #print('lines read')
-        #print('no matches')
 
     def setup(self):
         print("Hello whats up has to show twice")
-        self.setObjectName()
+        self.setObjectName("window")
         self.resize(1119, 774)
         self.label = QtWidgets.QLabel(self)
         self.label.setGeometry(QtCore.QRect(240, 140, 571, 57))

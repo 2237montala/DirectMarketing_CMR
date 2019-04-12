@@ -21,10 +21,8 @@ class Ui_CreateAccount(QtWidgets.QWidget):
         print("file opened")
         for i in range(2):
             f.write(UserInfo[i] + ";")
-
         f.write("\n")
         f.close
-
         print("hello 2")
         self.window = QtWidgets.QMainWindow()
         print("hello 3")
@@ -157,6 +155,6 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     Form1 = QtWidgets.QWidget()
     ui = Ui_CreateAccount()
-    ui.setupUi1(Form1)
+    ui.setup(Form1)
     Form1.show()
     sys.exit(app.exec_())

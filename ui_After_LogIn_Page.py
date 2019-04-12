@@ -129,7 +129,7 @@ if __name__ == '__main__':
     #self.window = QWidget()
     #mainWindow = QMainWindow()
     mainWindow = QMainWindow()
-    main.setupUi2(mainWindow)
+    main.setupUi(mainWindow)
     main.retranslateUi(mainWindow)
     mainWindow.show()
 
