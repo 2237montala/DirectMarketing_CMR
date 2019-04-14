@@ -148,10 +148,10 @@ class csv_importer_popup(QtWidgets.QDialog):
             count += 1
 
         if radio_button_number > -1:
-            searchCritera = self.ingestor.getHeaderIndex(self.default_lists[button_number],self.ingestor.getCSVHeaders())
+            searchCritera = self.ingestor.getHeaderIndex(self.default_lists[radio_button_number],self.ingestor.getCSVHeaders())
             #print(searchCritera)
 
-            buttonText = self.buttonGroups[0].buttons()[button_number].text()
+            buttonText = self.buttonGroups[0].buttons()[radio_button_number].text()
             #print(buttonText)
             #buttonText = self.buttonGroups[0].id(self.buttonGroups[0].checkedId()).text()
 
@@ -166,11 +166,11 @@ class csv_importer_popup(QtWidgets.QDialog):
                     #Check if tables exists already
                     if not self.db.doesTableExist(tableName):
                         #If not the create it with the table name
-                        self.db.create_table_list(tableName,self.db.remove_spaces(self.default_lists[button_number]),'string')
+                        self.db.create_table_list(tableName,self.db.remove_spaces(self.default_lists[radio_button_number]),'string')
 
-                    self.import_with_progress_bar(tableName,self.ingestor.getRows(),self.default_lists[button_number])
+                    self.import_with_progress_bar(tableName,self.ingestor.getRows(),self.default_lists[radio_button_number])
                     self.import_done(tableName)
-#         elif special_button_number > -1:
+#         elif special_radio_button_number > -1:
         else:
             try:
                 if self.tableNameField.text() == '':
