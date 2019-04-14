@@ -164,6 +164,7 @@ class Ui_Form(QWidget):
         self.label_8.setFont(font)
         self.label_8.setObjectName("label_8")
         self.AdditionalInfo_txt = QtWidgets.QPlainTextEdit(self)
+        self.AdditionalInfo_txt.setReadOnly(True)
         self.AdditionalInfo_txt.setGeometry(QtCore.QRect(40, 570, 431, 261))
         self.AdditionalInfo_txt.setObjectName("AdditionalInfo_txt")
         self.label_9 = QtWidgets.QLabel(self)
@@ -396,6 +397,7 @@ class Ui_Form(QWidget):
         self.Respond_person.setEnabled(True)
         self.Button_NOresponse.setEnabled(True)
         self.Button_responded.setEnabled(True)
+        self.AdditionalInfo_txt.setReadOnly(False)
 
 
     def Handle_Save (self):
@@ -431,6 +433,7 @@ class Ui_Form(QWidget):
         self.Respond_person.setEnabled(False)
         self.Button_NOresponse.setEnabled(False)
         self.Button_responded.setEnabled(False)
+        self.AdditionalInfo_txt.setReadOnly(True)
         self.filltable(self.header, self.information)
 
         '''
