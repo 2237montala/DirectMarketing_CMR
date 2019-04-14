@@ -19,7 +19,7 @@ class Ui_Form(QWidget):
 
     CheckEdit = True
     header = ["Adress:", "City:", "Zip Code:", "State:","Status"]
-    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0"]
+    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0g"]
 
     def __init__(self):
         super().__init__()
