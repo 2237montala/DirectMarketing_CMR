@@ -18,8 +18,8 @@ import webbrowser
 class Ui_Form(QWidget):
 
     CheckEdit = True
-    header = ["Adress:", "City:", "Zip Code:", "State:","Status"]
-    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0g"]
+    header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:","Comments of Property"]
+    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"the previos comments"]
 
     def __init__(self):
         super().__init__()
@@ -167,6 +167,7 @@ class Ui_Form(QWidget):
         self.AdditionalInfo_txt.setReadOnly(True)
         self.AdditionalInfo_txt.setGeometry(QtCore.QRect(40, 570, 431, 261))
         self.AdditionalInfo_txt.setObjectName("AdditionalInfo_txt")
+        self.AdditionalInfo_txt.setPlainText("Comments of Property")
         self.label_9 = QtWidgets.QLabel(self)
         self.label_9.setGeometry(QtCore.QRect(490, 540, 171, 21))
         font = QtGui.QFont()
@@ -314,9 +315,10 @@ class Ui_Form(QWidget):
         while count != self.house_info.rowCount():
             count2 = len(headers)
             for x in range(0, count2):
+             
                 if headers[x] == self.house_info.verticalHeaderItem(count).text():
                    item = QtWidgets.QTableWidgetItem(info[x])
-
+                   print(x)
                    if self.CheckEdit:
                        item.setFlags(QtCore.Qt.ItemIsEditable)
 
@@ -343,6 +345,8 @@ class Ui_Form(QWidget):
                     elif info[x] == "2":
                         self.Button_responded.setChecked(True)
                     count =count+1
+                elif headers[x]== self.AdditionalInfo_txt.toPlainText():
+                    self.AdditionalInfo_txt.setPlainText(info[x])
                 elif x+1 == count2:
                     count = count+1
                     break
@@ -389,7 +393,7 @@ class Ui_Form(QWidget):
     def Handle_edit (self):
         self.CheckEdit = False
         print("hello")
-        self.filltable(self.header, self.information)
+        #self.filltable(self.header, self.information)
         #for x in range(0, )
         self.Very_interested.setEnabled(True)
         self.Interested.setEnabled(True)
