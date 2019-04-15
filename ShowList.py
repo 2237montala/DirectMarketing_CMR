@@ -313,7 +313,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         print(selectedRow)
         #self.ui_ProfilePage().filltable(columHeaders, selectedRow, Table_name)
         return selectedRow, columHeaders, Table_name
-        
+
         #Here you would call a method to show the profile page
 
     def get_search_key(self):
