@@ -1,52 +1,66 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from UI_CreateAccount import *
-from ui_After_LogIn_Page import*
 from PyQt5.Qt import QLineEdit, QMainWindow
+from DatabaseManager import DatabaseManager
+
+account_info_table_name = "ADMIN_Account_Info"
+account_columns = ['Password','UserName','FirstName','LastName']
 
 class Ui_LogIn_Page(QtWidgets.QWidget):
-    def __init__(self):
-        super().__init__()
 
+
+    def __init__(self, db_file_loc):
+        super().__init__()
+        self.setup()
+        self.db_file_loc = db_file_loc
 
     def Handle_CreateAccount(self):
-        print("hello 1")
         self.createAccountWidget = Ui_CreateAccount()
-        self.createAccountWidget.setup()
-        self.window.show()
-        print("hello tester")
+        self.createAccountWidget.create_account_done_signal.connect(self.create_account_closed)
+        self.createAccountWidget.exec_()
+        #self.hide()
 
     def Handle_LogIn(self):
         print("button pressed")
-        LoginInfo=([0]*2)
-        Username = self.UserName_TXTfield.text()
+        db = DatabaseManager(self.db_file_loc)
+        username = self.UserName_TXTfield.text()
         password = self.Password_TXTfield.text()
-        print('read')
-        f=open("username_password.txt",'r')
-        print('file opened')
-        UserInfo = {}
-        for line in f:
-            x=line.split(";")
-            a=x[0]
-            b=x[1]
-            UserInfo[a]=b
-        print('dict made')
-        print(UserInfo)
+
+        try:
+            if db.is_valid_string(username) and db.is_valid_string(password):
+                if not db.doesTableExist(account_info_table_name):
+                    print("Must create account before")
+
+                row_with_entered_pass = db.get_row_at(account_info_table_name,column_name=account_columns[0],column_value=password)
+                print(row_with_entered_pass)
+
+                if not row_with_entered_pass == None:
+                    password_db = row_with_entered_pass[0]
+                    user_name_db =row_with_entered_pass[1]
+
+                    if password_db == password and user_name_db == username:
+                        print("Valid log in")
+
+                else:
+                    ErrorBox = QtWidgets.QMessageBox()
+                    ErrorBox.warning(self, 'No Account Found',
+                                                "No account found for the combination of user name and password",
+                                                ErrorBox.Ok)
+            else:
+                raise Exception()
+        except:
+            ErrorBox = QtWidgets.QMessageBox()
+            ErrorBox.critical(self, 'Text Entry Error',
+                                        "Table name can only have letters numbers, and underscores",
+                                        ErrorBox.Ok)
+
+    def valid_login(self):
+        #emit a signal that relates to having a realated log in
+        #Then connect this signal to a method that changes the main widget
         
-        if UserInfo[Username]==password:
-            print('match found')
-            self.window = QtWidgets.QMainWindow()
-            print("test 1")
-            self.ui = Ui_After_LogIn_Page()
-            print("test 2")
-            self.ui.setup2(self.window)
-            print("test 3")
-            self.window.show()
-            print("test 4")
-            self.hide()
-            print("test 5")
+        pass
 
     def setup(self):
-        print("Hello whats up has to show twice")
         self.setObjectName("window")
         self.resize(1119, 774)
         self.label = QtWidgets.QLabel(self)
@@ -108,10 +122,31 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(_translate("Form", "Chicago Turnkey Properties"))
-        self.label_2.setText(_translate("Form", "Username:"))
+        self.label_2.setText(_translate("Form", "username:"))
         self.label_3.setText(_translate("Form", "Password:"))
         self.pushButton_CreateAccount.setText(_translate("Form", "Create Account"))
         self.pushButton_LogIn.setText(_translate("Form", "LogIn"))
+
+    def create_account_closed(self, new_account_info):
+        #Info comes in as first name, last name, user name, password
+        print(new_account_info)
+
+        temp = new_account_info.split('//')
+
+        reformated_data=([0]*4)
+        reformated_data[0]=temp[1]
+        reformated_data[1]=temp[0]
+        reformated_data[2]=temp[2]
+        reformated_data[3]=temp[3]
+
+        db = DatabaseManager(self.db_file_loc)
+
+        if not db.doesTableExist(account_info_table_name):
+            db.create_table_list(account_info_table_name,account_columns,'string')
+
+        db.add_row_list(account_info_table_name,account_columns,reformated_data)
+
+        self.show()
 
 
 if __name__ == "__main__":
@@ -119,7 +154,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     mainWindow = QtWidgets.QMainWindow()
 
-    ui = Ui_LogIn_Page()
-    ui.setup()
+    ui = Ui_LogIn_Page('test.db')
+
     ui.show()
     sys.exit(app.exec_())
