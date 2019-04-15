@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 from ShowList import Ui_MainWindow
+from UI_LogIn_Page import Ui_LogIn_Page
 from PyQt5.Qt import QDesktopWidget
 
 class gui(QtWidgets.QMainWindow):
@@ -9,12 +10,15 @@ class gui(QtWidgets.QMainWindow):
         self.setObjectName("Direct Marketing CMR")
         self.setWindowTitle("Direct Marketing CMR")
         self.resize(width , height + 50)
-        self.main_window = Ui_MainWindow(db_file_loc)
-        self.main_window.setup_main_widget(width,height)
+        #self.main_window = Ui_MainWindow(db_file_loc)
+        #self.main_window.setup_main_widget(width,height)
+
+        self.main_window = Ui_LogIn_Page(db_file_loc)
+
         self.setCentralWidget(self.main_window)
 
-        self.menuBar = self.main_window.setup_menu_bar()
-        self.setMenuBar(self.menuBar)
+        #self.menuBar = self.main_window.setup_menu_bar()
+        #self.setMenuBar(self.menuBar)
 
         #self.main_window.show()
 

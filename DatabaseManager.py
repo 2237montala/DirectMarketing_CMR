@@ -174,7 +174,6 @@ class DatabaseManager:
                 #The user wants to use a specific column to get row
                 print("Get row w/ column")
 #                 self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name), (column_value,))
-                column_name = column_name.replace("'","\'")
                 self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name,), (column_value,))
 #                 return self.cursor.fetchall()
             for row in self.cursor:
@@ -235,7 +234,6 @@ class DatabaseManager:
                 return False
         else:
             print("using column method")
-            column_name = column_name.replace("'","\'")
             old_row = self.get_row_at(table_name, column_name, column_value)
             if (len(old_row) == len(new_row)):
                 try:
