@@ -311,11 +311,13 @@ class Ui_Form(QWidget):
         count =0
         self.header = headers
         self.information = info
-
-        while count != self.house_info.rowCount():
+        print("row count:")
+        print(self.house_info.rowCount()-1)
+        while count != self.house_info.rowCount()-1:
             count2 = len(headers)
             for x in range(0, count2):
-             
+                print(self.house_info.verticalHeaderItem(count).text())
+                print(count)
                 if headers[x] == self.house_info.verticalHeaderItem(count).text():
                    item = QtWidgets.QTableWidgetItem(info[x])
                    print(x)
@@ -324,7 +326,8 @@ class Ui_Form(QWidget):
 
                    self.house_info.setItem(count,0, item)
                    count=count+1
-                   
+                   print("table")
+                   print(count)
                    
                    break
                 elif headers[x]=="Interested":
@@ -336,8 +339,10 @@ class Ui_Form(QWidget):
                     elif info[x] == "2":
                         self.Not_interested.setChecked(True)
                     count =count+1
+                    print("Interested")
+                    print(count)
                 elif headers[x] == "Status":
-                    print("interested")
+                    
                     if info[x] == "0":
                         self.Respond_person.setChecked(True)
                     elif info[x] == "1":
@@ -345,11 +350,15 @@ class Ui_Form(QWidget):
                     elif info[x] == "2":
                         self.Button_responded.setChecked(True)
                     count =count+1
+                    print("status")
+                    print(count)
                 elif headers[x]== self.AdditionalInfo_txt.toPlainText():
                     self.AdditionalInfo_txt.setPlainText(info[x])
-                elif x+1 == count2:
-                    count = count+1
-                    break
+                #elif x+1 == count2:
+                 #   count = count+1
+                  #  print("lastif")
+                   # print(count)
+                    #break
                 
 
         
@@ -366,7 +375,7 @@ class Ui_Form(QWidget):
             count=count+1
             '''
         count =0
-        while count != self.owner_info.rowCount():
+        while count != self.owner_info.rowCount()-1:
             count2 = len(headers)
             for x in range(0, count2):
                 if headers[x] == self.owner_info.verticalHeaderItem(count).text():
@@ -393,7 +402,7 @@ class Ui_Form(QWidget):
     def Handle_edit (self):
         self.CheckEdit = False
         print("hello")
-        #self.filltable(self.header, self.information)
+        self.filltable(self.header, self.information)
         #for x in range(0, )
         self.Very_interested.setEnabled(True)
         self.Interested.setEnabled(True)
