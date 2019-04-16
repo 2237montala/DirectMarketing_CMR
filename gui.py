@@ -21,7 +21,10 @@ class gui(QtWidgets.QMainWindow):
         #self.setMenuBar(self.menuBar)
 
         #self.main_window.show()
+        self.main_window.pushButton_LogIn.clicked.connect(self.switchMainWidget)
 
+    def switchMainWidget(self):
+        print('hellow')
 if __name__ == "__main__":
     data_base_file = 'test.db'
 

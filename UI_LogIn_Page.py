@@ -57,7 +57,7 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
     def valid_login(self):
         #emit a signal that relates to having a realated log in
         #Then connect this signal to a method that changes the main widget
-        
+
         pass
 
     def setup(self):
