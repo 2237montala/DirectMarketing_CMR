@@ -18,8 +18,8 @@ import webbrowser
 class Ui_Form(QWidget):
 
     CheckEdit = True
-    header = ["Adress:", "City:", "Zip Code:", "State:","Status"]
-    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0g"]
+    header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:","Comments of Property"]
+    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"the previos comments"]
 
     def __init__(self):
         super().__init__()
@@ -167,6 +167,7 @@ class Ui_Form(QWidget):
         self.AdditionalInfo_txt.setReadOnly(True)
         self.AdditionalInfo_txt.setGeometry(QtCore.QRect(40, 570, 431, 261))
         self.AdditionalInfo_txt.setObjectName("AdditionalInfo_txt")
+        self.AdditionalInfo_txt.setPlainText("Comments of Property")
         self.label_9 = QtWidgets.QLabel(self)
         self.label_9.setGeometry(QtCore.QRect(490, 540, 171, 21))
         font = QtGui.QFont()
@@ -310,19 +311,23 @@ class Ui_Form(QWidget):
         count =0
         self.header = headers
         self.information = info
-
-        while count != self.house_info.rowCount():
+        print("row count:")
+        print(self.house_info.rowCount()-1)
+        while count != self.house_info.rowCount()-1:
             count2 = len(headers)
             for x in range(0, count2):
+                print(self.house_info.verticalHeaderItem(count).text())
+                print(count)
                 if headers[x] == self.house_info.verticalHeaderItem(count).text():
                    item = QtWidgets.QTableWidgetItem(info[x])
-
+                   print(x)
                    if self.CheckEdit:
                        item.setFlags(QtCore.Qt.ItemIsEditable)
 
                    self.house_info.setItem(count,0, item)
                    count=count+1
-                   
+                   print("table")
+                   print(count)
                    
                    break
                 elif headers[x]=="Interested":
@@ -334,8 +339,10 @@ class Ui_Form(QWidget):
                     elif info[x] == "2":
                         self.Not_interested.setChecked(True)
                     count =count+1
+                    print("Interested")
+                    print(count)
                 elif headers[x] == "Status":
-                    print("interested")
+                    
                     if info[x] == "0":
                         self.Respond_person.setChecked(True)
                     elif info[x] == "1":
@@ -343,9 +350,15 @@ class Ui_Form(QWidget):
                     elif info[x] == "2":
                         self.Button_responded.setChecked(True)
                     count =count+1
-                elif x+1 == count2:
-                    count = count+1
-                    break
+                    print("status")
+                    print(count)
+                elif headers[x]== self.AdditionalInfo_txt.toPlainText():
+                    self.AdditionalInfo_txt.setPlainText(info[x])
+                #elif x+1 == count2:
+                 #   count = count+1
+                  #  print("lastif")
+                   # print(count)
+                    #break
                 
 
         
@@ -362,7 +375,7 @@ class Ui_Form(QWidget):
             count=count+1
             '''
         count =0
-        while count != self.owner_info.rowCount():
+        while count != self.owner_info.rowCount()-1:
             count2 = len(headers)
             for x in range(0, count2):
                 if headers[x] == self.owner_info.verticalHeaderItem(count).text():
