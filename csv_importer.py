@@ -15,14 +15,15 @@ from re import search
 class csv_importer_popup(QtWidgets.QDialog):
     importDoneSignal = QtCore.pyqtSignal('QString')
 
-    def __init__(self,window_title,db_file_loc,tables):
+    def __init__(self,window_title,db_file_loc,tables,protected_table_prefix):
         super().__init__()
         self.title = window_title
         self.setWindowTitle(self.title)
+        self.protected_table_prefix = protected_table_prefix
 
         self.tablesInDB = tables
         #Database manager stuff
-        self.db = DatabaseManager(db_file_loc)
+        self.db = DatabaseManager(db_file_loc,protected_table_prefix)
 
         #Create array with tables already in the db to be
         #put in the common files radio button box
@@ -173,7 +174,7 @@ class csv_importer_popup(QtWidgets.QDialog):
 #         elif special_radio_button_number > -1:
         else:
             try:
-                if self.tableNameField.text() == '':
+                if self.tableNameField.text() == '' or self.protected_table_prefix in self.tableNameField.text():
                     raise Exception()
                 else:
                     customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
@@ -248,7 +249,7 @@ if __name__ == '__main__':
     file = "Test_Files/DatabaseManagerTest_15.csv"
     tables = ['Absentee','Divorce','Lis_Pendents','Probate']
     app = QApplication([])
-    csvTest = csv_importer_popup("Test Popup",'test.db',tables)
+    csvTest = csv_importer_popup("Test Popup",'test.db',tables,'__ADMIN__')
     csvTest.run_popup(file)
     csvTest.show()
     app.exec_()

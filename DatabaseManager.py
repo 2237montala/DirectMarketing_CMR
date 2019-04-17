@@ -13,9 +13,10 @@ VALID_CHARS = '^[A-Za-z0-9_ ]*$'
 
 
 class DatabaseManager:
-    def __init__ (self, file_loc):
+    def __init__ (self, file_loc,protected_table_prefix):
         self.conn = sqlite3.connect(file_loc)
         self.cursor = self.conn.cursor()
+        self.protected_table_prefix = protected_table_prefix
 
     def create_table(self, table_name, column_name, column_type):
         """
@@ -126,7 +127,7 @@ class DatabaseManager:
             print('Error message:', er.args[0])
             return None
 
-    def get_table_names(self):
+    def get_table_names(self, exclude_protected=True):
         """
         Returns a list of the table names in the database
         """
@@ -135,7 +136,9 @@ class DatabaseManager:
             names = self.cursor.fetchall()
             formatedNames = []
             for name in names:
-                formatedNames.append(name[0])
+                if not (exclude_protected and (self.protected_table_prefix in name[0])):
+                    #Excludes lists with the protected prefix
+                    formatedNames.append(name[0])
             return formatedNames
         except Exception as er:
             #General error message

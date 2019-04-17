@@ -20,9 +20,10 @@ from file_browser import file_browser
 from csv_importer import csv_importer_popup
 
 class Ui_MainWindow(QtWidgets.QWidget):
-    def __init__(self,db_file):
+    def __init__(self,db_file,protected_table_prefix):
         super().__init__()
-        self.db = DatabaseManager(db_file)
+        self.protected_table_prefix = protected_table_prefix
+        self.db = DatabaseManager(db_file,self.protected_table_prefix)
         self.tables_in_db = self.db.get_table_names()
         self.curr_table = ''
         if(len(self.tables_in_db) > 0):
@@ -181,7 +182,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         file = file_browser("File Browser").openFileNameDialog()
         if(file != None):
 
-            self.csv_importer = csv_importer_popup("CSV Importer",'test.db',self.tables_in_db)
+            self.csv_importer = csv_importer_popup("CSV Importer",'test.db',self.tables_in_db,self.protected_table_prefix)
             #This links the import signal to the import close window
             self.csv_importer.importDoneSignal.connect(self.import_closed)
             self.csv_importer.run_popup(file)
@@ -221,7 +222,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         When a combo box option is clicked it changes the current
         Table to the option's text and refreshes the table
         """
-        print(self.tables_in_db[selectedItem])
+        #print(self.tables_in_db[selectedItem])
         self.set_curr_table_name(self.tables_in_db[selectedItem])
         self.update_menu_action()
 
@@ -345,7 +346,7 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     mainWindow = QtWidgets.QMainWindow()
     mainWindow.resize(1600 , 900+50)
-    leadsTable = Ui_MainWindow(data_base_file)
+    leadsTable = Ui_MainWindow(data_base_file,'__ADMIN__')
     leadsTable.setup_main_widget(1600,900)
     mainWindow.setCentralWidget(leadsTable)
 

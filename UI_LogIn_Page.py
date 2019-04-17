@@ -3,18 +3,19 @@ from UI_CreateAccount import *
 from PyQt5.Qt import QLineEdit, QMainWindow
 from DatabaseManager import DatabaseManager
 
-account_info_table_name = "__ADMIN__Account_Info"
+#account_info_table_name = "Account_Info"
 account_columns = ['Password','UserName','FirstName','LastName']
 
 class Ui_LogIn_Page(QtWidgets.QWidget):
-
     valid_login_signal = QtCore.pyqtSignal()
 
-
-    def __init__(self, db_file_loc):
+    def __init__(self, db_file_loc, table_prefix):
         super().__init__()
+        self.protected_table_prefix = table_prefix
         self.setup()
         self.db_file_loc = db_file_loc
+        self.account_info_table_name = table_prefix + "Account_Info"
+        print(self.account_info_table_name)
 
     def Handle_CreateAccount(self):
         self.createAccountWidget = Ui_CreateAccount()
@@ -24,19 +25,19 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
 
     def Handle_LogIn(self):
         print("button pressed")
-        db = DatabaseManager(self.db_file_loc)
+        db = DatabaseManager(self.db_file_loc,self.protected_table_prefix)
         username = self.UserName_TXTfield.text()
         password = self.Password_TXTfield.text()
 
         try:
             if db.is_valid_string(username) and db.is_valid_string(password):
                 #Both user name and password have to be valid strings to continue
-                if not db.doesTableExist(account_info_table_name):
+                if not db.doesTableExist(self.account_info_table_name):
                     print("Must create account before")
 
                 #Gets the account from the databse with the same password
                 #If the isn't a match then it returns none
-                row_with_entered_pass = db.get_row_at(account_info_table_name,column_name=account_columns[0],column_value=password)
+                row_with_entered_pass = db.get_row_at(self.account_info_table_name,column_name=account_columns[0],column_value=password)
                 print(row_with_entered_pass)
 
                 if not row_with_entered_pass == None:
@@ -165,7 +166,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     mainWindow = QtWidgets.QMainWindow()
 
-    ui = Ui_LogIn_Page('test.db')
+    ui = Ui_LogIn_Page('test.db','__ADMIN__')
 
     ui.show()
     sys.exit(app.exec_())
