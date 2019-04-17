@@ -28,7 +28,7 @@ class Ui_CreateAccount(QtWidgets.QDialog):
 
         emptyTextBoxes = False
         for str in UserInfo:
-            if not re.match('^[A-Za-z0-9_]*$',str):
+            if not re.match('^[A-Za-z0-9_]*$',str) or str == '':
                 emptyTextBoxes = True
                 break
 

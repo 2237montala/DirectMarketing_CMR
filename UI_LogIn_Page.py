@@ -3,10 +3,12 @@ from UI_CreateAccount import *
 from PyQt5.Qt import QLineEdit, QMainWindow
 from DatabaseManager import DatabaseManager
 
-account_info_table_name = "ADMIN_Account_Info"
+account_info_table_name = "__ADMIN__Account_Info"
 account_columns = ['Password','UserName','FirstName','LastName']
 
 class Ui_LogIn_Page(QtWidgets.QWidget):
+
+    valid_login_signal = QtCore.pyqtSignal()
 
 
     def __init__(self, db_file_loc):
@@ -28,18 +30,29 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
 
         try:
             if db.is_valid_string(username) and db.is_valid_string(password):
+                #Both user name and password have to be valid strings to continue
                 if not db.doesTableExist(account_info_table_name):
                     print("Must create account before")
 
+                #Gets the account from the databse with the same password
+                #If the isn't a match then it returns none
                 row_with_entered_pass = db.get_row_at(account_info_table_name,column_name=account_columns[0],column_value=password)
                 print(row_with_entered_pass)
 
                 if not row_with_entered_pass == None:
+                    #If the there is a password match then save the info
                     password_db = row_with_entered_pass[0]
                     user_name_db =row_with_entered_pass[1]
 
                     if password_db == password and user_name_db == username:
-                        print("Valid log in")
+                        #If the user name and password entered match the
+                        #user name and password in the db then it's a valid login
+                        self.valid_login()
+                    else:
+                        ErrorBox = QtWidgets.QMessageBox()
+                        ErrorBox.warning(self, 'No Account Found',
+                                                    "No account found for the combination of user name and password",
+                                                    ErrorBox.Ok)
 
                 else:
                     ErrorBox = QtWidgets.QMessageBox()
@@ -51,14 +64,8 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
         except:
             ErrorBox = QtWidgets.QMessageBox()
             ErrorBox.critical(self, 'Text Entry Error',
-                                        "Table name can only have letters numbers, and underscores",
+                                        "Text entries can only have letters numbers, and underscores",
                                         ErrorBox.Ok)
-
-    def valid_login(self):
-        #emit a signal that relates to having a realated log in
-        #Then connect this signal to a method that changes the main widget
-
-        pass
 
     def setup(self):
         self.setObjectName("window")
@@ -147,6 +154,10 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
         db.add_row_list(account_info_table_name,account_columns,reformated_data)
 
         self.show()
+
+    def valid_login(self):
+        print("Valid login\nEmitting signal")
+        self.valid_login_signal.emit()
 
 
 if __name__ == "__main__":

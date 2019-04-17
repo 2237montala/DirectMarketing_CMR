@@ -7,24 +7,26 @@ from PyQt5.Qt import QDesktopWidget
 class gui(QtWidgets.QMainWindow):
     def __init__(self,width,height,db_file_loc):
         super().__init__()
+        self.data_base_file = db_file_loc
+        self.height = height
+        self.width = width
         self.setObjectName("Direct Marketing CMR")
         self.setWindowTitle("Direct Marketing CMR")
         self.resize(width , height + 50)
-        #self.main_window = Ui_MainWindow(db_file_loc)
-        #self.main_window.setup_main_widget(width,height)
 
-        self.main_window = Ui_LogIn_Page(db_file_loc)
+        self.main_window = Ui_LogIn_Page(self.data_base_file)
 
         self.setCentralWidget(self.main_window)
-
-        #self.menuBar = self.main_window.setup_menu_bar()
-        #self.setMenuBar(self.menuBar)
-
-        #self.main_window.show()
-        self.main_window.pushButton_LogIn.clicked.connect(self.switchMainWidget)
+        self.main_window.valid_login_signal.connect(self.switchMainWidget)
 
     def switchMainWidget(self):
-        print('hellow')
+        print('Switching main widget')
+
+        new_widget = Ui_MainWindow(self.data_base_file)
+        new_widget.setup_main_widget(self.width,self.height)
+
+        self.setMenuBar(new_widget.setup_menu_bar())
+        self.setCentralWidget(new_widget)
 if __name__ == "__main__":
     data_base_file = 'test.db'
 
