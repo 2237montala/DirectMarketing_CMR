@@ -69,71 +69,113 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
                                         ErrorBox.Ok)
 
     def setup(self):
-        self.setObjectName("window")
-        self.resize(1119, 774)
-        self.label = QtWidgets.QLabel(self)
-        self.label.setGeometry(QtCore.QRect(240, 140, 571, 57))
-        font = QtGui.QFont()
-        font.setPointSize(28)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(self)
-        self.label_2.setGeometry(QtCore.QRect(240, 230, 131, 41))
-        font = QtGui.QFont()
-        font.setPointSize(16)
-        self.label_2.setFont(font)
-        self.label_2.setObjectName("label_2")
-        self.label_3 = QtWidgets.QLabel(self)
-        self.label_3.setGeometry(QtCore.QRect(240, 360, 151, 31))
-        font = QtGui.QFont()
-        font.setPointSize(16)
-        self.label_3.setFont(font)
-        self.label_3.setObjectName("label_3")
-        self.UserName_TXTfield = QtWidgets.QLineEdit(self)
-        self.UserName_TXTfield.setGeometry(QtCore.QRect(390, 230, 411, 51))
-        self.UserName_TXTfield.setObjectName("UserName_TXTfield")
+        self.setObjectName("Login_Page")
+        layout = QtWidgets.QGridLayout()
 
-        font = self.UserName_TXTfield.font()
-        font.setPointSize(15) # sets the size to 27
-        self.UserName_TXTfield.setFont(font)
+        #labels
 
+        self.login_label = QtWidgets.QLabel("Log In",self)
+        self.login_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.login_label.setFont(QtGui.QFont("Ariel",16,QtGui.QFont.Bold))
+        self.user_name_label = QtWidgets.QLabel("Username",self)
+        self.user_name_label.setAlignment(QtCore.Qt.AlignRight)
+        self.password_label = QtWidgets.QLabel("Password",self)
+        self.password_label.setAlignment(QtCore.Qt.AlignRight)
 
-        self.Password_TXTfield = QtWidgets.QLineEdit(self)
-        self.Password_TXTfield.setGeometry(QtCore.QRect(390, 350, 411, 51))
-        self.Password_TXTfield.setObjectName("Password_TXTfield")
+        #text fields
+        self.user_name_tf = QtWidgets.QLineEdit(self)
+        self.user_name_tf.setPlaceholderText("Username")
+        self.password_tf = QtWidgets.QLineEdit(self)
+        self.password_tf.setPlaceholderText("Password")
 
-        font = self.Password_TXTfield.font()
-        font.setPointSize(15) # sets the size to 27
-        self.Password_TXTfield.setFont(font)
+        #buttons
+        self.login_button = QtWidgets.QPushButton(self)
+        self.login_button.setText("Log In")
+        self.create_account_button = QtWidgets.QPushButton(self)
+        self.create_account_button.setText("Create Account")
 
-        self.Password_TXTfield.setEchoMode(QLineEdit.Password)
+        print(self.login_button.size())
+        print(self.create_account_button.size())
+        self.login_button.resize(self.create_account_button.size())
 
-        self.pushButton_CreateAccount = QtWidgets.QPushButton(self)
-        self.pushButton_CreateAccount.setGeometry(QtCore.QRect(560, 460, 191, 51))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.pushButton_CreateAccount.setFont(font)
-        self.pushButton_CreateAccount.setObjectName("pushButton_CreateAccount")
-        self.pushButton_CreateAccount.clicked.connect(self.Handle_CreateAccount)
-        self.pushButton_LogIn = QtWidgets.QPushButton(self)
-        self.pushButton_LogIn.setGeometry(QtCore.QRect(330, 460, 191, 51))
-        self.pushButton_LogIn.clicked.connect(self.Handle_LogIn)
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.pushButton_LogIn.setFont(font)
-        self.pushButton_LogIn.setObjectName("pushButton_LogIn")
+        layout.addWidget(self.login_label,0,0,1,2)
+        layout.addWidget(self.user_name_label,1,0,1,1)
+        layout.addWidget(self.user_name_tf,1,1,1,1)
+        layout.addWidget(self.password_label,2,0,1,1)
+        layout.addWidget(self.password_tf,2,1,1,1)
+        layout.addWidget(self.login_button,3,0,1,1)
+        layout.addWidget(self.create_account_button,3,1,1,1)
 
-        self.retranslateUi()
-        QtCore.QMetaObject.connectSlotsByName(self)
+        layout.setAlignment(QtCore.Qt.AlignCenter)
 
-    def retranslateUi(self):
-        _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("Form", "Form"))
-        self.label.setText(_translate("Form", "Chicago Turnkey Properties"))
-        self.label_2.setText(_translate("Form", "username:"))
-        self.label_3.setText(_translate("Form", "Password:"))
-        self.pushButton_CreateAccount.setText(_translate("Form", "Create Account"))
-        self.pushButton_LogIn.setText(_translate("Form", "LogIn"))
+        self.setLayout(layout)
+        self.resize(self.sizeHint())
+        self.setMaximumSize(300,150)
+    #
+    #     self.resize(1119, 774)
+    #     self.label = QtWidgets.QLabel(self)
+    #     self.label.setGeometry(QtCore.QRect(240, 140, 571, 57))
+    #     font = QtGui.QFont()
+    #     font.setPointSize(28)
+    #     self.label.setFont(font)
+    #     self.label.setObjectName("label")
+    #     self.label_2 = QtWidgets.QLabel(self)
+    #     self.label_2.setGeometry(QtCore.QRect(240, 230, 131, 41))
+    #     font = QtGui.QFont()
+    #     font.setPointSize(16)
+    #     self.label_2.setFont(font)
+    #     self.label_2.setObjectName("label_2")
+    #     self.label_3 = QtWidgets.QLabel(self)
+    #     self.label_3.setGeometry(QtCore.QRect(240, 360, 151, 31))
+    #     font = QtGui.QFont()
+    #     font.setPointSize(16)
+    #     self.label_3.setFont(font)
+    #     self.label_3.setObjectName("label_3")
+    #     self.UserName_TXTfield = QtWidgets.QLineEdit(self)
+    #     self.UserName_TXTfield.setGeometry(QtCore.QRect(390, 230, 411, 51))
+    #     self.UserName_TXTfield.setObjectName("UserName_TXTfield")
+    #
+    #     font = self.UserName_TXTfield.font()
+    #     font.setPointSize(15) # sets the size to 27
+    #     self.UserName_TXTfield.setFont(font)
+    #
+    #
+    #     self.Password_TXTfield = QtWidgets.QLineEdit(self)
+    #     self.Password_TXTfield.setGeometry(QtCore.QRect(390, 350, 411, 51))
+    #     self.Password_TXTfield.setObjectName("Password_TXTfield")
+    #
+    #     font = self.Password_TXTfield.font()
+    #     font.setPointSize(15) # sets the size to 27
+    #     self.Password_TXTfield.setFont(font)
+    #
+    #     self.Password_TXTfield.setEchoMode(QLineEdit.Password)
+    #
+    #     self.pushButton_CreateAccount = QtWidgets.QPushButton(self)
+    #     self.pushButton_CreateAccount.setGeometry(QtCore.QRect(560, 460, 191, 51))
+    #     font = QtGui.QFont()
+    #     font.setPointSize(12)
+    #     self.pushButton_CreateAccount.setFont(font)
+    #     self.pushButton_CreateAccount.setObjectName("pushButton_CreateAccount")
+    #     self.pushButton_CreateAccount.clicked.connect(self.Handle_CreateAccount)
+    #     self.pushButton_LogIn = QtWidgets.QPushButton(self)
+    #     self.pushButton_LogIn.setGeometry(QtCore.QRect(330, 460, 191, 51))
+    #     self.pushButton_LogIn.clicked.connect(self.Handle_LogIn)
+    #     font = QtGui.QFont()
+    #     font.setPointSize(12)
+    #     self.pushButton_LogIn.setFont(font)
+    #     self.pushButton_LogIn.setObjectName("pushButton_LogIn")
+    #
+    #     self.retranslateUi()
+    #     QtCore.QMetaObject.connectSlotsByName(self)
+    #
+    # def retranslateUi(self):
+    #     _translate = QtCore.QCoreApplication.translate
+    #     self.setWindowTitle(_translate("Form", "Form"))
+    #     self.label.setText(_translate("Form", "Chicago Turnkey Properties"))
+    #     self.label_2.setText(_translate("Form", "username:"))
+    #     self.label_3.setText(_translate("Form", "Password:"))
+    #     self.pushButton_CreateAccount.setText(_translate("Form", "Create Account"))
+    #     self.pushButton_LogIn.setText(_translate("Form", "LogIn"))
 
     def create_account_closed(self, new_account_info):
         #Info comes in as first name, last name, user name, password
