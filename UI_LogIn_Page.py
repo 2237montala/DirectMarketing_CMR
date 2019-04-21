@@ -15,7 +15,7 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
         self.setup()
         self.db_file_loc = db_file_loc
         self.account_info_table_name = table_prefix + "Account_Info"
-        print(self.account_info_table_name)
+#         print(self.account_info_table_name)
 
     def setup(self):
         self.setObjectName("Login_Page")
@@ -151,7 +151,7 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
                 #Gets the account from the databse with the same password
                 #If the isn't a match then it returns none
                 row_with_entered_pass = db.get_row_at(self.account_info_table_name,column_name=account_columns[0],column_value=password)
-                print(row_with_entered_pass)
+#                 print(row_with_entered_pass)
 
                 if not row_with_entered_pass == None:
                     #If the there is a password match then save the info
@@ -185,7 +185,7 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
 
     def create_account_closed(self, new_account_info):
         #Info comes in as first name, last name, user name, password
-        print(new_account_info)
+#         print(new_account_info)
 
         temp = new_account_info.split('//')
 
@@ -199,6 +199,7 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
 
         if not db.doesTableExist(self.account_info_table_name):
             db.create_table_list(self.account_info_table_name,account_columns,'string')
+            print("Creating login db file")
 
         db.add_row_list(self.account_info_table_name,account_columns,reformated_data)
 

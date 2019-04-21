@@ -33,8 +33,8 @@ class csv_importer_popup(QtWidgets.QDialog):
             for columnName in self.db.get_headers(table):
                 tempList.append(columnName)
             self.default_lists.append(tempList)
-
-        print(self.default_lists)
+        
+#         print(self.default_lists)
 
 
         self.layout = QGridLayout()
@@ -89,7 +89,7 @@ class csv_importer_popup(QtWidgets.QDialog):
 
 
     def generate_checkboxes(self, button_name_list):
-        print(button_name_list)
+#         print(button_name_list)
         self.csvHeaderGroup = QButtonGroup()
         self.csvHeaderGroup_layout = QVBoxLayout()
         self.csvHeaderGroup.setExclusive(False)
@@ -137,13 +137,13 @@ class csv_importer_popup(QtWidgets.QDialog):
         count = 0
         for radioButton in self.buttonGroups[0].buttons():
             if radioButton.isChecked():
-                print(radioButton.text())
+#                 print(radioButton.text())
                 radio_button_number = count
                 break;
             count += 1
         for specialButton in self.buttonGroups[1].buttons():
             if specialButton.isChecked():
-                print(specialButton.text())
+#                 print(specialButton.text())
                 special_button_number = count
                 break;
             count += 1
@@ -178,8 +178,8 @@ class csv_importer_popup(QtWidgets.QDialog):
                     raise Exception()
                 else:
                     customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
-                    print(customTableName)
-                    print(special_button_number)
+#                     print(customTableName)
+#                     print(special_button_number)
                     if special_button_number > -1:
                         #default header option not choosen, so custom lists
                         try:
@@ -190,11 +190,11 @@ class csv_importer_popup(QtWidgets.QDialog):
                                     requestedHeaders.append(item.text())
 
                             searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
-                            print(searchCritera)
+#                             print(searchCritera)
 
                             self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                             rows = self.ingestor.getRows()
-                            print(rows)
+#                             print(rows)
 
                             if not self.db.doesTableExist(customTableName):
                                 #If not the create it with the table name
