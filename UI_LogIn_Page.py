@@ -45,6 +45,7 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
         self.login_button.setMaximumSize(125,30)
         self.login_button.setFont(reg_font)
         self.login_button.clicked.connect(self.Handle_LogIn)
+        self.password_tf.returnPressed.connect(self.login_button.click)
         self.create_account_button = QtWidgets.QPushButton(self)
         self.create_account_button.setText("Create Account")
         self.create_account_button.setMaximumSize(325,30)
