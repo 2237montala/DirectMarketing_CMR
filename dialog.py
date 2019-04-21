@@ -16,8 +16,8 @@ class Ui_Dialog(object):
     def handle_acceptClick(self):
         eventDate = self.DateLineEdit.text()
         eventEdit = self.textEdit.toPlainText()
-        print(eventDate)
-        print(eventEdit)
+#         print(eventDate)
+#         print(eventEdit)
         #save information in both line edits
         Dialog.hide()
         

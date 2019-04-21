@@ -13,9 +13,10 @@ VALID_CHARS = '^[A-Za-z0-9_ ]*$'
 
 
 class DatabaseManager:
-    def __init__ (self, file_loc):
+    def __init__ (self, file_loc,protected_table_prefix):
         self.conn = sqlite3.connect(file_loc)
         self.cursor = self.conn.cursor()
+        self.protected_table_prefix = protected_table_prefix
 
     def create_table(self, table_name, column_name, column_type):
         """
@@ -126,7 +127,7 @@ class DatabaseManager:
             print('Error message:', er.args[0])
             return None
 
-    def get_table_names(self):
+    def get_table_names(self, exclude_protected=True):
         """
         Returns a list of the table names in the database
         """
@@ -135,7 +136,9 @@ class DatabaseManager:
             names = self.cursor.fetchall()
             formatedNames = []
             for name in names:
-                formatedNames.append(name[0])
+                if not (exclude_protected and (self.protected_table_prefix in name[0])):
+                    #Excludes lists with the protected prefix
+                    formatedNames.append(name[0])
             return formatedNames
         except Exception as er:
             #General error message
@@ -168,11 +171,11 @@ class DatabaseManager:
         try:
             if row_id != -1:
                 #The user wants to use row id to get row
-                print("Get PK")
+#                 print("Get PK")
                 self.cursor.execute('SELECT * FROM %s WHERE _rowid_ = ?' % (table_name,), (row_id,))
             else:
                 #The user wants to use a specific column to get row
-                print("Get row w/ column")
+#                 print("Get row w/ column")
 #                 self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name), (column_value,))
                 self.cursor.execute('SELECT * FROM %s WHERE %s = ?' % (table_name,column_name,), (column_value,))
 #                 return self.cursor.fetchall()
@@ -240,7 +243,7 @@ class DatabaseManager:
                     with self.conn:
                         self.cursor.execute("SELECT _rowid_, * FROM %s WHERE %s = ?" % (table_name, column_name), (column_value,))
                         rowid = self.cursor.fetchone()
-                        print(rowid[0])
+#                         print(rowid[0])
                         for i in range(0, len(new_row)):
     #                         print(column_arr[i])
     #                         print(new_row[i])
@@ -256,8 +259,8 @@ class DatabaseManager:
 
     def search_table(self, searchCriteria, table_name):
         columns = self.get_headers(table_name)
-        print(columns)
-        print(searchCriteria)
+#         print(columns)
+#         print(searchCriteria)
         searchCriteria = ("%" + searchCriteria + "%")
         try:
             with self.conn:
@@ -272,7 +275,7 @@ class DatabaseManager:
                     else:
                         for r in row:
                             rows.append(r)
-                        print(rows)
+#                         print(rows)
                 return rows
         except Exception as e:
             print("Error Message:", e.args[0])

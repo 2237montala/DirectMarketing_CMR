@@ -20,9 +20,12 @@ from file_browser import file_browser
 from csv_importer import csv_importer_popup
 
 class Ui_MainWindow(QtWidgets.QWidget):
-    def __init__(self,db_file):
+    log_out_signal = QtCore.pyqtSignal()
+    
+    def __init__(self,db_file,protected_table_prefix):
         super().__init__()
-        self.db = DatabaseManager(db_file)
+        self.protected_table_prefix = protected_table_prefix
+        self.db = DatabaseManager(db_file,self.protected_table_prefix)
         self.tables_in_db = self.db.get_table_names()
         self.curr_table = ''
         if(len(self.tables_in_db) > 0):
@@ -86,7 +89,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         self.menubar.setNativeMenuBar(True)
 
         fileMenu = self.menubar.addMenu("File")
-        fileMenu.addMenu("Log out")
+        fileMenu.addAction("Log Out", self.log_out)
         editMenu = self.menubar.addMenu("Edit")
         editMenu.addAction('Import CSV',self.open_csv_import)
         editMenu.addSeparator()
@@ -181,7 +184,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         file = file_browser("File Browser").openFileNameDialog()
         if(file != None):
 
-            self.csv_importer = csv_importer_popup("CSV Importer",'test.db',self.tables_in_db)
+            self.csv_importer = csv_importer_popup("CSV Importer",'test.db',self.tables_in_db,self.protected_table_prefix)
             #This links the import signal to the import close window
             self.csv_importer.importDoneSignal.connect(self.import_closed)
             self.csv_importer.run_popup(file)
@@ -221,7 +224,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         When a combo box option is clicked it changes the current
         Table to the option's text and refreshes the table
         """
-        print(self.tables_in_db[selectedItem])
+        #print(self.tables_in_db[selectedItem])
         self.set_curr_table_name(self.tables_in_db[selectedItem])
         self.update_menu_action()
 
@@ -307,10 +310,10 @@ class Ui_MainWindow(QtWidgets.QWidget):
         selectedRow = self.db.get_row_at(table_name=self.curr_table,row_id = row+1)
         columHeaders = self.db.get_headers(self.curr_table)
         Table_name= self.curr_table
-        print(selectedRow)
-        print(Table_name)
+#         print(selectedRow)
+#         print(Table_name)
 
-        print(selectedRow)
+#         print(selectedRow)
         #self.ui_ProfilePage().filltable(columHeaders, selectedRow, Table_name)
         return selectedRow, columHeaders, Table_name
 
@@ -321,11 +324,11 @@ class Ui_MainWindow(QtWidgets.QWidget):
         Gets the text from the search bar and checks if it is a valid entry. If so
         then pass it to the search table method
         """
-        print("CLICKED")
+#         print("CLICKED")
         try:
             key = self.searchBar.displayText()
             if(self.db.is_valid_string(key)):
-                print(key)
+#                 print(key)
                 self.search_table(key)
         except:
             QtWidgets.QMessageBox.critical(self, 'Invalid Text',
@@ -337,15 +340,19 @@ class Ui_MainWindow(QtWidgets.QWidget):
         Searches the database for the search key inputed
         """
         rows = self.db.search_table(search_key, self.curr_table)
-        print(rows)
+#         print(rows)
         return rows
+    
+    def log_out(self):
+        print("Logging out\nEmitting signal")
+        self.log_out_signal.emit()
 
 if __name__ == '__main__':
     data_base_file = 'test.db'
     app = QtWidgets.QApplication(sys.argv)
     mainWindow = QtWidgets.QMainWindow()
     mainWindow.resize(1600 , 900+50)
-    leadsTable = Ui_MainWindow(data_base_file)
+    leadsTable = Ui_MainWindow(data_base_file,'__ADMIN__')
     leadsTable.setup_main_widget(1600,900)
     mainWindow.setCentralWidget(leadsTable)
 

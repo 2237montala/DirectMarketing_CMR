@@ -23,17 +23,17 @@ from file_browser import file_browser
 from csv_importer import csv_importer_popup
 
 class Ui_CalendarForm(object):
-    
+
     def __init__(self):
       super(Ui_CalendarForm, self).__init__()
       self.setupUi(CalendarForm)
-    
+
     def EventButton_handler(self):
         self.updateWindow=QtWidgets.QDialogButtonBox()
         self.ui_update = Ui_Dialog()
         self.ui_update.setupUi(self.updateWindow)
         self.updateWindow.show()
-        
+
     def handle_listsPageButton(self):
         print("clicked")
         #self.window2 = QtWidgets.QMainWindow()
@@ -42,7 +42,7 @@ class Ui_CalendarForm(object):
         #self.window2.show()
         #CalendarForm.hide()
         print("made it")
-        
+
     def handle_profilePageButton(self):
         print("clicked")
         self.window3 = QtWidgets.QWidget()
@@ -51,29 +51,29 @@ class Ui_CalendarForm(object):
         self.window3.show()
         CalendarForm.hide()
         print("made it")
-        
+
     def handle_searchPageButton(self):
         print("clicked")
         #self.window4 = QtWidgets.QMainWindow()
-        #self.ui4 = 
+        #self.ui4 =
         #self.ui4.classname(self.window4)
         #self.window4.show()
         #CalendarForm.hide()
         print("made it")
-        
+
     def handle_homePageButton(self):
         CalendarForm.update()
-    
+
     def handle_refreshButton(self):
         CalendarForm.update()
-    
+
     def showDate(self, date):
         self.label.setText(date.toString("MM-dd-yy"))
-        
+
     def load_from_csv_table(self, date):
         print("should start loading")
         #self.label_3.setText(events)
-        
+
     def setupUi(self, CalendarForm):
         CalendarForm.setObjectName("CalendarForm")
         CalendarForm.setEnabled(True)
@@ -194,8 +194,8 @@ class Ui_CalendarForm(object):
         self.label_5.setFont(font)
         self.label_5.setAutoFillBackground(True)
         self.label_5.setObjectName("label_5")
-        
-        self.retranslateUi(CalendarForm) 
+
+        self.retranslateUi(CalendarForm)
         self.calendar.clicked[QtCore.QDate].connect(self.showDate)
         self.calendar.clicked[QtCore.QDate].connect(self.load_from_csv_table)
         date = self.calendar.selectedDate()
@@ -231,5 +231,3 @@ if __name__ == "__main__":
     ui.setupUi(CalendarForm)
     CalendarForm.show()
     sys.exit(app.exec_())
-
-
