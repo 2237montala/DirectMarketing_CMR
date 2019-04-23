@@ -48,7 +48,8 @@ class Ingestor:
         """
         Takes the header dictionary and finds each element in the column
         headers from the fields list. It then updates the integer values
-        for each element to match what column it is
+        for each element to match what column it is. All spaces will be replaced
+        with underscores
         """
         headerListWithIndex = self.listToTwoD(headerList,-1)
 
