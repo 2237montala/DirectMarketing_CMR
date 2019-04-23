@@ -274,7 +274,19 @@ class DatabaseManager:
                         print("No Row Found at %s" % (header))
                     else:
                         for r in row:
-                            rows.append(r)
+#                             print(r)
+#                             print('r')
+                            if len(rows) == 0:
+                                rows.append(r)
+                            for i in rows:
+#                                 print(i)
+#                                 print('i')
+                                if (r == i):
+#                                     print('i matches r')
+                                    break
+                                else:
+                                    rows.append(r)
+                                    break
 #                         print(rows)
                 return rows
         except Exception as e:

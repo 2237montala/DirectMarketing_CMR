@@ -340,8 +340,9 @@ class Ui_MainWindow(QtWidgets.QWidget):
         Searches the database for the search key inputed
         """
         rows = self.db.search_table(search_key, self.curr_table)
-#         print(rows)
-        return rows
+        self.update_table(rows, self.db.get_headers(self.curr_table))
+        
+        
     
     def log_out(self):
         print("Logging out\nEmitting signal")
