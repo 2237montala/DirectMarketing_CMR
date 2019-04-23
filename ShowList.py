@@ -20,6 +20,8 @@ from file_browser import file_browser
 from csv_importer import csv_importer_popup
 
 class Ui_MainWindow(QtWidgets.QWidget):
+    log_out_signal = QtCore.pyqtSignal()
+    
     def __init__(self,db_file,protected_table_prefix):
         super().__init__()
         self.protected_table_prefix = protected_table_prefix
@@ -87,7 +89,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         self.menubar.setNativeMenuBar(True)
 
         fileMenu = self.menubar.addMenu("File")
-        fileMenu.addMenu("Log out")
+        fileMenu.addAction("Log Out", self.log_out)
         editMenu = self.menubar.addMenu("Edit")
         editMenu.addAction('Import CSV',self.open_csv_import)
         editMenu.addSeparator()
@@ -308,10 +310,10 @@ class Ui_MainWindow(QtWidgets.QWidget):
         selectedRow = self.db.get_row_at(table_name=self.curr_table,row_id = row+1)
         columHeaders = self.db.get_headers(self.curr_table)
         Table_name= self.curr_table
-        print(selectedRow)
-        print(Table_name)
+#         print(selectedRow)
+#         print(Table_name)
 
-        print(selectedRow)
+#         print(selectedRow)
         #self.ui_ProfilePage().filltable(columHeaders, selectedRow, Table_name)
         return selectedRow, columHeaders, Table_name
 
@@ -322,11 +324,11 @@ class Ui_MainWindow(QtWidgets.QWidget):
         Gets the text from the search bar and checks if it is a valid entry. If so
         then pass it to the search table method
         """
-        print("CLICKED")
+#         print("CLICKED")
         try:
             key = self.searchBar.displayText()
             if(self.db.is_valid_string(key)):
-                print(key)
+#                 print(key)
                 self.search_table(key)
         except:
             QtWidgets.QMessageBox.critical(self, 'Invalid Text',
@@ -338,8 +340,12 @@ class Ui_MainWindow(QtWidgets.QWidget):
         Searches the database for the search key inputed
         """
         rows = self.db.search_table(search_key, self.curr_table)
-        print(rows)
+#         print(rows)
         return rows
+    
+    def log_out(self):
+        print("Logging out\nEmitting signal")
+        self.log_out_signal.emit()
 
 if __name__ == '__main__':
     data_base_file = 'test.db'
