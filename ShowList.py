@@ -248,7 +248,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         """
         Clears the current table and verifies if the users wants to clear it
         """
-        choice  = QtWidgets.QMessageBox.question(self, 'Confimation',
+        choice  = QtWidgets.QMessageBox.question(self, 'Confirmation',
                                     "Are you sure you want to clear the current table?",
                                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if choice == QtWidgets.QMessageBox.Yes:
@@ -259,7 +259,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         """
         Delete the current table and verifies if the users wants to delete it
         """
-        choice  = QtWidgets.QMessageBox.question(self, 'Confimation',
+        choice  = QtWidgets.QMessageBox.question(self, 'Confirmation',
                                     "Are you sure you want to delete the current table? \nTHIS OPERATION IS NOT RECOVERABLE",
                                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if choice == QtWidgets.QMessageBox.Yes:
