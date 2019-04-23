@@ -18,6 +18,7 @@ import sys
 from DatabaseManager import DatabaseManager
 from file_browser import file_browser
 from csv_importer import csv_importer_popup
+from UI_ProfilePage import UI_ProfilePage
 
 class Ui_MainWindow(QtWidgets.QWidget):
     def __init__(self,db_file,protected_table_prefix):
@@ -313,7 +314,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
 
         print(selectedRow)
         #self.ui_ProfilePage().filltable(columHeaders, selectedRow, Table_name)
-        return selectedRow, columHeaders, Table_name
+        temp = UI_ProfilePage()
 
         #Here you would call a method to show the profile page
 
