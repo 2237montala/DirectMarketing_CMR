@@ -18,7 +18,7 @@ class UI_ProfilePage(QWidget):
 
     CheckEdit = True
     header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:","Comments of Property"]
-    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"the previos comments"]
+    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"comments"]
 
     def __init__(self):
         super().__init__()
@@ -307,13 +307,11 @@ class UI_ProfilePage(QWidget):
         count =0
         self.header = headers
         self.information = info
-        print("row count:")
-        print(self.house_info.rowCount()-1)
+
         while count != self.house_info.rowCount()-1:
             count2 = len(headers)
             for x in range(0, count2):
-                print(self.house_info.verticalHeaderItem(count).text())
-                print(count)
+
                 if headers[x] == self.house_info.verticalHeaderItem(count).text():
                    item = QtWidgets.QTableWidgetItem(info[x])
                    print(x)
@@ -322,12 +320,18 @@ class UI_ProfilePage(QWidget):
 
                    self.house_info.setItem(count,0, item)
                    count=count+1
+<<<<<<< HEAD:UI_ProfilePage.py
                    print("table")
                    print(count)
 
+=======
+
+                
+>>>>>>> a51b5d2b03ada0ade0214a4949b61813cec27daa:ui_ProfilePage.py
                    break
+
                 elif headers[x]=="Interested":
-                    print("status")
+
                     if info[x] == "0":
                         self.Very_interested.setChecked(True)
                     elif info[x] == "1":
@@ -335,8 +339,7 @@ class UI_ProfilePage(QWidget):
                     elif info[x] == "2":
                         self.Not_interested.setChecked(True)
                     count =count+1
-                    print("Interested")
-                    print(count)
+
                 elif headers[x] == "Status":
 
                     if info[x] == "0":
@@ -346,8 +349,7 @@ class UI_ProfilePage(QWidget):
                     elif info[x] == "2":
                         self.Button_responded.setChecked(True)
                     count =count+1
-                    print("status")
-                    print(count)
+
                 elif headers[x]== self.AdditionalInfo_txt.toPlainText():
                     self.AdditionalInfo_txt.setPlainText(info[x])
                 #elif x+1 == count2:
@@ -414,16 +416,67 @@ class UI_ProfilePage(QWidget):
         print("hello")
 
         count =0
-        while count != self.house_info.rowCount():
+        while count != self.house_info.rowCount()-1:
+            print("this worked lol22222")
+            print(count)
             count2 = len(self.header)
             for x in range(0, count2):
+                print("this is count")
+                print(count)
+                print(x)
+                print("this worked lol11111111")
                 if self.header[x] == self.house_info.verticalHeaderItem(count).text():
                    self.information[x] = self.house_info.item(count,0).text()
                    count=count+1
+                   print("this worked lol333333")
                    break
-                elif x+1 == count2:
-                    count = count+1
-                    break
+                
+               
+
+                elif headers[x]=="Interested":
+                    if self.Very_interested.isChecked:
+                        info[x] = "0"
+                        count =count+1
+                        print("this worked lol11111911")
+                        break
+                    elif self.Interested.isChecked:
+                        info[x] = "1"
+                        count =count+1
+                        break                        
+                    elif self.Not_interested.sisChecked:
+                        info[x] = "2"
+                        count =count+1
+                        break
+
+
+                elif headers[x] == "Status":
+                    print("this worked lol444444444")
+                    if self.Respond_person.isChecked:
+                        print("this worked lol")
+                        info[x] = "0"
+                        count =count+1
+                                   
+                    elif self.Button_NOresponse.isChecked:
+                        info[x] = "1"    
+                        count =count+1
+                                           
+                    elif self.Button_responded.isChecked:
+                        info[x] = "2"
+                        count =count+1
+                                            
+                elif True:
+                    print("this worked lol11111181")
+
+                #elif headers[x]== self.AdditionalInfo_txt.():
+                 #   self.AdditionalInfo_txt.setPlainText(info[x])
+                  #  count = count+1
+                #elif x+1 == count2:
+                 #   print("this worked lol5555555")
+                  #  count = count+1
+                   # break               
+                
+               
+               
 
         count =0
         while count != self.owner_info.rowCount():
@@ -436,6 +489,7 @@ class UI_ProfilePage(QWidget):
                 elif x+1 == count2:
                     count = count+1
                     break
+            
         self.Very_interested.setEnabled(False)
         self.Interested.setEnabled(False)
         self.Not_interested.setEnabled(False)
