@@ -320,14 +320,8 @@ class UI_ProfilePage(QWidget):
 
                    self.house_info.setItem(count,0, item)
                    count=count+1
-<<<<<<< HEAD:UI_ProfilePage.py
                    print("table")
                    print(count)
-
-=======
-
-                
->>>>>>> a51b5d2b03ada0ade0214a4949b61813cec27daa:ui_ProfilePage.py
                    break
 
                 elif headers[x]=="Interested":
