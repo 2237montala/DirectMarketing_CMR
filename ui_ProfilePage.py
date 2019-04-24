@@ -8,24 +8,21 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 from distutils.log import info
-help(QtCore.Qt)
 from PyQt5.Qt import QWidget, QApplication, QAbstractItemView, QTableWidgetItem
 from _sqlite3 import Row
 
 import webbrowser
 #from ShowList import ShowList
 
-class Ui_Form(QWidget):
+class UI_ProfilePage(QWidget):
 
     CheckEdit = True
-    header = ["Adress:", "City:", "Zip Code:", "State:","Status"]
-    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","1"]
+    header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:","Comments of Property"]
+    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"comments"]
 
     def __init__(self):
         super().__init__()
         self.setupUi()
-
-
 
     def setupUi(self):
         self.setObjectName("Form")
@@ -164,8 +161,10 @@ class Ui_Form(QWidget):
         self.label_8.setFont(font)
         self.label_8.setObjectName("label_8")
         self.AdditionalInfo_txt = QtWidgets.QPlainTextEdit(self)
+        self.AdditionalInfo_txt.setReadOnly(True)
         self.AdditionalInfo_txt.setGeometry(QtCore.QRect(40, 570, 431, 261))
         self.AdditionalInfo_txt.setObjectName("AdditionalInfo_txt")
+        self.AdditionalInfo_txt.setPlainText("Comments of Property")
         self.label_9 = QtWidgets.QLabel(self)
         self.label_9.setGeometry(QtCore.QRect(490, 540, 171, 21))
         font = QtGui.QFont()
@@ -305,27 +304,28 @@ class Ui_Form(QWidget):
         #Selected_info = self.sl.table_item_clicked().selectedRow
         #Table_Headers = self.sl.table_item_clicked().columHeaders
 
-
         count =0
         self.header = headers
         self.information = info
 
-        while count != self.house_info.rowCount():
+        while count != self.house_info.rowCount()-1:
             count2 = len(headers)
             for x in range(0, count2):
+
                 if headers[x] == self.house_info.verticalHeaderItem(count).text():
                    item = QtWidgets.QTableWidgetItem(info[x])
-
+                   print(x)
                    if self.CheckEdit:
                        item.setFlags(QtCore.Qt.ItemIsEditable)
 
                    self.house_info.setItem(count,0, item)
                    count=count+1
-                   
-                   
+                   print("table")
+                   print(count)
                    break
+
                 elif headers[x]=="Interested":
-                    print("status")
+
                     if info[x] == "0":
                         self.Very_interested.setChecked(True)
                     elif info[x] == "1":
@@ -333,25 +333,31 @@ class Ui_Form(QWidget):
                     elif info[x] == "2":
                         self.Not_interested.setChecked(True)
                     count =count+1
+
                 elif headers[x] == "Status":
-                    print("interested")
+
                     if info[x] == "0":
                         self.Respond_person.setChecked(True)
                     elif info[x] == "1":
-                        self.Button_NOresponse.setChecked(True)       
+                        self.Button_NOresponse.setChecked(True)
                     elif info[x] == "2":
                         self.Button_responded.setChecked(True)
                     count =count+1
-                elif x+1 == count2:
-                    count = count+1
-                    break
-                
 
-        
+                elif headers[x]== self.AdditionalInfo_txt.toPlainText():
+                    self.AdditionalInfo_txt.setPlainText(info[x])
+                #elif x+1 == count2:
+                 #   count = count+1
+                  #  print("lastif")
+                   # print(count)
+                    #break
 
 
- 
-        
+
+
+
+
+
             '''
             count=count+1
 
@@ -361,7 +367,7 @@ class Ui_Form(QWidget):
             count=count+1
             '''
         count =0
-        while count != self.owner_info.rowCount():
+        while count != self.owner_info.rowCount()-1:
             count2 = len(headers)
             for x in range(0, count2):
                 if headers[x] == self.owner_info.verticalHeaderItem(count).text():
@@ -396,6 +402,7 @@ class Ui_Form(QWidget):
         self.Respond_person.setEnabled(True)
         self.Button_NOresponse.setEnabled(True)
         self.Button_responded.setEnabled(True)
+        self.AdditionalInfo_txt.setReadOnly(False)
 
 
     def Handle_Save (self):
@@ -403,16 +410,67 @@ class Ui_Form(QWidget):
         print("hello")
 
         count =0
-        while count != self.house_info.rowCount():
+        while count != self.house_info.rowCount()-1:
+            print("this worked lol22222")
+            print(count)
             count2 = len(self.header)
             for x in range(0, count2):
+                print("this is count")
+                print(count)
+                print(x)
+                print("this worked lol11111111")
                 if self.header[x] == self.house_info.verticalHeaderItem(count).text():
                    self.information[x] = self.house_info.item(count,0).text()
                    count=count+1
+                   print("this worked lol333333")
                    break
-                elif x+1 == count2:
-                    count = count+1
-                    break
+                
+               
+
+                elif headers[x]=="Interested":
+                    if self.Very_interested.isChecked:
+                        info[x] = "0"
+                        count =count+1
+                        print("this worked lol11111911")
+                        break
+                    elif self.Interested.isChecked:
+                        info[x] = "1"
+                        count =count+1
+                        break                        
+                    elif self.Not_interested.sisChecked:
+                        info[x] = "2"
+                        count =count+1
+                        break
+
+
+                elif headers[x] == "Status":
+                    print("this worked lol444444444")
+                    if self.Respond_person.isChecked:
+                        print("this worked lol")
+                        info[x] = "0"
+                        count =count+1
+                                   
+                    elif self.Button_NOresponse.isChecked:
+                        info[x] = "1"    
+                        count =count+1
+                                           
+                    elif self.Button_responded.isChecked:
+                        info[x] = "2"
+                        count =count+1
+                                            
+                elif True:
+                    print("this worked lol11111181")
+
+                #elif headers[x]== self.AdditionalInfo_txt.():
+                 #   self.AdditionalInfo_txt.setPlainText(info[x])
+                  #  count = count+1
+                #elif x+1 == count2:
+                 #   print("this worked lol5555555")
+                  #  count = count+1
+                   # break               
+                
+               
+               
 
         count =0
         while count != self.owner_info.rowCount():
@@ -425,12 +483,14 @@ class Ui_Form(QWidget):
                 elif x+1 == count2:
                     count = count+1
                     break
+            
         self.Very_interested.setEnabled(False)
         self.Interested.setEnabled(False)
         self.Not_interested.setEnabled(False)
         self.Respond_person.setEnabled(False)
         self.Button_NOresponse.setEnabled(False)
         self.Button_responded.setEnabled(False)
+        self.AdditionalInfo_txt.setReadOnly(True)
         self.filltable(self.header, self.information)
 
         '''
@@ -483,6 +543,6 @@ if __name__ == '__main__':                      #
     import sys
 
     app = QApplication(sys.argv)
-    window = Ui_Form()
+    window = UI_ProfilePage()
     window.show()
     sys.exit(app.exec_())

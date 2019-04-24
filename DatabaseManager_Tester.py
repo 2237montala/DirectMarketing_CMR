@@ -7,7 +7,7 @@ from Ingestor import Ingestor
 
 # SETTING IT EQUAL TO ':memory:' WILL HAVE IT RUN ON RAM AND NO SQLITE FILE WILL BE MADE.
 sqlite_file = 'test.db'
-db = DatabaseManager(sqlite_file)
+db = DatabaseManager(sqlite_file,'__ADMIN__')
 
 CLEAR_ON_COMPLETION = True
 
@@ -47,8 +47,11 @@ print(db.get_headers(new_table))
 print('\nPrinting all table entries')
 print(db.get_table(new_table))
 
-print("\nPrinting the names of all tables in the database")
+print("\nPrinting the names of non-protected tables in the database")
 print(db.get_table_names())
+
+print("\nPrinting the names of all tables in the database")
+print(db.get_table_names(exclude_protected=False))
 
 print("\nGet row with address %s (columns)" % ingestor.getRowAt(2)[0])
 print(db.get_row_at(new_table,column_name=searchCritera[0],column_value=ingestor.getRowAt(2)[0]))

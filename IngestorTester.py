@@ -5,6 +5,33 @@
 #https://www.geeksforgeeks.org/working-csv-files-python/
 
 from Ingestor import Ingestor
+import unittest
+
+class IngestorTest(unittest.TestCase):
+    def setUp(self):
+        filename = 'Test_Files/DatabaseManagerTest_15.csv'
+        self.ingestor = Ingestor(filename)
+        self.ingestor.readCSV()
+
+
+    def test_headers(self):
+        headerList = ["Street Address","owner's first name","last_name","Long","email","phone Number","Loan Amount","Lat"]
+        #self.assertEqual(self.ingestor.getCSVHeaders(),headerList)
+
+    def test_search_headers(self):
+        searchCritera = ["last_name","Long","phone Number"]
+        expectedRetun = [["last_name",2],["Long",3],["phone_Number",5]]
+
+        self.assertEqual(self.ingestor.getHeaderIndex(searchCritera,self.ingestor.getCSVHeaders()),expectedRetun)
+
+    def test_get_row(self):
+        expectedRetun = ["8 Hoard Court","Samuele","Gulliver","-64.1305924","sgulliver0@yahoo.co.jp","+54 (656) 804-6029","$14895.21","-31.4325479"]
+        self.assertEqual(self.ingestor.getRowAt(0),expectedRetun)
+
+    def test_switch_files(self):
+        self.assertFalse(self.ingestor.updateFileLoc(""))
+        self.assertTrue(self.ingestor.updateFileLoc("Test_Files/DatabaseManagerTest_1000.csv"))
+
 
 def main():
     filename = 'Test_Files/DatabaseManagerTest_15.csv'
@@ -44,5 +71,7 @@ def main():
 
     print("\nUpdating file to a csv with location Test_Files/DatabaseManagerTest_1000.csv. Expected:true")
     print(ingestor.updateFileLoc("Test_Files/DatabaseManagerTest_1000.csv"))
-#Run main method
-main()
+
+
+if __name__ == '__main__':
+    unittest.main()
