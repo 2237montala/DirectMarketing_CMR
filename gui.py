@@ -28,13 +28,13 @@ class gui(QtWidgets.QMainWindow):
 
         self.setMenuBar(self.main_window.setup_menu_bar())
         self.setCentralWidget(self.main_window)
-        
+
     def log_out(self):
         ## Setting the login page to be the main window
         self.main_window = Ui_LogIn_Page(self.data_base_file, protected_table_prefix)
         self.main_window.valid_login_signal.connect(self.switchMainWidget)
         self.setCentralWidget(self.main_window)
-        
+
 if __name__ == "__main__":
     data_base_file = 'test.db'
 
