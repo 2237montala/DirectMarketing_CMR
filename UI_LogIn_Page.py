@@ -133,23 +133,15 @@ class Ui_LogIn_Page(QtWidgets.QWidget):
 
     def Handle_CreateAccount(self):
         self.createAccountWidget = Ui_CreateAccount()
-<<<<<<< HEAD
-<<<<<<< HEAD
+
         print('yes')
         self.createAccountWidget.setup()
         print('working')
         self.window.show()
         print("hello tester")
-=======
         self.createAccountWidget.create_account_done_signal.connect(self.create_account_closed)
         self.createAccountWidget.exec_()
         #self.hide()
->>>>>>> ae4f389d26c5c84e937621ef50f2fa500451d09d
-=======
-        self.createAccountWidget.create_account_done_signal.connect(self.create_account_closed)
-        self.createAccountWidget.exec_()
-        #self.hide()
->>>>>>> ae4f389d26c5c84e937621ef50f2fa500451d09d
 
     def Handle_LogIn(self):
         print("button pressed")

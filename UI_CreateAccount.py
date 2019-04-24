@@ -144,8 +144,6 @@ class Ui_CreateAccount(QtWidgets.QDialog):
         print('Getting text box values')
         UserInfo=([0]*4)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         UserInfo[0] = self.UserName_TXTfield_CA.text()
         UserInfo[1] = self.Password_TXTfield_CA.text()
         UserInfo[2] = self.FirstName_TXTfield.text()
@@ -258,14 +256,14 @@ class Ui_CreateAccount(QtWidgets.QDialog):
 # "p, li { white-space: pre-wrap; }\n"
 # "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
 # "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
-        self.label_2.setText(_translate("Form", "User Name:"))
+#         self.label_2.setText(_translate("Form", "User Name:"))
 #         self.Password_TXTfield_CA.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 # "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 # "p, li { white-space: pre-wrap; }\n"
 # "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
 # "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
-        self.label_4.setText(_translate("Form", "Last Name:"))
-        self.label_5.setText(_translate("Form", "First Name:"))
+#         self.label_4.setText(_translate("Form", "Last Name:"))
+#         self.label_5.setText(_translate("Form", "First Name:"))
 #         self.FirstName_TXTfield.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 # "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 # "p, li { white-space: pre-wrap; }\n"
@@ -277,17 +275,8 @@ class Ui_CreateAccount(QtWidgets.QDialog):
 # "</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
 # "<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>"))
 #===============================================================================
-=======
-=======
->>>>>>> ae4f389d26c5c84e937621ef50f2fa500451d09d
-        UserInfo[0] = self.user_name_tf.text()
-        UserInfo[1] = self.password_tf.text()
-        UserInfo[2] = self.first_name_tf.text()
-        UserInfo[3] = self.last_name_tf.text()
-<<<<<<< HEAD
->>>>>>> ae4f389d26c5c84e937621ef50f2fa500451d09d
-=======
->>>>>>> ae4f389d26c5c84e937621ef50f2fa500451d09d
+
+
 
         emptyTextBoxes = False
         for str in UserInfo:
