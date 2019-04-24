@@ -57,10 +57,16 @@ class DatabaseManager:
         Creates a table with a name but takes in a list of column header
         Uses the create_table and add column method but with a loop
         """
-        self.create_table(table_name,column_name_list[0],column_type)
-        for i in range(1,len(column_name_list)):
-            #column_name = column_name.replace("'","\'")
-            self.add_column(table_name,column_name_list[i],'string')
+        try:
+            self.create_table(table_name,column_name_list[0],column_type)
+            for i in range(1,len(column_name_list)):
+                #column_name = column_name.replace("'","\'")
+                self.add_column(table_name,column_name_list[i],'string')
+            return True
+        except Exception as er:
+            #General error message
+            print('Error message:', er.args[0])
+            return False
 
 
     def add_column(self, table_name,column_name, column_type):
@@ -94,14 +100,18 @@ class DatabaseManager:
         Adds a rows to the table with specified data. It first adds the value
         related to the first column, then adds the rest by appending to it
         """
-
-        #Crashes if there is a comma in the field
-        with self.conn:
-            self.cursor.execute("INSERT OR IGNORE INTO %s (%s) VALUES(?)" % (table_name,'"{}"'.format(column_arr[0])), (row_arr[0],))
-            for i in range(1,len(column_arr)):
-                self.cursor.execute("UPDATE %s SET %s=? WHERE %s=?" % (table_name, '"{}"'.format(column_arr[i]),column_arr[0]) , (row_arr[i], row_arr[0],))
-                #self.cursor.execute("UPDATE %s SET ?=? WHERE ?=?" % (table_name) , (column_arr[i],row_arr[i], column_arr[0],row_arr[0],))
-
+        try:
+            #Crashes if there is a comma in the field
+            with self.conn:
+                self.cursor.execute("INSERT OR IGNORE INTO %s (%s) VALUES(?)" % (table_name,'"{}"'.format(column_arr[0])), (row_arr[0],))
+                for i in range(1,len(column_arr)):
+                    self.cursor.execute("UPDATE %s SET %s=? WHERE %s=?" % (table_name, '"{}"'.format(column_arr[i]),column_arr[0]) , (row_arr[i], row_arr[0],))
+                    #self.cursor.execute("UPDATE %s SET ?=? WHERE ?=?" % (table_name) , (column_arr[i],row_arr[i], column_arr[0],row_arr[0],))
+            return True
+        except Exception as er:
+            #General error message
+            print('Error message:', er.args[0])
+            return False
 
     def clear_table(self, table_name):
         """
