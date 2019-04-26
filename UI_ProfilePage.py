@@ -10,6 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, Qt
 from distutils.log import info
 from PyQt5.Qt import QWidget, QApplication, QAbstractItemView, QTableWidgetItem
 from _sqlite3 import Row
+from sys import platform
 
 import webbrowser
 #from ShowList import ShowList
@@ -496,8 +497,23 @@ class UI_ProfilePage(QWidget):
         '''
         here the method would call the data base to save any changes.
         '''
+    def searchOS (self):
+        print('this is after search')
+        from sys import platform
+        if platform == "Linux" or platform == "Linux2":
+            a =1
+        elif platform == "Darwin":
+            a =2
+        elif platform == "win32":
+            a = 3
+            print('windows')
+        else:
+            print("did not work")
+        return a
 
     def searchAdressZillow (self):
+
+            
         Adress="/"
         count = len(self.header)
         for x in range(0, count):
@@ -527,6 +543,12 @@ class UI_ProfilePage(QWidget):
         print(Adress)
         url = Adress
         print(url)
+        os = UI_ProfilePage()
+        system = os.searchOS()  
+        webbrowser.open(url, new=1, autoraise=True)
+        
+            #webbrowser.get('windows-default').open(url) 
+        # Windows...
         # for MacOS
         #chrome_path = 'open -a /Applications/Google\ Chrome.app %s'
 
@@ -535,7 +557,7 @@ class UI_ProfilePage(QWidget):
 
         # for Windows
         chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
-        webbrowser.get(chrome_path).open(url)
+        #webbrowser.get(chrome_path).open(url)
     #def searchAdressOtherPage(self):
         #fjf
 
