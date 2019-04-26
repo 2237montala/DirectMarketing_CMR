@@ -22,6 +22,7 @@ from UI_ProfilePage import UI_ProfilePage
 
 class Ui_MainWindow(QtWidgets.QWidget):
     log_out_signal = QtCore.pyqtSignal()
+    goto_profile_signal = QtCore.pyqtSignal()
     
     def __init__(self,db_file,protected_table_prefix):
         super().__init__()
@@ -316,7 +317,12 @@ class Ui_MainWindow(QtWidgets.QWidget):
 
 #         print(selectedRow)
         #self.ui_ProfilePage().filltable(columHeaders, selectedRow, Table_name)
-        temp = UI_ProfilePage()
+        self.UI_P = UI_ProfilePage()
+        self.UI_P = setupUi()
+#         self.csv_importer.importDoneSignal.connect(self.import_closed)
+#         self.csv_importer.run_popup(file)
+#         #Runs to the window
+#         self.csv_importer.exec_()
 
         #Here you would call a method to show the profile page
 
@@ -331,6 +337,8 @@ class Ui_MainWindow(QtWidgets.QWidget):
             if(self.db.is_valid_string(key)):
 #                 print(key)
                 self.search_table(key)
+            elif (key == ""):
+                self.update_menu_action()
         except:
             QtWidgets.QMessageBox.critical(self, 'Invalid Text',
                 "Search values can only have alphanumeric values",
