@@ -23,12 +23,13 @@ from UI_ProfilePage import UI_ProfilePage
 class Ui_MainWindow(QtWidgets.QWidget):
     log_out_signal = QtCore.pyqtSignal()
     goto_profile_signal = QtCore.pyqtSignal()
-    
+
     def __init__(self,db_file,protected_table_prefix):
         super().__init__()
         self.protected_table_prefix = protected_table_prefix
         self.db = DatabaseManager(db_file,self.protected_table_prefix)
         self.tables_in_db = self.db.get_table_names()
+        self.db_file_loc = db_file
         self.curr_table = ''
         if(len(self.tables_in_db) > 0):
             self.curr_table = self.tables_in_db[0]
@@ -186,7 +187,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         file = file_browser("File Browser").openFileNameDialog()
         if(file != None):
 
-            self.csv_importer = csv_importer_popup("CSV Importer",'test.db',self.tables_in_db,self.protected_table_prefix)
+            self.csv_importer = csv_importer_popup("CSV Importer",self.db_file_loc,self.tables_in_db,self.protected_table_prefix)
             #This links the import signal to the import close window
             self.csv_importer.importDoneSignal.connect(self.import_closed)
             self.csv_importer.run_popup(file)
@@ -350,15 +351,15 @@ class Ui_MainWindow(QtWidgets.QWidget):
         """
         rows = self.db.search_table(search_key, self.curr_table)
         self.update_table(rows, self.db.get_headers(self.curr_table))
-        
-        
-    
+
+
+
     def log_out(self):
         print("Logging out\nEmitting signal")
         self.log_out_signal.emit()
 
 if __name__ == '__main__':
-    data_base_file = 'test.db'
+    data_base_file = 'programData.db'
     app = QtWidgets.QApplication(sys.argv)
     mainWindow = QtWidgets.QMainWindow()
     mainWindow.resize(1600 , 900+50)

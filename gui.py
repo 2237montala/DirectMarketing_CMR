@@ -36,7 +36,7 @@ class gui(QtWidgets.QMainWindow):
         self.setCentralWidget(self.main_window)
 
 if __name__ == "__main__":
-    data_base_file = 'test.db'
+    data_base_file = 'programData.db'
 
     app = QtWidgets.QApplication(sys.argv)
     gui = gui(1600,900,data_base_file)
