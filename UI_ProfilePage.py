@@ -425,8 +425,8 @@ class UI_ProfilePage(QWidget):
                    count=count+1
                    print("this worked lol333333")
                    break
-                
-               
+
+
 
                 elif headers[x]=="Interested":
                     if self.Very_interested.isChecked:
@@ -437,7 +437,7 @@ class UI_ProfilePage(QWidget):
                     elif self.Interested.isChecked:
                         info[x] = "1"
                         count =count+1
-                        break                        
+                        break
                     elif self.Not_interested.sisChecked:
                         info[x] = "2"
                         count =count+1
@@ -450,15 +450,15 @@ class UI_ProfilePage(QWidget):
                         print("this worked lol")
                         info[x] = "0"
                         count =count+1
-                                   
+
                     elif self.Button_NOresponse.isChecked:
-                        info[x] = "1"    
+                        info[x] = "1"
                         count =count+1
-                                           
+
                     elif self.Button_responded.isChecked:
                         info[x] = "2"
                         count =count+1
-                                            
+
                 elif True:
                     print("this worked lol11111181")
 
@@ -468,10 +468,10 @@ class UI_ProfilePage(QWidget):
                 #elif x+1 == count2:
                  #   print("this worked lol5555555")
                   #  count = count+1
-                   # break               
-                
-               
-               
+                   # break
+
+
+
 
         count =0
         while count != self.owner_info.rowCount():
@@ -484,7 +484,7 @@ class UI_ProfilePage(QWidget):
                 elif x+1 == count2:
                     count = count+1
                     break
-            
+
         self.Very_interested.setEnabled(False)
         self.Interested.setEnabled(False)
         self.Not_interested.setEnabled(False)
@@ -498,22 +498,27 @@ class UI_ProfilePage(QWidget):
         here the method would call the data base to save any changes.
         '''
     def searchOS (self):
+        """
+        This method uses the python platform package to identify what type of
+        operating system the user is using.
+        """
         print('this is after search')
         from sys import platform
-        if platform == "Linux" or platform == "Linux2":
+        if platform == "linux" or platform == "linux2":
             a =1
-        elif platform == "Darwin":
+        elif platform == "Darwin" or platform == "darwin":
             a =2
         elif platform == "win32":
             a = 3
-            print('windows')
         else:
-            print("did not work")
+            a = -1
         return a
 
     def searchAdressZillow (self):
-
-            
+        """
+        Looks up the property on zillow.com. It takes the street address, zip, 
+        and county and forms a url for zillow and opens the web page
+        """
         Adress="/"
         count = len(self.header)
         for x in range(0, count):
@@ -535,7 +540,6 @@ class UI_ProfilePage(QWidget):
         for x in range(0, count):
             if self.header[x] == "State:":
                 Adress = Adress+"-"+self.information[x]
-            print('lol')
 
 
         print(Adress)
@@ -544,22 +548,8 @@ class UI_ProfilePage(QWidget):
         url = Adress
         print(url)
         os = UI_ProfilePage()
-        system = os.searchOS()  
+        system = os.searchOS()
         webbrowser.open(url, new=1, autoraise=True)
-        
-            #webbrowser.get('windows-default').open(url) 
-        # Windows...
-        # for MacOS
-        #chrome_path = 'open -a /Applications/Google\ Chrome.app %s'
-
-        # Linux
-        # chrome_path = '/usr/bin/google-chrome %s'
-
-        # for Windows
-        chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
-        #webbrowser.get(chrome_path).open(url)
-    #def searchAdressOtherPage(self):
-        #fjf
 
 if __name__ == '__main__':                      #
     import sys
