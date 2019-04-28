@@ -18,8 +18,8 @@ import webbrowser
 class Ui_Form(QWidget):
 
     CheckEdit = True
-    header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:","Comments of Property"]
-    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"comments"]
+    header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:"]
+    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10']
 
     def __init__(self):
         super().__init__()
@@ -415,69 +415,58 @@ class Ui_Form(QWidget):
 
         count =0
         while count != self.house_info.rowCount()-1:
-            print("this worked lol22222")
-            print(count)
             count2 = len(self.header)
+            print("lolololo11111111111")
             for x in range(0, count2):
-                print("this is count")
-                print(count)
-                print(x)
-                print("this worked lol11111111")
                 if self.header[x] == self.house_info.verticalHeaderItem(count).text():
                    self.information[x] = self.house_info.item(count,0).text()
                    count=count+1
-                   print("this worked lol333333")
                    break
-                
                
-
-                elif headers[x]=="Interested":
-                    if self.Very_interested.isChecked:
-                        info[x] = "0"
+                elif self.header[x]=="Interested":
+                    if self.Very_interested.isChecked():
+                        self.information[x] = "0"
                         count =count+1
-                        print("this worked lol11111911")
-                        break
-                    elif self.Interested.isChecked:
-                        info[x] = "1"
+                    
+                    elif self.Interested.isChecked():
+                        self.information[x] = "1"
                         count =count+1
-                        break                        
-                    elif self.Not_interested.sisChecked:
-                        info[x] = "2"
+                                                
+                    elif self.Not_interested.sisChecked():
+                        self.information[x] = "2"
                         count =count+1
-                        break
+                    break 
 
 
-                elif headers[x] == "Status":
+                elif self.header[x] == "Status":
                     print("this worked lol444444444")
-                    if self.Respond_person.isChecked:
-                        print("this worked lol")
-                        info[x] = "0"
+                    if self.Respond_person.isChecked():
+                        self.information[x] = "0"
                         count =count+1
                                    
-                    elif self.Button_NOresponse.isChecked:
-                        info[x] = "1"    
+                    elif self.Button_NOresponse.isChecked():
+                        self.information[x] = "1"    
                         count =count+1
                                            
-                    elif self.Button_responded.isChecked:
-                        info[x] = "2"
-                        count =count+1
-                                            
-                elif True:
-                    print("this worked lol11111181")
+                    elif self.Button_responded.isChecked():
+                        self.information[x] = "2"
+                        count =count+1                
+                    break
 
                 #elif headers[x]== self.AdditionalInfo_txt.():
                  #   self.AdditionalInfo_txt.setPlainText(info[x])
                   #  count = count+1
-                #elif x+1 == count2:
-                 #   print("this worked lol5555555")
-                  #  count = count+1
-                   # break               
+                elif x+1 == count2:
+                    print("this worked lol5555555")
+                    count = count+1
+                    break               
                 
                
                
 
         count =0
         while count != self.owner_info.rowCount():
+            print("alberto its here")
             count2 = len(self.header)
             for x in range(0, count2):
                 if self.header[x] == self.owner_info.verticalHeaderItem(count).text():
