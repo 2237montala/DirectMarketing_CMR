@@ -57,10 +57,16 @@ class DatabaseManager:
         Creates a table with a name but takes in a list of column header
         Uses the create_table and add column method but with a loop
         """
-        self.create_table(table_name,column_name_list[0],column_type)
-        for i in range(1,len(column_name_list)):
-            #column_name = column_name.replace("'","\'")
-            self.add_column(table_name,column_name_list[i],'string')
+        try:
+            self.create_table(table_name,column_name_list[0],column_type)
+            for i in range(1,len(column_name_list)):
+                #column_name = column_name.replace("'","\'")
+                self.add_column(table_name,column_name_list[i],'string')
+            return True
+        except Exception as er:
+            #General error message
+            print('Error message:', er.args[0])
+            return False
 
 
     def add_column(self, table_name,column_name, column_type):
@@ -94,14 +100,18 @@ class DatabaseManager:
         Adds a rows to the table with specified data. It first adds the value
         related to the first column, then adds the rest by appending to it
         """
-
-        #Crashes if there is a comma in the field
-        with self.conn:
-            self.cursor.execute("INSERT OR IGNORE INTO %s (%s) VALUES(?)" % (table_name,'"{}"'.format(column_arr[0])), (row_arr[0],))
-            for i in range(1,len(column_arr)):
-                self.cursor.execute("UPDATE %s SET %s=? WHERE %s=?" % (table_name, '"{}"'.format(column_arr[i]),column_arr[0]) , (row_arr[i], row_arr[0],))
-                #self.cursor.execute("UPDATE %s SET ?=? WHERE ?=?" % (table_name) , (column_arr[i],row_arr[i], column_arr[0],row_arr[0],))
-
+        try:
+            #Crashes if there is a comma in the field
+            with self.conn:
+                self.cursor.execute("INSERT OR IGNORE INTO %s (%s) VALUES(?)" % (table_name,'"{}"'.format(column_arr[0])), (row_arr[0],))
+                for i in range(1,len(column_arr)):
+                    self.cursor.execute("UPDATE %s SET %s=? WHERE %s=?" % (table_name, '"{}"'.format(column_arr[i]),column_arr[0]) , (row_arr[i], row_arr[0],))
+                    #self.cursor.execute("UPDATE %s SET ?=? WHERE ?=?" % (table_name) , (column_arr[i],row_arr[i], column_arr[0],row_arr[0],))
+            return True
+        except Exception as er:
+            #General error message
+            print('Error message:', er.args[0])
+            return False
 
     def clear_table(self, table_name):
         """
@@ -217,16 +227,18 @@ class DatabaseManager:
         else:
             raise Exception('Illegally formatted string')
 
-    def update_row_at(self, table_name, column_name = None, column_value = None, primary_key = None, new_row = None):
+    def update_row_at(self, table_name, column_name = None, column_value = None, primary_key = -1, new_row = None):
         column_arr =  self.get_headers(table_name)
-        if (primary_key != None):
+        if (primary_key != -1):
             print("PK found")
+            print(primary_key)
             old_row = self.get_row_at(table_name, row_id = primary_key)
+            print(old_row)
             if (len(old_row) == len(new_row)):
                 try:
                     with self.conn:
                         for i in range(0, len(new_row)):
-                            self.cursor.execute("UPDATE %s SET %s='%s' WHERE _rowid_ = ?" % (table_name, column_arr[i], new_row[i]), (primary_key,))
+                            self.cursor.execute("UPDATE %s SET %s='%s' WHERE _rowid_ = ?" % (table_name, '"{}"'.format(column_arr[i]), new_row[i]), (primary_key,))
                         return True
                 except Exception as er:
                     #General error message
@@ -274,7 +286,19 @@ class DatabaseManager:
                         print("No Row Found at %s" % (header))
                     else:
                         for r in row:
-                            rows.append(r)
+#                             print(r)
+#                             print('r')
+                            if len(rows) == 0:
+                                rows.append(r)
+                            for i in rows:
+#                                 print(i)
+#                                 print('i')
+                                if (r == i):
+#                                     print('i matches r')
+                                    break
+                                else:
+                                    rows.append(r)
+                                    break
 #                         print(rows)
                 return rows
         except Exception as e:

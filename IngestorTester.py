@@ -5,44 +5,48 @@
 #https://www.geeksforgeeks.org/working-csv-files-python/
 
 from Ingestor import Ingestor
+import unittest
 
-def main():
-    filename = 'Test_Files/DatabaseManagerTest_15.csv'
-    ingestor = Ingestor(filename)
-    ingestor.readCSV()
+class IngestorTest(unittest.TestCase):
+    def setUp(self):
+        filename = 'Test_Files/DatabaseManagerTest_15.csv'
+        self.ingestor = Ingestor(filename)
+        self.ingestor.readCSV()
 
-    print("Header of csv file")
-    print(ingestor.getCSVHeaders())
-    tempHeaders = ingestor.getCSVHeaders()
-    searchCritera = [tempHeaders[2],tempHeaders[3],tempHeaders[5]]
 
-    searchCritera = ingestor.getHeaderIndex(searchCritera,tempHeaders)
-    print("\nDictionary of search critera and their indexes in the csv")
-    print(searchCritera)
+    def test_headers(self):
+        headerList = ["Street Address","owner's first name","last_name","Long","email","phone Number","Loan Amount","Lat"]
+        #self.assertEqual(self.ingestor.getCSVHeaders(),headerList)
 
-    print("\nPrint raw list from csv")
-    print(ingestor.getRowAt(1))
-    ingestor.searchRows(searchCritera,ingestor.getRows())
-    print("\nPrint filtered list from unfiltered row")
-    print(ingestor.getRowAt(1))
+    def test_search_headers(self):
+        searchCritera = ["last_name","Long","phone Number"]
+        expectedRetun = [["last_name",2],["Long",3],["phone_Number",5]]
 
-    print(ingestor.getRowAt(2))
-    print(ingestor.getRowAt(3))
-    print(ingestor.getRowAt(4))
+        self.assertEqual(self.ingestor.getHeaderIndex(searchCritera,self.ingestor.getCSVHeaders()),expectedRetun)
 
-    print("\nNumber of columns")
-    print(ingestor.getNumberOfHeaders())
+    def test_get_row(self):
+        expectedRetun = ["8 Hoard Court","Samuele","Gulliver","-64.1305924","sgulliver0@yahoo.co.jp","+54 (656) 804-6029","$14,895.21 ","-31.4325479"]
+        self.assertEqual(self.ingestor.getRowAt(0),expectedRetun)
 
-    print("\nNumber of rows")
-    print(ingestor.getNumberOfRows())
+    def test_get_row_filtered(self):
+        searchCritera = [["last_name",2],["Long",3],["phone_Number",5]]
+        expectedRetun = ["Gulliver","-64.1305924","+54 (656) 804-6029"]
+        self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
+        self.assertEqual(self.ingestor.getRowAt(0),expectedRetun)
 
-    print("\nUpdating file to a csv in project folder names newList.csv. Expected:False")
-    print(ingestor.updateFileLoc("/home/anthonym/Documents/SchoolWork/SoftwareEngineering/newList.csv"))
+        expectedRetun = ["Scoullar","121.5570313","+63 (634) 506-0432"]
+        self.assertEqual(self.ingestor.getRowAt(4),expectedRetun)
 
-    print("\nUpdating file to a csv with no name. Expected:false")
-    print(ingestor.updateFileLoc(""))
+    def test_number_of_headers(self):
+        self.assertEqual(self.ingestor.getNumberOfHeaders(),8)
 
-    print("\nUpdating file to a csv with location Test_Files/DatabaseManagerTest_1000.csv. Expected:true")
-    print(ingestor.updateFileLoc("Test_Files/DatabaseManagerTest_1000.csv"))
-#Run main method
-main()
+    def test_number_of_row(self):
+        self.assertEqual(self.ingestor.getNumberOfRows(),15)
+
+
+    def test_switch_files(self):
+        self.assertFalse(self.ingestor.updateFileLoc(""))
+        self.assertTrue(self.ingestor.updateFileLoc("Test_Files/DatabaseManagerTest_1000.csv"))
+
+if __name__ == '__main__':
+    unittest.main()
