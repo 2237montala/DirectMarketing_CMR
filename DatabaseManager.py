@@ -25,7 +25,7 @@ class DatabaseManager:
         try:
             with self.conn:
               if not self.doesTableExist(table_name):
-                  self.cursor.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
+                  self.cursor.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, '"{}"'.format(column_name), column_type))
                   self.conn.commit()
                   return True
               else:
