@@ -306,20 +306,21 @@ class UI_ProfilePage(QtWidgets.QDialog):
         #Parameters: header, information, nameOfList
         #Selected_info = self.sl.table_item_clicked().selectedRow
         #Table_Headers = self.sl.table_item_clicked().columHeaders
-
+        print(headers)
         self.header = headers
         self.information=info
-
         count =0
         while count != self.house_info.rowCount()-1:
             count2 = len(self.header)
             for x in range(0, count2):
-                print(headers[x])
-                print(self.house_info.verticalHeaderItem(count).text())
+
                 if headers[x] == self.house_info.verticalHeaderItem(count).text():
-                   item = QtWidgets.QTableWidgetItem(info[x])
-
-
+                   item = QtWidgets.QTableWidgetItem(str(info[x]))
+                   
+                   print(headers[x])
+                   print(self.house_info.verticalHeaderItem(count).text())
+                   print(info[x])
+                   
                    if self.CheckEdit:
                        item.setFlags(QtCore.Qt.ItemIsEditable)
 
@@ -544,8 +545,8 @@ if __name__ == '__main__':                      #
 
     app = QApplication(sys.argv)
 
-    header = ["Site_Address", "Site_City", "Zip Code", "State","Status","Baths","Comments of Property"]
-    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"comments"]
+    header = ["Site_Address", "Site_City", "Zip Code", "State","Status","Comments of Property"]
+    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0","comments"]
     window = UI_ProfilePage()
     window.filltable(information,header)
     window.show()
