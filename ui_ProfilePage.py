@@ -317,9 +317,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
                 if headers[x] == self.house_info.verticalHeaderItem(count).text():
                    item = QtWidgets.QTableWidgetItem(str(info[x]))
                    
-                   print(headers[x])
-                   print(self.house_info.verticalHeaderItem(count).text())
-                   print(info[x])
                    
                    if self.CheckEdit:
                        item.setFlags(QtCore.Qt.ItemIsEditable)
@@ -372,8 +369,9 @@ class UI_ProfilePage(QtWidgets.QDialog):
                    item = QtWidgets.QTableWidgetItem(self.information[x])
 
                    if self.CheckEdit:
+                    print("--------------------only once")
                     item.setFlags(QtCore.Qt.ItemIsEditable)
-
+                    
                    self.owner_info.setItem(count,0, item)
                    count=count+1
                    break
@@ -390,9 +388,10 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
 
     def Handle_edit (self):
-        self.CheckEdit = False
-        print("hello")
-        #self.filltable(self.header, self.information)
+        for x in range(0,3):
+            self.CheckEdit = False
+            self.update()
+            self.filltable(self.header, self.information)
         #for x in range(0, )
         self.Very_interested.setEnabled(True)
         self.Interested.setEnabled(True)
@@ -401,7 +400,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.Button_NOresponse.setEnabled(True)
         self.Button_responded.setEnabled(True)
         self.AdditionalInfo_txt.setReadOnly(False)
-
+        
 
     def Handle_Save (self):
         self.CheckEdit = True
