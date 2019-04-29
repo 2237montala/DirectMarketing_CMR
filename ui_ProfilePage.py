@@ -5,7 +5,6 @@
 # Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from distutils.log import info
 from PyQt5.Qt import QWidget, QApplication, QAbstractItemView, QTableWidgetItem
@@ -212,6 +211,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.pushButton_Redfin = QtWidgets.QPushButton(self)
         self.pushButton_Redfin.setGeometry(QtCore.QRect(810, 700, 300, 80))
         self.pushButton_Redfin.setObjectName("pushButton_3")
+        self.pushButton_Redfin.clicked.connect(self.searchAdressHomesnap)
 
         self.Very_interested.setEnabled(False)
         self.Interested.setEnabled(False)
@@ -532,6 +532,109 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
         print(Adress)
         Adress = "https://www.zillow.com/homes/for_sale"+Adress+"_rb/"
+        print(Adress)
+        url = Adress
+        print(url)
+        system = self.searchOS()
+        webbrowser.open(url, new=1, autoraise=True)
+        
+    def searchAdressHomesnap (self):
+        """
+        
+        Looks up the property on zillow.com. It takes the street address, zip, 
+        and county and forms a url for zillow and opens the web page
+        """
+        print('start')
+        Adress="/"
+        count = len(self.header)
+        for x in range(0, count):
+            if self.header[x] == "State:":
+                print(self.information[x])
+                info=self.information[x]
+                info= info.replace("Alabama", "AL")
+                info= info.replace("Illinois", "IL")
+                info = info.replace("Montana", "MT")
+                info = info.replace("Alaska", "AK")
+                info = info.replace("Nebraska", "NE")
+                info = info.replace("Arizona", "AZ")
+                info = info.replace("Nevada", "NV")
+                info = info.replace("Arkansas", "AR")
+                info = info.replace("New Hampshire", "NH")
+                info = info.replace("California", "CA")
+                info = info.replace("New Jersey", "NJ")
+                info = info.replace("Colorado", "CO")
+                info = info.replace("New Mexico", "NM")
+                info = info.replace("Connecticut", "CT")
+                info = info.replace("New York", "NY")
+                info = info.replace("Delaware", "DE")
+                info = info.replace("North Carolina", "NC")
+                info = info.replace("Florida", "FL")
+                info = info.replace("North Dakota", "ND")
+                info = info.replace("Georgia", "GA")
+                info = info.replace("Ohio", "OH")
+                info = info.replace("Hawaii", "HI")
+                info = info.replace("Oklahoma", "OK")
+                info = info.replace("Idaho", "ID")
+                info = info.replace("Oregon", "OR")
+                info = info.replace("Pennsylvania", "PA")
+                info = info.replace("Indiana", "IN")
+                info = info.replace("Rhode Island", "RI")
+                info = info.replace("Iowa", "IA")
+                info = info.replace("South Carolina", "SC")
+                info = info.replace("Kansas", "KS")
+                info = info.replace("South Dakota", "SD")
+                info = info.replace("Kentucky", "KY")
+                info = info.replace("Tennesse", "TN")
+                info = info.replace("Louisiana", "LA")
+                info = info.replace("Texas", "TX")
+                info = info.replace("Maine", "ME")
+                info = info.replace("Utah", "UT")
+                info = info.replace("Maryland", "MD")
+                info = info.replace("Vermont", "VT")
+                info = info.replace("Massachusetts", "MA")
+                info = info.replace("Wyoming", "WY")
+                info = info.replace("Missouri", "MO")
+                info = info.replace("Wisconsin", "WI")
+                info = info.replace("Mississippi", "MS")
+                info = info.replace("Washington", "WA")
+                info = info.replace("Michigan", "MI")
+                info = info.replace("Virginia", "VA")
+                Adress = Adress+ info
+        for x in range(0, count):
+            if self.header[x] == "City:":
+                Adress = Adress+"/"+self.information[x]+"/"
+        
+        for x in range(0, count):
+            if self.header[x] == "Adress:":
+                HoldD = self.information[x].split(" ")
+                print('hold d')
+                print(HoldD)
+                for y in range(0, len(HoldD)):
+                    if y==len(HoldD)-1:
+                        Adress=Adress+HoldD[y]
+                    else:
+                        Adress=Adress+HoldD[y]+"-"
+                print(Adress)
+                find_street_type = Adress.split('-')
+                print(find_street_type[2])
+                find_street_type[2] = find_street_type[2].replace("Ave","Avenue")
+                find_street_type[2] = find_street_type[2].replace('ALy', "Alley") 
+                find_street_type[2] = find_street_type[2].replace("BCH","Beach")
+                find_street_type[2] = find_street_type[2].replace("BLVD", "Boulevard")
+                find_street_type[2] = find_street_type[2].replace("CT", "Court")
+                find_street_type[2] = find_street_type[2].replace("DR","Drive")
+                find_street_type[2] = find_street_type[2].replace("FLD","Field")
+                find_street_type[2] = find_street_type[2].replace("FLS","Falls")
+                find_street_type[2] = find_street_type[2].replace("HL","Hills")
+                print(find_street_type[2])
+                s = "-"
+                s = s.join(find_street_type)  
+                Adress = s
+                               
+             
+             
+        print(Adress)
+        Adress = "https://www.homesnap.com"+Adress
         print(Adress)
         url = Adress
         print(url)
