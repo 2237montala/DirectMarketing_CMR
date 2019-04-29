@@ -153,7 +153,8 @@ class csv_importer_popup(QtWidgets.QDialog):
             count += 1
 
         if radio_button_number > -1:
-            searchCritera = self.ingestor.getHeaderIndex(self.default_lists[radio_button_number],self.ingestor.getCSVHeaders())
+            searchCritera = self.ingestor.getHeaderIndex(self.default_lists[radio_button_number]
+                                                        ,self.ingestor.getCSVHeaders())
             #print(searchCritera)
 
             buttonText = self.buttonGroups[0].buttons()[radio_button_number].text()
@@ -171,9 +172,11 @@ class csv_importer_popup(QtWidgets.QDialog):
                     #Check if tables exists already
                     if not self.db.doesTableExist(tableName):
                         #If not the create it with the table name
-                        self.db.create_table_list(tableName,self.db.remove_spaces(self.default_lists[radio_button_number]),'string')
+                        self.db.create_table_list(tableName,
+                            self.db.remove_spaces(self.default_lists[radio_button_number]),'string')
 
-                    self.import_with_progress_bar(tableName,self.ingestor.getRows(),self.default_lists[radio_button_number])
+                    self.import_with_progress_bar(tableName,self.ingestor.getRows()
+                                                ,self.default_lists[radio_button_number])
                     self.import_done(tableName)
         else:
             try:
@@ -182,7 +185,6 @@ class csv_importer_popup(QtWidgets.QDialog):
                 else:
                     customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
                     print(customTableName)
-                    print(special_button_number)
                     if special_button_number > -1:
                         #default header option not choosen, so custom lists
                         try:
@@ -192,19 +194,52 @@ class csv_importer_popup(QtWidgets.QDialog):
                                     #print(item.text())
                                     requestedHeaders.append(item.text())
 
-                            searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
-                            print(searchCritera)
-
-                            self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
-                            rows = self.ingestor.getRows()
-                            print(rows)
-
-                            if not self.db.doesTableExist(customTableName):
+                            does_exist = self.db.doesTableExist(customTableName)
+                            has_same_cols = True
+                            if not does_exist:
                                 #If not the create it with the table name
                                 print('%s doesn\'t exist. Creating' % customTableName)
                                 self.db.create_table_list(customTableName,self.db.remove_spaces(requestedHeaders),'string')
-                            self.import_with_progress_bar(customTableName, self.ingestor.getRows(),requestedHeaders)
-                            #self.db.add_list_of_rows(customTableName,self.db.remove_spaces(requestedHeaders),rows)
+                            else:
+                                #Tables exists. Does it have the same columns?
+                                if not(requestedHeaders == self.db.get_headers(customTableName)):
+                                    print("Same table name, different columns")
+                                    has_same_cols = False
+                                    #Find the different column names
+                                    #This works by turing the lists into sets
+                                    #A set is an unordered list with no duplicate elements
+                                    #A set supports matrix operations so you can subtract the two sets
+                                    #This returns the elements that are not shared
+                                    different_cols = list(set(self.db.remove_spaces(requestedHeaders))
+                                                            - set(self.db.get_headers(customTableName)))
+                                    #Add the extra columns
+                                    for col in different_cols:
+                                        self.db.add_column(customTableName,col,'string')
+
+                            if has_same_cols:
+                                #New table is identical to existing one
+                                searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
+                                self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
+                                rows = self.ingestor.getRows()
+                                self.import_with_progress_bar(customTableName, self.ingestor.getRows(),requestedHeaders)
+                            else:
+                                #New table has different columns
+                                #Combine the headers in the lists
+                                combinedHeaders = self.db.get_headers(customTableName) + requestedHeaders
+                                print(combinedHeaders)
+                                #Have to re order them to match the csv file
+                                newRequestedHeaders = []
+                                #print(self.ingestor.getCSVHeaders())
+                                for header in self.db.remove_spaces(self.ingestor.getCSVHeaders()):
+                                    if header in combinedHeaders:
+                                        newRequestedHeaders.append(header)
+
+                                print(newRequestedHeaders)
+                                searchCritera = self.ingestor.getHeaderIndex(newRequestedHeaders,self.ingestor.getCSVHeaders())
+                                self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
+                                rows = self.ingestor.getRows()
+                                self.import_with_progress_bar(customTableName, self.ingestor.getRows(),newRequestedHeaders)
+
                             self.import_done(customTableName)
                         except Exception as er:
                             #General error message
