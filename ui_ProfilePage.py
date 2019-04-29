@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets, Qt
+from PyQt5 import QtCore, QtGui, QtWidgets
 from distutils.log import info
 from PyQt5.Qt import QWidget, QApplication, QAbstractItemView, QTableWidgetItem
 from _sqlite3 import Row
@@ -15,15 +15,16 @@ from sys import platform
 import webbrowser
 #from ShowList import ShowList
 
-class UI_ProfilePage(QWidget):
+class UI_ProfilePage(QtWidgets.QDialog):
 
     CheckEdit = True
-    header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:"]
-    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10']
 
-    def __init__(self):
+    def __init__(self, header, information):
         super().__init__()
         self.setupUi()
+        self.header = header
+        self.information = information
+        self.filltable(self.header, self.information)
 
     def setupUi(self):
         self.setObjectName("Form")
@@ -298,7 +299,6 @@ class UI_ProfilePage(QWidget):
         self.pushButton_3.setText(_translate("Form", "PushButton"))
         self.pushButton_Zillow.setText(_translate("Form", "Search Property In Zillow"))
         self.pushButton_Redfin.setText(_translate("Form", "Search Property In Red Fin"))
-        self.filltable(self.header, self.information)
 
     def filltable(self, headers, info):
         #Parameters: header, information, nameOfList
@@ -395,7 +395,7 @@ class UI_ProfilePage(QWidget):
     def Handle_edit (self):
         self.CheckEdit = False
         print("hello")
-        self.filltable(self.header, self.information)
+#         self.filltable(self.header, self.information)
         #for x in range(0, )
         self.Very_interested.setEnabled(True)
         self.Interested.setEnabled(True)
@@ -574,14 +574,16 @@ class UI_ProfilePage(QWidget):
         print(Adress)
         url = Adress
         print(url)
-        os = UI_ProfilePage()
-        system = os.searchOS()
+        system = self.searchOS()
         webbrowser.open(url, new=1, autoraise=True)
 
 if __name__ == '__main__':                      #
     import sys
 
     app = QApplication(sys.argv)
-    window = UI_ProfilePage()
+    
+    header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:","Comments of Property"]
+    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"comments"]
+    window = UI_ProfilePage(header, information)
     window.show()
     sys.exit(app.exec_())
