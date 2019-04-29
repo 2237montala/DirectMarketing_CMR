@@ -21,15 +21,11 @@ class UI_ProfilePage(QtWidgets.QDialog):
     def __init__(self):
         super().__init__()
         self.setupUi()
-
-        self.header = header
-        self.information = information
-        self.filltable(self.header, self.information)
-
         self.show()
         print("sadfas")
 
     def setupUi(self):
+        self.setObjectName("Form")
         self.resize(1122, 847)
         self.label_13 = QtWidgets.QLabel(self)
         self.label_13.setGeometry(QtCore.QRect(720, 60, 151, 16))
@@ -306,7 +302,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.pushButton_Zillow.setText(_translate("Form", "Search Property In Zillow"))
         self.pushButton_Redfin.setText(_translate("Form", "Search Property In Red Fin"))
 
-    def filltable(self, headers, info):
+    def filltable(self, info, headers):
         #Parameters: header, information, nameOfList
         #Selected_info = self.sl.table_item_clicked().selectedRow
         #Table_Headers = self.sl.table_item_clicked().columHeaders
@@ -314,18 +310,12 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.header = headers
         self.information=info
         count =0
-        self.header = headers
-        self.information = info
-
         while count != self.house_info.rowCount()-1:
-            count2 = len(headers)
+            count2 = len(self.header)
             for x in range(0, count2):
 
                 if headers[x] == self.house_info.verticalHeaderItem(count).text():
-                   item = QtWidgets.QTableWidgetItem(info[x])
-                   print(x)
-
-                   #item = QtWidgets.QTableWidgetItem(str(info[x]))
+                   item = QtWidgets.QTableWidgetItem(str(info[x]))
                    
                    
                    if self.CheckEdit:
@@ -335,39 +325,24 @@ class UI_ProfilePage(QtWidgets.QDialog):
                    count=count+1
                    break
 
-                elif headers[x]=="Interested":
-
-                    if info[x] == "0":
-
-                #elif self.header[x]=="Interested":
-                    #if self.information[x] == "0":
+                elif self.header[x]=="Interested":
+                    if self.information[x] == "0":
                         self.Very_interested.setChecked(True)
-                    elif info[x] == "1":
+                    elif self.information[x] == "1":
                         self.Interested.setChecked(True)
-                    elif info[x] == "2":
+                    elif self.information[x] == "2":
                         self.Not_interested.setChecked(True)
                     count=count+1
 
-                elif headers[x] == "Status":
+                elif self.header[x] == "Status":
 
-                    if info[x] == "0":
+                    if self.information[x] == "0":
                         self.Respond_person.setChecked(True)
-                    elif info[x] == "1":
+                    elif self.information[x] == "1":
                         self.Button_NOresponse.setChecked(True)
-                    elif info[x] == "2":
+                    elif self.information[x] == "2":
                         self.Button_responded.setChecked(True)
                     count =count+1
-
-                elif headers[x]== self.AdditionalInfo_txt.toPlainText():
-                    self.AdditionalInfo_txt.setPlainText(info[x])
-                #elif x+1 == count2:
-                 #   count = count+1
-                  #  print("lastif")
-                   # print(count)
-                    #break
-
-
-
 
 
                 elif headers[x]== self.label_8.text():
@@ -388,10 +363,10 @@ class UI_ProfilePage(QtWidgets.QDialog):
             '''
         count =0
         while count != self.owner_info.rowCount()-1:
-            count2 = len(headers)
+            count2 = len(self.header)
             for x in range(0, count2):
-                if headers[x] == self.owner_info.verticalHeaderItem(count).text():
-                   item = QtWidgets.QTableWidgetItem(info[x])
+                if self.header[x] == self.owner_info.verticalHeaderItem(count).text():
+                   item = QtWidgets.QTableWidgetItem(self.information[x])
 
                    if self.CheckEdit:
                     item.setFlags(QtCore.Qt.ItemIsEditable)
@@ -670,12 +645,10 @@ if __name__ == '__main__':                      #
     import sys
 
     app = QApplication(sys.argv)
-    header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:","Comments of Property"]
-    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"comments"]
-    window = UI_ProfilePage(header, information)
-    #header = ["Site_Address", "Site_City", "Zip Code", "State","Status","Comments of Property"]
-    #information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0","comments"]
-    #window = UI_ProfilePage()
-    #window.filltable(information,header)
-    #window.show()
+
+    header = ["Site_Address", "Site_City", "Zip Code", "State","Status","Comments of Property"]
+    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0","comments"]
+    window = UI_ProfilePage()
+    window.filltable(information,header)
+    window.show()
     sys.exit(app.exec_())
