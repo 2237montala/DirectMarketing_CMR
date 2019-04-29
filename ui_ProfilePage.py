@@ -25,9 +25,9 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.header = header
         self.information = information
         self.filltable(self.header, self.information)
+        self.show()
 
     def setupUi(self):
-        self.setObjectName("Form")
         self.resize(1122, 847)
         self.label_13 = QtWidgets.QLabel(self)
         self.label_13.setGeometry(QtCore.QRect(720, 60, 151, 16))
@@ -420,7 +420,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
                    count=count+1
                    break
 
-               
+
                 elif self.header[x]=="Interested":
                     if self.Very_interested.isChecked():
                         self.information[x] = "0"
@@ -433,12 +433,12 @@ class UI_ProfilePage(QtWidgets.QDialog):
                         info[x] = "0"
 
                         count =count+1
-                    
+
                     elif self.Interested.isChecked():
                         self.information[x] = "1"
                         count =count+1
 
-                                                
+
                     elif self.Not_interested.sisChecked():
                         self.information[x] = "2"
 
@@ -447,7 +447,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
                         info[x] = "2"
 
                         count =count+1
-                    break 
+                    break
 
 
                 elif self.header[x] == "Status":
@@ -456,14 +456,14 @@ class UI_ProfilePage(QtWidgets.QDialog):
                         self.information[x] = "0"
                         count =count+1
 
-                                   
+
                     elif self.Button_NOresponse.isChecked():
-                        self.information[x] = "1"    
+                        self.information[x] = "1"
                         count =count+1
-                                           
+
                     elif self.Button_responded.isChecked():
                         self.information[x] = "2"
-                        count =count+1                
+                        count =count+1
                         break
 
                     elif self.Button_NOresponse.isChecked:
@@ -485,10 +485,10 @@ class UI_ProfilePage(QtWidgets.QDialog):
                 elif x+1 == count2:
                     print("this worked lol5555555")
                     count = count+1
-                    break               
-                
-               
-               
+                    break
+
+
+
 
                 #elif x+1 == count2:
                  #   print("this worked lol5555555")
@@ -543,7 +543,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
     def searchAdressZillow (self):
         """
-        Looks up the property on zillow.com. It takes the street address, zip, 
+        Looks up the property on zillow.com. It takes the street address, zip,
         and county and forms a url for zillow and opens the web page
         """
         Adress="/"
@@ -581,9 +581,7 @@ if __name__ == '__main__':                      #
     import sys
 
     app = QApplication(sys.argv)
-    
     header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:","Comments of Property"]
     information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"comments"]
     window = UI_ProfilePage(header, information)
-    window.show()
     sys.exit(app.exec_())

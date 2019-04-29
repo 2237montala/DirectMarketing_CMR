@@ -24,7 +24,8 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.setupUi()
         self.header = header
         self.information = information
-        self.filltable(self.header, self.information)
+        self.filltable()
+        self.show()
 
     def setupUi(self):
         self.setObjectName("Form")
@@ -300,21 +301,18 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.pushButton_Zillow.setText(_translate("Form", "Search Property In Zillow"))
         self.pushButton_Redfin.setText(_translate("Form", "Search Property In Red Fin"))
 
-    def filltable(self, headers, info):
+    def filltable(self):
         #Parameters: header, information, nameOfList
         #Selected_info = self.sl.table_item_clicked().selectedRow
         #Table_Headers = self.sl.table_item_clicked().columHeaders
 
         count =0
-        self.header = headers
-        self.information = info
-
         while count != self.house_info.rowCount()-1:
-            count2 = len(headers)
+            count2 = len(self.header)
             for x in range(0, count2):
 
-                if headers[x] == self.house_info.verticalHeaderItem(count).text():
-                   item = QtWidgets.QTableWidgetItem(info[x])
+                if self.header[x] == self.house_info.verticalHeaderItem(count).text():
+                   item = QtWidgets.QTableWidgetItem(self.information[x])
                    print(x)
                    if self.CheckEdit:
                        item.setFlags(QtCore.Qt.ItemIsEditable)
@@ -325,28 +323,28 @@ class UI_ProfilePage(QtWidgets.QDialog):
                    print(count)
                    break
 
-                elif headers[x]=="Interested":
+                elif self.header[x]=="Interested":
 
-                    if info[x] == "0":
+                    if self.information[x] == "0":
                         self.Very_interested.setChecked(True)
-                    elif info[x] == "1":
+                    elif self.information[x] == "1":
                         self.Interested.setChecked(True)
-                    elif info[x] == "2":
+                    elif self.information[x] == "2":
                         self.Not_interested.setChecked(True)
                     count =count+1
 
-                elif headers[x] == "Status":
+                elif self.header[x] == "Status":
 
-                    if info[x] == "0":
+                    if self.information[x] == "0":
                         self.Respond_person.setChecked(True)
-                    elif info[x] == "1":
+                    elif self.information[x] == "1":
                         self.Button_NOresponse.setChecked(True)
-                    elif info[x] == "2":
+                    elif self.information[x] == "2":
                         self.Button_responded.setChecked(True)
                     count =count+1
 
-                elif headers[x]== self.AdditionalInfo_txt.toPlainText():
-                    self.AdditionalInfo_txt.setPlainText(info[x])
+                elif self.header[x]== self.AdditionalInfo_txt.toPlainText():
+                    self.AdditionalInfo_txt.setPlainText(self.information[x])
                 #elif x+1 == count2:
                  #   count = count+1
                   #  print("lastif")
@@ -369,10 +367,10 @@ class UI_ProfilePage(QtWidgets.QDialog):
             '''
         count =0
         while count != self.owner_info.rowCount()-1:
-            count2 = len(headers)
+            count2 = len(self.header)
             for x in range(0, count2):
-                if headers[x] == self.owner_info.verticalHeaderItem(count).text():
-                   item = QtWidgets.QTableWidgetItem(info[x])
+                if self.header[x] == self.owner_info.verticalHeaderItem(count).text():
+                   item = QtWidgets.QTableWidgetItem(self.information[x])
 
                    if self.CheckEdit:
                     item.setFlags(QtCore.Qt.ItemIsEditable)
@@ -420,7 +418,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
                    count=count+1
                    break
 
-               
+
                 elif self.header[x]=="Interested":
                     if self.Very_interested.isChecked():
                         self.information[x] = "0"
@@ -433,12 +431,12 @@ class UI_ProfilePage(QtWidgets.QDialog):
                         info[x] = "0"
 
                         count =count+1
-                    
+
                     elif self.Interested.isChecked():
                         self.information[x] = "1"
                         count =count+1
 
-                                                
+
                     elif self.Not_interested.sisChecked():
                         self.information[x] = "2"
 
@@ -447,7 +445,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
                         info[x] = "2"
 
                         count =count+1
-                    break 
+                    break
 
 
                 elif self.header[x] == "Status":
@@ -456,14 +454,14 @@ class UI_ProfilePage(QtWidgets.QDialog):
                         self.information[x] = "0"
                         count =count+1
 
-                                   
+
                     elif self.Button_NOresponse.isChecked():
-                        self.information[x] = "1"    
+                        self.information[x] = "1"
                         count =count+1
-                                           
+
                     elif self.Button_responded.isChecked():
                         self.information[x] = "2"
-                        count =count+1                
+                        count =count+1
                         break
 
                     elif self.Button_NOresponse.isChecked:
@@ -485,10 +483,10 @@ class UI_ProfilePage(QtWidgets.QDialog):
                 elif x+1 == count2:
                     print("this worked lol5555555")
                     count = count+1
-                    break               
-                
-               
-               
+                    break
+
+
+
 
                 #elif x+1 == count2:
                  #   print("this worked lol5555555")
@@ -543,7 +541,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
     def searchAdressZillow (self):
         """
-        Looks up the property on zillow.com. It takes the street address, zip, 
+        Looks up the property on zillow.com. It takes the street address, zip,
         and county and forms a url for zillow and opens the web page
         """
         Adress="/"
@@ -581,7 +579,7 @@ if __name__ == '__main__':                      #
     import sys
 
     app = QApplication(sys.argv)
-    
+
     header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:","Comments of Property"]
     information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"comments"]
     window = UI_ProfilePage(header, information)
