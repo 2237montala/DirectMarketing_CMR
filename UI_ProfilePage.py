@@ -306,7 +306,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         #Parameters: header, information, nameOfList
         #Selected_info = self.sl.table_item_clicked().selectedRow
         #Table_Headers = self.sl.table_item_clicked().columHeaders
-        print(headers)
+
         self.header = headers
         self.information=info
         count =0
@@ -369,7 +369,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
                    item = QtWidgets.QTableWidgetItem(self.information[x])
 
                    if self.CheckEdit:
-                    print("--------------------only once")
                     item.setFlags(QtCore.Qt.ItemIsEditable)
                     
                    self.owner_info.setItem(count,0, item)
