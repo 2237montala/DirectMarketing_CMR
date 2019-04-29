@@ -19,17 +19,11 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
     CheckEdit = True
 
-    header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:","Additional Comments:"]
-    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"hey lolol"]
-
-
-    def __init__(self, header, information):
+    def __init__(self):
         super().__init__()
         self.setupUi()
-        self.header = header
-        self.information = information
-        self.filltable(information, header)
         self.show()
+        print("sadfas")
 
     def setupUi(self):
         self.setObjectName("Form")
@@ -51,7 +45,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label_11.setFont(font)
-        self.label_11.setObjectName("label_11")        
+        self.label_11.setObjectName("label_11")
         self.line = QtWidgets.QFrame(self)
         self.line.setGeometry(QtCore.QRect(0, 30, 1121, 16))
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
@@ -312,19 +306,19 @@ class UI_ProfilePage(QtWidgets.QDialog):
         #Parameters: header, information, nameOfList
         #Selected_info = self.sl.table_item_clicked().selectedRow
         #Table_Headers = self.sl.table_item_clicked().columHeaders
-        
+
         self.header = headers
         self.information=info
-        
+
         count =0
         while count != self.house_info.rowCount()-1:
             count2 = len(self.header)
             for x in range(0, count2):
-
-
+                print(headers[x])
+                print(self.house_info.verticalHeaderItem(count).text())
                 if headers[x] == self.house_info.verticalHeaderItem(count).text():
                    item = QtWidgets.QTableWidgetItem(info[x])
-        
+
 
                    if self.CheckEdit:
                        item.setFlags(QtCore.Qt.ItemIsEditable)
@@ -334,14 +328,13 @@ class UI_ProfilePage(QtWidgets.QDialog):
                    break
 
                 elif self.header[x]=="Interested":
-
                     if self.information[x] == "0":
                         self.Very_interested.setChecked(True)
                     elif self.information[x] == "1":
                         self.Interested.setChecked(True)
                     elif self.information[x] == "2":
                         self.Not_interested.setChecked(True)
-                    count =count+1
+                    count=count+1
 
                 elif self.header[x] == "Status":
 
@@ -356,16 +349,10 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
                 elif headers[x]== self.label_8.text():
                     self.AdditionalInfo_txt.setPlainText(info[x])
-                #elif x+1 == count2:
-                 #   count = count+1
-                  #  print("lastif")
-                   # print(count)
-                    #break
-
-
-
-
-
+                    count += 1
+                elif x+1 == count2:
+                   count = count+1
+                   break
 
 
             '''
@@ -404,7 +391,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
     def Handle_edit (self):
         self.CheckEdit = False
         print("hello")
-#         self.filltable(self.header, self.information)
+        #self.filltable(self.header, self.information)
         #for x in range(0, )
         self.Very_interested.setEnabled(True)
         self.Interested.setEnabled(True)
@@ -442,7 +429,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
                     elif self.Not_interested.sisChecked():
                         self.information[x] = "2"
                         count =count+1
-                        
+
                     elif self.Not_interested.sisChecked:
                         info[x] = "2"
 
@@ -462,7 +449,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
                     elif self.Button_responded.isChecked():
                         self.information[x] = "2"
-                        count =count+1                
+                        count =count+1
                     break
 
 
@@ -474,18 +461,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
                 elif x+1 == count2:
                     count = count+1
                     break
-
-
-
-
-                #elif x+1 == count2:
-                 #   print("this worked lol5555555")
-                  #  count = count+1
-                   # break
-
-
-
-
 
         count =0
         while count != self.owner_info.rowCount():
@@ -569,8 +544,9 @@ if __name__ == '__main__':                      #
 
     app = QApplication(sys.argv)
 
-    header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:","Comments of Property"]
+    header = ["Site_Address", "Site_City", "Zip Code", "State","Status","Baths","Comments of Property"]
     information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"comments"]
-    window = UI_ProfilePage(header, information)
+    window = UI_ProfilePage()
+    window.filltable(information,header)
     window.show()
     sys.exit(app.exec_())

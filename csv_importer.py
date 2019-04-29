@@ -93,7 +93,6 @@ class csv_importer_popup(QtWidgets.QDialog):
 
 
     def generate_checkboxes(self, button_name_list):
-        print(button_name_list)
         self.csvHeaderGroup = QButtonGroup()
         self.csvHeaderGroup_layout = QVBoxLayout()
         self.csvHeaderGroup.setExclusive(False)
@@ -155,17 +154,13 @@ class csv_importer_popup(QtWidgets.QDialog):
         if radio_button_number > -1:
             searchCritera = self.ingestor.getHeaderIndex(self.default_lists[radio_button_number]
                                                         ,self.ingestor.getCSVHeaders())
-            #print(searchCritera)
 
             buttonText = self.buttonGroups[0].buttons()[radio_button_number].text()
-            #print(buttonText)
-            #buttonText = self.buttonGroups[0].id(self.buttonGroups[0].checkedId()).text()
 
             #Check which table coresponds with the button pressed
             for tableName in self.tablesInDB:
                 #print('%s == %s' % (buttonText.replace(' ','_'), tableName))
                 if buttonText.replace(' ','_') == tableName:
-                    #print(tableName)
                     #Uses the ingestor to search the unfiltered rows using
                     #this search critera list
                     self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
@@ -218,6 +213,7 @@ class csv_importer_popup(QtWidgets.QDialog):
 
                             if has_same_cols:
                                 #New table is identical to existing one
+                                print("same columns")
                                 searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
                                 self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                                 rows = self.ingestor.getRows()
@@ -225,19 +221,23 @@ class csv_importer_popup(QtWidgets.QDialog):
                             else:
                                 #New table has different columns
                                 #Combine the headers in the lists
+                                print("diff columns")
                                 combinedHeaders = self.db.get_headers(customTableName) + requestedHeaders
-                                print(combinedHeaders)
                                 #Have to re order them to match the csv file
                                 newRequestedHeaders = []
                                 #print(self.ingestor.getCSVHeaders())
                                 for header in self.db.remove_spaces(self.ingestor.getCSVHeaders()):
+                                    #Find the header in the csv file
+                                    #The order matters because the primary key is needed to update the row
                                     if header in combinedHeaders:
                                         newRequestedHeaders.append(header)
 
-                                print(newRequestedHeaders)
+                                #Get the index for the header
                                 searchCritera = self.ingestor.getHeaderIndex(newRequestedHeaders,self.ingestor.getCSVHeaders())
+                                #Filter the rows so only the requested info is there
                                 self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                                 rows = self.ingestor.getRows()
+                                #Import them nomrally
                                 self.import_with_progress_bar(customTableName, self.ingestor.getRows(),newRequestedHeaders)
 
                             self.import_done(customTableName)
@@ -267,6 +267,7 @@ class csv_importer_popup(QtWidgets.QDialog):
         Adds the ingestor rows to the db one row at a time so the progress
         bar will show the progress
         """
+        print(column_headers)
         #Set the max value of the progess bar to the number of rows to be add
         self.progressBar.setMaximum(len(rows_to_be_added))
         #self.db.add_list_of_rows(tableName,self.db.remove_spaces(self.default_lists[button_number]),rows)
