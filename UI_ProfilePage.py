@@ -18,12 +18,11 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
     CheckEdit = True
 
-    def __init__(self, header, information):
+    def __init__(self):
         super().__init__()
         self.setupUi()
-        self.header = header
-        self.information = information
-        self.filltable(self.header, self.information)
+        self.show()
+        print("sadfas")
 
     def setupUi(self):
         self.setObjectName("Form")
@@ -116,7 +115,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.owner_info.setGeometry(QtCore.QRect(560, 80, 521, 441))
         self.owner_info.setObjectName("owner_info")
         self.owner_info.setColumnCount(1)
-        self.owner_info.setRowCount(11)
+        self.owner_info.setRowCount(12)
         item = QtWidgets.QTableWidgetItem()
         self.owner_info.setVerticalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -140,7 +139,8 @@ class UI_ProfilePage(QtWidgets.QDialog):
         item = QtWidgets.QTableWidgetItem()
         self.owner_info.setVerticalHeaderItem(10, item)
         item = QtWidgets.QTableWidgetItem()
-
+        self.owner_info.setVerticalHeaderItem(11, item)
+        item = QtWidgets.QTableWidgetItem()
         self.owner_info.setHorizontalHeaderItem(0, item)
 
 
@@ -231,55 +231,57 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.label_11.setText(_translate("Form", "Property Information"))
         self.pushButton.setText(_translate("Form", "Edit Information"))
         item = self.house_info.verticalHeaderItem(0)
-        item.setText(_translate("Form", "Adress:"))
+        item.setText(_translate("Form", "Site_Address"))
         item = self.house_info.verticalHeaderItem(1)
-        item.setText(_translate("Form", "City:"))
+        item.setText(_translate("Form", "Site_City"))
         item = self.house_info.verticalHeaderItem(2)
-        item.setText(_translate("Form", "Zip Code:"))
+        item.setText(_translate("Form", "Site_Zip_Code"))
         item = self.house_info.verticalHeaderItem(3)
-        item.setText(_translate("Form", "State:"))
+        item.setText(_translate("Form", "Site_State"))
         item = self.house_info.verticalHeaderItem(4)
-        item.setText(_translate("Form", "Property Type:"))
+        item.setText(_translate("Form", "Property_Type"))
         item = self.house_info.verticalHeaderItem(5)
-        item.setText(_translate("Form", "Building Size:"))
+        item.setText(_translate("Form", "Building_Size"))
         item = self.house_info.verticalHeaderItem(6)
-        item.setText(_translate("Form", "Lot Size(SqFt):"))
+        item.setText(_translate("Form", "Lot_Size_(SqFt)"))
         item = self.house_info.verticalHeaderItem(7)
-        item.setText(_translate("Form", "Baths:"))
+        item.setText(_translate("Form", "Baths"))
         item = self.house_info.verticalHeaderItem(8)
-        item.setText(_translate("Form", "Bedrooms:"))
+        item.setText(_translate("Form", "Bedrooms"))
         item = self.house_info.verticalHeaderItem(9)
-        item.setText(_translate("Form", "APN:"))
+        item.setText(_translate("Form", "APN_/_Parcel_Number"))
         item = self.house_info.verticalHeaderItem(10)
-        item.setText(_translate("Form", "Year Built:"))
+        item.setText(_translate("Form", "Year_Built"))
         item = self.house_info.verticalHeaderItem(11)
-        item.setText(_translate("Form", "Number of Units:"))
+        item.setText(_translate("Form", "Number_of_Units"))
         item = self.house_info.verticalHeaderItem(12)
-        item.setText(_translate("Form", "Primary Garage Type:"))
+        item.setText(_translate("Form", "Primary_Garage_Type"))
         item = self.house_info.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Information", "Hello"))
         item = self.owner_info.verticalHeaderItem(0)
-        item.setText(_translate("Form", "First Name:"))
+        item.setText(_translate("Form", "1st_Owner's_First_Name"))
         item = self.owner_info.verticalHeaderItem(1)
-        item.setText(_translate("Form", "Last Name:"))
+        item.setText(_translate("Form", "1st_Owner's_Last_Name"))
         item = self.owner_info.verticalHeaderItem(2)
-        item.setText(_translate("Form", "Mailing Adress:"))
+        item.setText(_translate("Form", "Mail_Address"))
         item = self.owner_info.verticalHeaderItem(3)
-        item.setText(_translate("Form", "Mailing City:"))
+        item.setText(_translate("Form", "Mailing_City"))
         item = self.owner_info.verticalHeaderItem(4)
-        item.setText(_translate("Form", "Mailing Zip Code:"))
+        item.setText(_translate("Form", "Mailing_Zip_Code"))
         item = self.owner_info.verticalHeaderItem(5)
-        item.setText(_translate("Form", "Mailing State:"))
+        item.setText(_translate("Form", "Mailing_State"))
         item = self.owner_info.verticalHeaderItem(6)
-        item.setText(_translate("Form", "Loan to Value Ratio:"))
+        item.setText(_translate("Form", "Loan_To_Value_Ratio"))
         item = self.owner_info.verticalHeaderItem(7)
-        item.setText(_translate("Form", "Total Outstanding Loans:"))
+        item.setText(_translate("Form", "Total_Outstanding_Loans"))
         item = self.owner_info.verticalHeaderItem(8)
-        item.setText(_translate("Form", "Amount of Delinquent Taxes:"))
+        item.setText(_translate("Form", "Amount_of_Delinquent_Taxes"))
         item = self.owner_info.verticalHeaderItem(9)
-        item.setText(_translate("Form", "Owner Occuppied:"))
+        item.setText(_translate("Form", "Owner_Occupied"))
         item = self.owner_info.verticalHeaderItem(10)
-        item.setText(_translate("Form", "Purchased Prise:"))
+        item.setText(_translate("Form", "Purchased_Prise"))
+        item = self.owner_info.verticalHeaderItem(11)
+        item.setText(_translate("Form", "Phone_Number"))
         item = self.owner_info.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Information"))
         __sortingEnabled = self.owner_info.isSortingEnabled()
@@ -300,63 +302,55 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.pushButton_Zillow.setText(_translate("Form", "Search Property In Zillow"))
         self.pushButton_Redfin.setText(_translate("Form", "Search Property In Red Fin"))
 
-    def filltable(self, headers, info):
+    def filltable(self, info, headers):
         #Parameters: header, information, nameOfList
         #Selected_info = self.sl.table_item_clicked().selectedRow
         #Table_Headers = self.sl.table_item_clicked().columHeaders
-
-        count =0
+        print(headers)
         self.header = headers
-        self.information = info
-
+        self.information=info
+        count =0
         while count != self.house_info.rowCount()-1:
-            count2 = len(headers)
+            count2 = len(self.header)
             for x in range(0, count2):
 
                 if headers[x] == self.house_info.verticalHeaderItem(count).text():
-                   item = QtWidgets.QTableWidgetItem(info[x])
-                   print(x)
+                   item = QtWidgets.QTableWidgetItem(str(info[x]))
+                   
+                   
                    if self.CheckEdit:
                        item.setFlags(QtCore.Qt.ItemIsEditable)
 
                    self.house_info.setItem(count,0, item)
                    count=count+1
-                   print("table")
-                   print(count)
                    break
 
-                elif headers[x]=="Interested":
-
-                    if info[x] == "0":
+                elif self.header[x]=="Interested":
+                    if self.information[x] == "0":
                         self.Very_interested.setChecked(True)
-                    elif info[x] == "1":
+                    elif self.information[x] == "1":
                         self.Interested.setChecked(True)
-                    elif info[x] == "2":
+                    elif self.information[x] == "2":
                         self.Not_interested.setChecked(True)
-                    count =count+1
+                    count=count+1
 
-                elif headers[x] == "Status":
+                elif self.header[x] == "Status":
 
-                    if info[x] == "0":
+                    if self.information[x] == "0":
                         self.Respond_person.setChecked(True)
-                    elif info[x] == "1":
+                    elif self.information[x] == "1":
                         self.Button_NOresponse.setChecked(True)
-                    elif info[x] == "2":
+                    elif self.information[x] == "2":
                         self.Button_responded.setChecked(True)
                     count =count+1
 
-                elif headers[x]== self.AdditionalInfo_txt.toPlainText():
+
+                elif headers[x]== self.label_8.text():
                     self.AdditionalInfo_txt.setPlainText(info[x])
-                #elif x+1 == count2:
-                 #   count = count+1
-                  #  print("lastif")
-                   # print(count)
-                    #break
-
-
-
-
-
+                    count += 1
+                elif x+1 == count2:
+                   count = count+1
+                   break
 
 
             '''
@@ -369,14 +363,15 @@ class UI_ProfilePage(QtWidgets.QDialog):
             '''
         count =0
         while count != self.owner_info.rowCount()-1:
-            count2 = len(headers)
+            count2 = len(self.header)
             for x in range(0, count2):
-                if headers[x] == self.owner_info.verticalHeaderItem(count).text():
-                   item = QtWidgets.QTableWidgetItem(info[x])
+                if self.header[x] == self.owner_info.verticalHeaderItem(count).text():
+                   item = QtWidgets.QTableWidgetItem(self.information[x])
 
                    if self.CheckEdit:
+                    print("--------------------only once")
                     item.setFlags(QtCore.Qt.ItemIsEditable)
-
+                    
                    self.owner_info.setItem(count,0, item)
                    count=count+1
                    break
@@ -393,9 +388,10 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
 
     def Handle_edit (self):
-        self.CheckEdit = False
-        print("hello")
-#         self.filltable(self.header, self.information)
+        for x in range(0,3):
+            self.CheckEdit = False
+            self.update()
+            self.filltable(self.header, self.information)
         #for x in range(0, )
         self.Very_interested.setEnabled(True)
         self.Interested.setEnabled(True)
@@ -404,104 +400,70 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.Button_NOresponse.setEnabled(True)
         self.Button_responded.setEnabled(True)
         self.AdditionalInfo_txt.setReadOnly(False)
-
+        
 
     def Handle_Save (self):
         self.CheckEdit = True
-        print("hello")
 
         count =0
         while count != self.house_info.rowCount()-1:
             count2 = len(self.header)
-            print("lolololo11111111111")
             for x in range(0, count2):
                 if self.header[x] == self.house_info.verticalHeaderItem(count).text():
                    self.information[x] = self.house_info.item(count,0).text()
                    count=count+1
                    break
 
-               
+
                 elif self.header[x]=="Interested":
-                    if self.Very_interested.isChecked():
-                        self.information[x] = "0"
-
-
-
-
-                elif headers[x]=="Interested":
                     if self.Very_interested.isChecked:
                         info[x] = "0"
 
                         count =count+1
-                    
+
                     elif self.Interested.isChecked():
                         self.information[x] = "1"
                         count =count+1
 
-                                                
+
                     elif self.Not_interested.sisChecked():
                         self.information[x] = "2"
+                        count =count+1
 
-                        break
                     elif self.Not_interested.sisChecked:
                         info[x] = "2"
 
                         count =count+1
-                    break 
+                    break
 
 
                 elif self.header[x] == "Status":
-                    print("this worked lol444444444")
                     if self.Respond_person.isChecked():
                         self.information[x] = "0"
                         count =count+1
 
-                                   
+
                     elif self.Button_NOresponse.isChecked():
-                        self.information[x] = "1"    
+                        self.information[x] = "1"
                         count =count+1
-                                           
+
                     elif self.Button_responded.isChecked():
                         self.information[x] = "2"
-                        count =count+1                
-                        break
-
-                    elif self.Button_NOresponse.isChecked:
-                        info[x] = "1"
                         count =count+1
-
-                    elif self.Button_responded.isChecked:
-                        info[x] = "2"
-                        count =count+1
-
-                elif True:
-                    print("this worked lol11111181")
+                    break
 
 
-                #elif headers[x]== self.AdditionalInfo_txt.():
-                 #   self.AdditionalInfo_txt.setPlainText(info[x])
-                  #  count = count+1
+
+                elif self.header[x]== self.label_8.text():
+                    self.information[x]=self.AdditionalInfo_txt.toPlainText().txt()
+                    count = count+1
 
                 elif x+1 == count2:
-                    print("this worked lol5555555")
                     count = count+1
-                    break               
-                
-               
-               
-
-                #elif x+1 == count2:
-                 #   print("this worked lol5555555")
-                  #  count = count+1
-                   # break
-
-
-
-
+                    break
 
         count =0
         while count != self.owner_info.rowCount():
-            print("alberto its here")
             count2 = len(self.header)
             for x in range(0, count2):
                 if self.header[x] == self.owner_info.verticalHeaderItem(count).text():
@@ -543,7 +505,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
     def searchAdressZillow (self):
         """
-        Looks up the property on zillow.com. It takes the street address, zip, 
+        Looks up the property on zillow.com. It takes the street address, zip,
         and county and forms a url for zillow and opens the web page
         """
         Adress="/"
@@ -684,9 +646,10 @@ if __name__ == '__main__':                      #
     import sys
 
     app = QApplication(sys.argv)
-    
-    header = ["Adress:", "City:", "Zip Code:", "State:","Status","Baths:","Comments of Property"]
-    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"comments"]
-    window = UI_ProfilePage(header, information)
+
+    header = ["Site_Address", "Site_City", "Zip Code", "State","Status","Comments of Property"]
+    information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0","comments"]
+    window = UI_ProfilePage()
+    window.filltable(information,header)
     window.show()
     sys.exit(app.exec_())
