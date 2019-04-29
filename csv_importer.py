@@ -60,6 +60,9 @@ class csv_importer_popup(QtWidgets.QDialog):
         #List of button groups
         self.buttonGroups = [self.commonFileTypesGroup,self.csvHeaderGroup]
 
+        #Create label
+        tableNameLabel = QtWidgets.QLabel("Table Name")
+
         #Create text field
         self.tableNameField = QtWidgets.QLineEdit()
         self.tableNameField.setPlaceholderText("Enter Custom Table Name")
@@ -79,11 +82,12 @@ class csv_importer_popup(QtWidgets.QDialog):
         #Add widgets
         #format of addWidget(widget,row,col,row span, col span)
         layout.addWidget(scrollArea,1,1,1,2)
-        layout.addWidget(self.tableNameField,2,1,1,2)
-        layout.addWidget(self.commonFileTypesGroupBox,3,1,1,2)
-        layout.addWidget(self.progressBar,4,1,1,2)
-        layout.addWidget(self.cancelButton,5,1)
-        layout.addWidget(self.importButton,5,2)
+        layout.addWidget(tableNameLabel,2,1,1,2)
+        layout.addWidget(self.tableNameField,3,1,1,2)
+        layout.addWidget(self.commonFileTypesGroupBox,4,1,1,2)
+        layout.addWidget(self.progressBar,5,1,1,2)
+        layout.addWidget(self.cancelButton,6,1)
+        layout.addWidget(self.importButton,6,2)
         self.setLayout(layout)
         self.resize(self.sizeHint())
 
@@ -106,7 +110,7 @@ class csv_importer_popup(QtWidgets.QDialog):
     def generate_radiobuttons(self,button_name_list):
         self.commonFileTypesGroup = QButtonGroup()
         self.commonFileTypesGroupLayout = QVBoxLayout()
-        self.commonFileTypesGroupBox = QGroupBox('Select a preexisting table')
+        self.commonFileTypesGroupBox = QGroupBox('Select a prexisting table')
         self.commonFileTypesGroupLayout.addStretch(1)
         count = 0
         for button_name in button_name_list:
@@ -171,7 +175,6 @@ class csv_importer_popup(QtWidgets.QDialog):
 
                     self.import_with_progress_bar(tableName,self.ingestor.getRows(),self.default_lists[radio_button_number])
                     self.import_done(tableName)
-#         elif special_radio_button_number > -1:
         else:
             try:
                 if self.tableNameField.text() == '' or self.protected_table_prefix in self.tableNameField.text():
@@ -245,7 +248,6 @@ class csv_importer_popup(QtWidgets.QDialog):
 #Running this file with run this part of the code
 #Makes a pop up window
 if __name__ == '__main__':
-#     file = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
     file = "Test_Files/DatabaseManagerTest_15.csv"
     tables = ['Absentee','Divorce','Lis_Pendents','Probate']
     app = QApplication([])

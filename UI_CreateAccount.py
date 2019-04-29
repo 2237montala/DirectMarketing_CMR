@@ -40,6 +40,7 @@ class UI_CreateAccount(QtWidgets.QDialog):
         self.password_tf = QtWidgets.QLineEdit(self)
         self.password_tf.setPlaceholderText("Password")
         self.password_tf.setFont(reg_font)
+        self.password_tf.setEchoMode(QtWidgets.QLineEdit.Password)
 
         self.create_account_button = QtWidgets.QPushButton("Create Account",self)
         self.create_account_button.setFont(reg_font)
