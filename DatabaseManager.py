@@ -25,7 +25,7 @@ class DatabaseManager:
         try:
             with self.conn:
               if not self.doesTableExist(table_name):
-                  self.cursor.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, column_name, column_type))
+                  self.cursor.execute("CREATE TABLE %s (%s %s PRIMARY KEY)" % (table_name, '"{}"'.format(column_name), column_type))
                   self.conn.commit()
                   return True
               else:
@@ -227,16 +227,18 @@ class DatabaseManager:
         else:
             raise Exception('Illegally formatted string')
 
-    def update_row_at(self, table_name, column_name = None, column_value = None, primary_key = None, new_row = None):
+    def update_row_at(self, table_name, column_name = None, column_value = None, primary_key = -1, new_row = None):
         column_arr =  self.get_headers(table_name)
-        if (primary_key != None):
+        if (primary_key != -1):
             print("PK found")
+            print(primary_key)
             old_row = self.get_row_at(table_name, row_id = primary_key)
+            print(old_row)
             if (len(old_row) == len(new_row)):
                 try:
                     with self.conn:
                         for i in range(0, len(new_row)):
-                            self.cursor.execute("UPDATE %s SET %s='%s' WHERE _rowid_ = ?" % (table_name, column_arr[i], new_row[i]), (primary_key,))
+                            self.cursor.execute("UPDATE %s SET %s='%s' WHERE _rowid_ = ?" % (table_name, '"{}"'.format(column_arr[i]), new_row[i]), (primary_key,))
                         return True
                 except Exception as er:
                     #General error message

@@ -6,6 +6,10 @@ from PyQt5.Qt import QDesktopWidget
 
 protected_table_prefix = "__ADMIN__"
 
+#TO make this an .exe run pyinstall gui.py
+#you need to install pyInstall 
+
+
 class gui(QtWidgets.QMainWindow):
     def __init__(self,width,height,db_file_loc):
         super().__init__()
@@ -36,7 +40,7 @@ class gui(QtWidgets.QMainWindow):
         self.setCentralWidget(self.main_window)
 
 if __name__ == "__main__":
-    data_base_file = 'test.db'
+    data_base_file = 'programData.db'
 
     app = QtWidgets.QApplication(sys.argv)
     gui = gui(1600,900,data_base_file)

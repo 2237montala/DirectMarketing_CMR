@@ -60,6 +60,9 @@ class csv_importer_popup(QtWidgets.QDialog):
         #List of button groups
         self.buttonGroups = [self.commonFileTypesGroup,self.csvHeaderGroup]
 
+        #Create label
+        tableNameLabel = QtWidgets.QLabel("Table Name")
+
         #Create text field
         self.tableNameField = QtWidgets.QLineEdit()
         self.tableNameField.setPlaceholderText("Enter Custom Table Name")
@@ -79,17 +82,17 @@ class csv_importer_popup(QtWidgets.QDialog):
         #Add widgets
         #format of addWidget(widget,row,col,row span, col span)
         layout.addWidget(scrollArea,1,1,1,2)
-        layout.addWidget(self.tableNameField,2,1,1,2)
-        layout.addWidget(self.commonFileTypesGroupBox,3,1,1,2)
-        layout.addWidget(self.progressBar,4,1,1,2)
-        layout.addWidget(self.cancelButton,5,1)
-        layout.addWidget(self.importButton,5,2)
+        layout.addWidget(tableNameLabel,2,1,1,2)
+        layout.addWidget(self.tableNameField,3,1,1,2)
+        layout.addWidget(self.commonFileTypesGroupBox,4,1,1,2)
+        layout.addWidget(self.progressBar,5,1,1,2)
+        layout.addWidget(self.cancelButton,6,1)
+        layout.addWidget(self.importButton,6,2)
         self.setLayout(layout)
         self.resize(self.sizeHint())
 
 
     def generate_checkboxes(self, button_name_list):
-        print(button_name_list)
         self.csvHeaderGroup = QButtonGroup()
         self.csvHeaderGroup_layout = QVBoxLayout()
         self.csvHeaderGroup.setExclusive(False)
@@ -106,7 +109,7 @@ class csv_importer_popup(QtWidgets.QDialog):
     def generate_radiobuttons(self,button_name_list):
         self.commonFileTypesGroup = QButtonGroup()
         self.commonFileTypesGroupLayout = QVBoxLayout()
-        self.commonFileTypesGroupBox = QGroupBox('Select a preexisting table')
+        self.commonFileTypesGroupBox = QGroupBox('Select a prexisting table')
         self.commonFileTypesGroupLayout.addStretch(1)
         count = 0
         for button_name in button_name_list:
@@ -149,29 +152,27 @@ class csv_importer_popup(QtWidgets.QDialog):
             count += 1
 
         if radio_button_number > -1:
-            searchCritera = self.ingestor.getHeaderIndex(self.default_lists[radio_button_number],self.ingestor.getCSVHeaders())
-            #print(searchCritera)
+            searchCritera = self.ingestor.getHeaderIndex(self.default_lists[radio_button_number]
+                                                        ,self.ingestor.getCSVHeaders())
 
             buttonText = self.buttonGroups[0].buttons()[radio_button_number].text()
-            #print(buttonText)
-            #buttonText = self.buttonGroups[0].id(self.buttonGroups[0].checkedId()).text()
 
             #Check which table coresponds with the button pressed
             for tableName in self.tablesInDB:
                 #print('%s == %s' % (buttonText.replace(' ','_'), tableName))
                 if buttonText.replace(' ','_') == tableName:
-                    #print(tableName)
                     #Uses the ingestor to search the unfiltered rows using
                     #this search critera list
                     self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                     #Check if tables exists already
                     if not self.db.doesTableExist(tableName):
                         #If not the create it with the table name
-                        self.db.create_table_list(tableName,self.db.remove_spaces(self.default_lists[radio_button_number]),'string')
+                        self.db.create_table_list(tableName,
+                            self.db.remove_spaces(self.default_lists[radio_button_number]),'string')
 
-                    self.import_with_progress_bar(tableName,self.ingestor.getRows(),self.default_lists[radio_button_number])
+                    self.import_with_progress_bar(tableName,self.ingestor.getRows()
+                                                ,self.default_lists[radio_button_number])
                     self.import_done(tableName)
-#         elif special_radio_button_number > -1:
         else:
             try:
                 if self.tableNameField.text() == '' or self.protected_table_prefix in self.tableNameField.text():
@@ -179,7 +180,6 @@ class csv_importer_popup(QtWidgets.QDialog):
                 else:
                     customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
                     print(customTableName)
-                    print(special_button_number)
                     if special_button_number > -1:
                         #default header option not choosen, so custom lists
                         try:
@@ -189,19 +189,57 @@ class csv_importer_popup(QtWidgets.QDialog):
                                     #print(item.text())
                                     requestedHeaders.append(item.text())
 
-                            searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
-                            print(searchCritera)
-
-                            self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
-                            rows = self.ingestor.getRows()
-                            print(rows)
-
-                            if not self.db.doesTableExist(customTableName):
+                            does_exist = self.db.doesTableExist(customTableName)
+                            has_same_cols = True
+                            if not does_exist:
                                 #If not the create it with the table name
                                 print('%s doesn\'t exist. Creating' % customTableName)
                                 self.db.create_table_list(customTableName,self.db.remove_spaces(requestedHeaders),'string')
-                            self.import_with_progress_bar(customTableName, self.ingestor.getRows(),requestedHeaders)
-                            #self.db.add_list_of_rows(customTableName,self.db.remove_spaces(requestedHeaders),rows)
+                            else:
+                                #Tables exists. Does it have the same columns?
+                                if not(requestedHeaders == self.db.get_headers(customTableName)):
+                                    print("Same table name, different columns")
+                                    has_same_cols = False
+                                    #Find the different column names
+                                    #This works by turing the lists into sets
+                                    #A set is an unordered list with no duplicate elements
+                                    #A set supports matrix operations so you can subtract the two sets
+                                    #This returns the elements that are not shared
+                                    different_cols = list(set(self.db.remove_spaces(requestedHeaders))
+                                                            - set(self.db.get_headers(customTableName)))
+                                    #Add the extra columns
+                                    for col in different_cols:
+                                        self.db.add_column(customTableName,col,'string')
+
+                            if has_same_cols:
+                                #New table is identical to existing one
+                                print("same columns")
+                                searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
+                                self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
+                                rows = self.ingestor.getRows()
+                                self.import_with_progress_bar(customTableName, self.ingestor.getRows(),requestedHeaders)
+                            else:
+                                #New table has different columns
+                                #Combine the headers in the lists
+                                print("diff columns")
+                                combinedHeaders = self.db.get_headers(customTableName) + requestedHeaders
+                                #Have to re order them to match the csv file
+                                newRequestedHeaders = []
+                                #print(self.ingestor.getCSVHeaders())
+                                for header in self.db.remove_spaces(self.ingestor.getCSVHeaders()):
+                                    #Find the header in the csv file
+                                    #The order matters because the primary key is needed to update the row
+                                    if header in combinedHeaders:
+                                        newRequestedHeaders.append(header)
+
+                                #Get the index for the header
+                                searchCritera = self.ingestor.getHeaderIndex(newRequestedHeaders,self.ingestor.getCSVHeaders())
+                                #Filter the rows so only the requested info is there
+                                self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
+                                rows = self.ingestor.getRows()
+                                #Import them nomrally
+                                self.import_with_progress_bar(customTableName, self.ingestor.getRows(),newRequestedHeaders)
+
                             self.import_done(customTableName)
                         except Exception as er:
                             #General error message
@@ -229,6 +267,7 @@ class csv_importer_popup(QtWidgets.QDialog):
         Adds the ingestor rows to the db one row at a time so the progress
         bar will show the progress
         """
+        print(column_headers)
         #Set the max value of the progess bar to the number of rows to be add
         self.progressBar.setMaximum(len(rows_to_be_added))
         #self.db.add_list_of_rows(tableName,self.db.remove_spaces(self.default_lists[button_number]),rows)
@@ -245,7 +284,6 @@ class csv_importer_popup(QtWidgets.QDialog):
 #Running this file with run this part of the code
 #Makes a pop up window
 if __name__ == '__main__':
-#     file = "/home/anthonym/Documents/SchoolWork/SoftwareEngineering/Divorce_list_08.20.18_FIXED.csv"
     file = "Test_Files/DatabaseManagerTest_15.csv"
     tables = ['Absentee','Divorce','Lis_Pendents','Probate']
     app = QApplication([])

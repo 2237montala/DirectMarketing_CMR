@@ -5,8 +5,7 @@
 # Created by: PyQt5 UI code generator 5.12
 #
 # WARNING! All changes made in this file will be lost!
-
-from PyQt5 import QtCore, QtGui, QtWidgets, Qt
+from PyQt5 import QtCore, QtGui, QtWidgets
 from distutils.log import info
 from PyQt5.Qt import QWidget, QApplication, QAbstractItemView, QTableWidgetItem
 from _sqlite3 import Row
@@ -15,17 +14,16 @@ from sys import platform
 import webbrowser
 #from ShowList import ShowList
 
-class UI_ProfilePage(QWidget):
+class UI_ProfilePage(QtWidgets.QDialog):
 
     CheckEdit = True
-    
 
     def __init__(self, headers, info):
         super().__init__()
         self.headers = headers
         self.info = info
         self.setupUi()
-        
+
     def setupUi(self):
         try:
             self.setObjectName("Form")
@@ -235,55 +233,57 @@ class UI_ProfilePage(QWidget):
         self.label_11.setText(_translate("Form", "Property Information"))
         self.pushButton.setText(_translate("Form", "Edit Information"))
         item = self.house_info.verticalHeaderItem(0)
-        item.setText(_translate("Form", "Adress:"))
+        item.setText(_translate("Form", "Site_Address"))
         item = self.house_info.verticalHeaderItem(1)
-        item.setText(_translate("Form", "City:"))
+        item.setText(_translate("Form", "Site_City"))
         item = self.house_info.verticalHeaderItem(2)
-        item.setText(_translate("Form", "Zip Code:"))
+        item.setText(_translate("Form", "Site_Zip_Code"))
         item = self.house_info.verticalHeaderItem(3)
-        item.setText(_translate("Form", "State:"))
+        item.setText(_translate("Form", "Site_State"))
         item = self.house_info.verticalHeaderItem(4)
-        item.setText(_translate("Form", "Property Type:"))
+        item.setText(_translate("Form", "Property_Type"))
         item = self.house_info.verticalHeaderItem(5)
-        item.setText(_translate("Form", "Building Size:"))
+        item.setText(_translate("Form", "Building_Size"))
         item = self.house_info.verticalHeaderItem(6)
-        item.setText(_translate("Form", "Lot Size(SqFt):"))
+        item.setText(_translate("Form", "Lot_Size_(SqFt)"))
         item = self.house_info.verticalHeaderItem(7)
-        item.setText(_translate("Form", "Baths:"))
+        item.setText(_translate("Form", "Baths"))
         item = self.house_info.verticalHeaderItem(8)
-        item.setText(_translate("Form", "Bedrooms:"))
+        item.setText(_translate("Form", "Bedrooms"))
         item = self.house_info.verticalHeaderItem(9)
-        item.setText(_translate("Form", "APN:"))
+        item.setText(_translate("Form", "APN_/_Parcel_Number"))
         item = self.house_info.verticalHeaderItem(10)
-        item.setText(_translate("Form", "Year Built:"))
+        item.setText(_translate("Form", "Year_Built"))
         item = self.house_info.verticalHeaderItem(11)
-        item.setText(_translate("Form", "Number of Units:"))
+        item.setText(_translate("Form", "Number_of_Units"))
         item = self.house_info.verticalHeaderItem(12)
-        item.setText(_translate("Form", "Primary Garage Type:"))
+        item.setText(_translate("Form", "Primary_Garage_Type"))
         item = self.house_info.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Information", "Hello"))
         item = self.owner_info.verticalHeaderItem(0)
-        item.setText(_translate("Form", "First Name:"))
+        item.setText(_translate("Form", "1st_Owner's_First_Name"))
         item = self.owner_info.verticalHeaderItem(1)
-        item.setText(_translate("Form", "Last Name:"))
+        item.setText(_translate("Form", "1st_Owner's_Last_Name"))
         item = self.owner_info.verticalHeaderItem(2)
-        item.setText(_translate("Form", "Mailing Adress:"))
+        item.setText(_translate("Form", "Mail_Address"))
         item = self.owner_info.verticalHeaderItem(3)
-        item.setText(_translate("Form", "Mailing City:"))
+        item.setText(_translate("Form", "Mailing_City"))
         item = self.owner_info.verticalHeaderItem(4)
-        item.setText(_translate("Form", "Mailing Zip Code:"))
+        item.setText(_translate("Form", "Mailing_Zip_Code"))
         item = self.owner_info.verticalHeaderItem(5)
-        item.setText(_translate("Form", "Mailing State:"))
+        item.setText(_translate("Form", "Mailing_State"))
         item = self.owner_info.verticalHeaderItem(6)
-        item.setText(_translate("Form", "Loan to Value Ratio:"))
+        item.setText(_translate("Form", "Loan_To_Value_Ratio"))
         item = self.owner_info.verticalHeaderItem(7)
-        item.setText(_translate("Form", "Total Outstanding Loans:"))
+        item.setText(_translate("Form", "Total_Outstanding_Loans"))
         item = self.owner_info.verticalHeaderItem(8)
-        item.setText(_translate("Form", "Amount of Delinquent Taxes:"))
+        item.setText(_translate("Form", "Amount_of_Delinquent_Taxes"))
         item = self.owner_info.verticalHeaderItem(9)
-        item.setText(_translate("Form", "Owner Occuppied:"))
+        item.setText(_translate("Form", "Owner_Occupied"))
         item = self.owner_info.verticalHeaderItem(10)
-        item.setText(_translate("Form", "Purchased Prise:"))
+        item.setText(_translate("Form", "Purchased_Prise"))
+        item = self.owner_info.verticalHeaderItem(11)
+        item.setText(_translate("Form", "Phone_Number"))
         item = self.owner_info.horizontalHeaderItem(0)
         item.setText(_translate("Form", "Information"))
         __sortingEnabled = self.owner_info.isSortingEnabled()
@@ -396,8 +396,6 @@ class UI_ProfilePage(QWidget):
             print("Error Message:", e.args[0])
             return None
 
-
-
     def Handle_edit (self):
         self.CheckEdit = False
         print("hello")
@@ -410,74 +408,67 @@ class UI_ProfilePage(QWidget):
         self.Button_NOresponse.setEnabled(True)
         self.Button_responded.setEnabled(True)
         self.AdditionalInfo_txt.setReadOnly(False)
-
+        
 
     def Handle_Save (self):
         self.CheckEdit = True
-        print("hello")
 
         count =0
         while count != self.house_info.rowCount()-1:
-            print("this worked lol22222")
-            print(count)
-            count2 = len(self.headers)
+            count2 = len(self.header)
             for x in range(0, count2):
-                print("this is count")
-                print(count)
-                print(x)
-                print("this worked lol11111111")
-                if self.headers[x] == self.house_info.verticalHeaderItem(count).text():
-                   self.info[x] = self.house_info.item(count,0).text()
+                if self.header[x] == self.house_info.verticalHeaderItem(count).text():
+                   self.information[x] = self.house_info.item(count,0).text()
                    count=count+1
-                   print("this worked lol333333")
                    break
-                
-               
 
-                elif headers[x]=="Interested":
+
+                elif self.header[x]=="Interested":
                     if self.Very_interested.isChecked:
                         info[x] = "0"
+
                         count =count+1
-                        print("this worked lol11111911")
-                        break
-                    elif self.Interested.isChecked:
-                        info[x] = "1"
+
+                    elif self.Interested.isChecked():
+                        self.information[x] = "1"
                         count =count+1
-                        break                        
+
+
+                    elif self.Not_interested.sisChecked():
+                        self.information[x] = "2"
+                        count =count+1
+
                     elif self.Not_interested.sisChecked:
                         info[x] = "2"
+
                         count =count+1
-                        break
+                    break
 
 
-                elif headers[x] == "Status":
-                    print("this worked lol444444444")
-                    if self.Respond_person.isChecked:
-                        print("this worked lol")
-                        info[x] = "0"
+                elif self.header[x] == "Status":
+                    if self.Respond_person.isChecked():
+                        self.information[x] = "0"
                         count =count+1
-                                   
-                    elif self.Button_NOresponse.isChecked:
-                        info[x] = "1"    
-                        count =count+1
-                                           
-                    elif self.Button_responded.isChecked:
-                        info[x] = "2"
-                        count =count+1
-                                            
-                elif True:
-                    print("this worked lol11111181")
 
-                #elif headers[x]== self.AdditionalInfo_txt.():
-                 #   self.AdditionalInfo_txt.setPlainText(info[x])
-                  #  count = count+1
-                #elif x+1 == count2:
-                 #   print("this worked lol5555555")
-                  #  count = count+1
-                   # break               
-                
-               
-               
+
+                    elif self.Button_NOresponse.isChecked():
+                        self.information[x] = "1"
+                        count =count+1
+
+                    elif self.Button_responded.isChecked():
+                        self.information[x] = "2"
+                        count =count+1
+                    break
+
+
+
+                elif self.header[x]== self.label_8.text():
+                    self.information[x]=self.AdditionalInfo_txt.toPlainText().txt()
+                    count = count+1
+
+                elif x+1 == count2:
+                    count = count+1
+                    break
 
         count =0
         while count != self.owner_info.rowCount():
@@ -490,7 +481,7 @@ class UI_ProfilePage(QWidget):
                 elif x+1 == count2:
                     count = count+1
                     break
-            
+
         self.Very_interested.setEnabled(False)
         self.Interested.setEnabled(False)
         self.Not_interested.setEnabled(False)
@@ -504,22 +495,27 @@ class UI_ProfilePage(QWidget):
         here the method would call the data base to save any changes.
         '''
     def searchOS (self):
+        """
+        This method uses the python platform package to identify what type of
+        operating system the user is using.
+        """
         print('this is after search')
         from sys import platform
-        if platform == "Linux" or platform == "Linux2":
+        if platform == "linux" or platform == "linux2":
             a =1
-        elif platform == "Darwin":
+        elif platform == "Darwin" or platform == "darwin":
             a =2
         elif platform == "win32":
             a = 3
-            print('windows')
         else:
-            print("did not work")
+            a = -1
         return a
 
     def searchAdressZillow (self):
-
-            
+        """
+        Looks up the property on zillow.com. It takes the street address, zip,
+        and county and forms a url for zillow and opens the web page
+        """
         Adress="/"
         count = len(self.headers)
         for x in range(0, count):
@@ -544,28 +540,117 @@ class UI_ProfilePage(QWidget):
             print('lol')
 
 
+
         print(Adress)
         Adress = "https://www.zillow.com/homes/for_sale"+Adress+"_rb/"
         print(Adress)
         url = Adress
         print(url)
-#         os = UI_ProfilePage()
         system = self.searchOS()
         webbrowser.open(url, new=1, autoraise=True)
         
-            #webbrowser.get('windows-default').open(url) 
-        # Windows...
-        # for MacOS
-        #chrome_path = 'open -a /Applications/Google\ Chrome.app %s'
-
-        # Linux
-        # chrome_path = '/usr/bin/google-chrome %s'
-
-        # for Windows
-        chrome_path = 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
-        #webbrowser.get(chrome_path).open(url)
-    #def searchAdressOtherPage(self):
-        #fjf
+    def searchAdressHomesnap (self):
+        """
+        
+        Looks up the property on zillow.com. It takes the street address, zip, 
+        and county and forms a url for zillow and opens the web page
+        """
+        print('start')
+        Adress="/"
+        count = len(self.header)
+        for x in range(0, count):
+            if self.header[x] == "State:":
+                print(self.information[x])
+                info=self.information[x]
+                info= info.replace("Alabama", "AL")
+                info= info.replace("Illinois", "IL")
+                info = info.replace("Montana", "MT")
+                info = info.replace("Alaska", "AK")
+                info = info.replace("Nebraska", "NE")
+                info = info.replace("Arizona", "AZ")
+                info = info.replace("Nevada", "NV")
+                info = info.replace("Arkansas", "AR")
+                info = info.replace("New Hampshire", "NH")
+                info = info.replace("California", "CA")
+                info = info.replace("New Jersey", "NJ")
+                info = info.replace("Colorado", "CO")
+                info = info.replace("New Mexico", "NM")
+                info = info.replace("Connecticut", "CT")
+                info = info.replace("New York", "NY")
+                info = info.replace("Delaware", "DE")
+                info = info.replace("North Carolina", "NC")
+                info = info.replace("Florida", "FL")
+                info = info.replace("North Dakota", "ND")
+                info = info.replace("Georgia", "GA")
+                info = info.replace("Ohio", "OH")
+                info = info.replace("Hawaii", "HI")
+                info = info.replace("Oklahoma", "OK")
+                info = info.replace("Idaho", "ID")
+                info = info.replace("Oregon", "OR")
+                info = info.replace("Pennsylvania", "PA")
+                info = info.replace("Indiana", "IN")
+                info = info.replace("Rhode Island", "RI")
+                info = info.replace("Iowa", "IA")
+                info = info.replace("South Carolina", "SC")
+                info = info.replace("Kansas", "KS")
+                info = info.replace("South Dakota", "SD")
+                info = info.replace("Kentucky", "KY")
+                info = info.replace("Tennesse", "TN")
+                info = info.replace("Louisiana", "LA")
+                info = info.replace("Texas", "TX")
+                info = info.replace("Maine", "ME")
+                info = info.replace("Utah", "UT")
+                info = info.replace("Maryland", "MD")
+                info = info.replace("Vermont", "VT")
+                info = info.replace("Massachusetts", "MA")
+                info = info.replace("Wyoming", "WY")
+                info = info.replace("Missouri", "MO")
+                info = info.replace("Wisconsin", "WI")
+                info = info.replace("Mississippi", "MS")
+                info = info.replace("Washington", "WA")
+                info = info.replace("Michigan", "MI")
+                info = info.replace("Virginia", "VA")
+                Adress = Adress+ info
+        for x in range(0, count):
+            if self.header[x] == "City:":
+                Adress = Adress+"/"+self.information[x]+"/"
+        
+        for x in range(0, count):
+            if self.header[x] == "Adress:":
+                HoldD = self.information[x].split(" ")
+                print('hold d')
+                print(HoldD)
+                for y in range(0, len(HoldD)):
+                    if y==len(HoldD)-1:
+                        Adress=Adress+HoldD[y]
+                    else:
+                        Adress=Adress+HoldD[y]+"-"
+                print(Adress)
+                find_street_type = Adress.split('-')
+                print(find_street_type[2])
+                find_street_type[2] = find_street_type[2].replace("Ave","Avenue")
+                find_street_type[2] = find_street_type[2].replace('ALy', "Alley") 
+                find_street_type[2] = find_street_type[2].replace("BCH","Beach")
+                find_street_type[2] = find_street_type[2].replace("BLVD", "Boulevard")
+                find_street_type[2] = find_street_type[2].replace("CT", "Court")
+                find_street_type[2] = find_street_type[2].replace("DR","Drive")
+                find_street_type[2] = find_street_type[2].replace("FLD","Field")
+                find_street_type[2] = find_street_type[2].replace("FLS","Falls")
+                find_street_type[2] = find_street_type[2].replace("HL","Hills")
+                print(find_street_type[2])
+                s = "-"
+                s = s.join(find_street_type)  
+                Adress = s
+                               
+             
+             
+        print(Adress)
+        Adress = "https://www.homesnap.com"+Adress
+        print(Adress)
+        url = Adress
+        print(url)
+        system = self.searchOS()
+        webbrowser.open(url, new=1, autoraise=True)
 
 if __name__ == '__main__':                      
     import sys
