@@ -300,7 +300,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.pushButton_2.setText(_translate("Form", "Save Edit"))
         self.pushButton_3.setText(_translate("Form", "PushButton"))
         self.pushButton_Zillow.setText(_translate("Form", "Search Property In Zillow"))
-        self.pushButton_Redfin.setText(_translate("Form", "Search Property In Red Fin"))
+        self.pushButton_Redfin.setText(_translate("Form", "Search Property In HomeSnap"))
 
     def filltable(self, info, headers):
         #Parameters: header, information, nameOfList
@@ -599,7 +599,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
                 info = info.replace("Washington", "WA")
                 info = info.replace("Michigan", "MI")
                 info = info.replace("Virginia", "VA")
-                Adress = Adress+ info
+                Adress = Adress + info
         for x in range(0, count):
             if self.header[x] == "City:":
                 Adress = Adress+"/"+self.information[x]+"/"
@@ -634,11 +634,10 @@ class UI_ProfilePage(QtWidgets.QDialog):
              
              
         print(Adress)
-        Adress = "https://www.homesnap.com"+Adress
+        Adress = "https://www.homesnap.com" + Adress
         print(Adress)
         url = Adress
         print(url)
-        system = self.searchOS()
         webbrowser.open(url, new=1, autoraise=True)
 
 if __name__ == '__main__':                      #
