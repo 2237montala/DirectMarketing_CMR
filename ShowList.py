@@ -1,14 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'ShowSortLists.ui'
-#
-# Created by: PyQt5 UI code generator 5.12
-#
-# WARNING! All changes made in this file will be lost!
-
-# Current List of Errors:
-# After importing once it doesn't do it again :(
-
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5 import QtCore
 from PyQt5 import QtWidgets
@@ -174,7 +163,8 @@ class Ui_MainWindow(QtWidgets.QWidget):
         """
         self.update_table(self.db.get_table(self.curr_table)
                          ,self.db.get_headers(self.curr_table))
-
+#         if self.curr_table == None
+#             self.set_curr_table_name()
 
     def open_csv_import(self):
         """
