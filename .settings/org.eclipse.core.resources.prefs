@@ -6,5 +6,6 @@ encoding/ShowList.py=utf-8
 encoding/UI_After_LogIn_Page.py=utf-8
 encoding/UI_CreateAccount.py=utf-8
 encoding/UI_LogIn_Page.py=utf-8
+encoding/UI_ProfilePage.py=utf-8
 encoding/dialog.py=utf-8
 encoding/ui_ProfilePage.py=utf-8

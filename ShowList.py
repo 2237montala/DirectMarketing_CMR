@@ -105,12 +105,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         #Using the lists from parameters
         table.setRowCount(len(row_list))
         table.setColumnCount(len(header_list))
-
-        for i in range(0,len(header_list)):
-            header_list[i] = header_list[i].replace('_',' ')
-
         table.setHorizontalHeaderLabels(header_list)
-
 
         #Adds the rows of data
         self.add_items(table,row_list)
@@ -273,6 +268,9 @@ class Ui_MainWindow(QtWidgets.QWidget):
                 #Update the table to show another table
                 pass
 
+
+
+
     def update_view_menu(self):
         """
         Updates the options in the view -> switch table menu to display
@@ -301,23 +299,23 @@ class Ui_MainWindow(QtWidgets.QWidget):
         #The double clicked signal returns the row and column of the
         #double clicked item. It will automatically pass those into the method
         #if the paramaters are row and column
-
+        print("it read something")
         selectedRow = self.db.get_row_at(table_name=self.curr_table,row_id = row+1)
-        columnHeaders = self.db.get_headers(self.curr_table)
+        print(selectedRow)
+        columHeaders = self.db.get_headers(self.curr_table)
+        print(columHeaders)
         Table_name= self.curr_table
 #         print(selectedRow)
-        #self.ui_ProfilePage().filltable(columHeaders, selectedRow, Table_name)\
-        try:
-            self.UI_P = UI_ProfilePage(columnHeaders, selectedRow)
-            self.UI_P.exec_()
-        except Exception as er:
-            print('Error message:', er.args[0])
-            return False
-
+#         print(Table_name)
+        
+        self.profilePage = UI_ProfilePage()
+        #self.profilePage.filltable(columnHeaders,selectedRow)
+        self.profilePage.filltable(selectedRow,columHeaders)
+        print("didnt pass this")
 #         self.csv_importer.importDoneSignal.connect(self.import_closed)
 #         self.csv_importer.run_popup(file)
 #         #Runs to the window
-#         self.csv_importer.exec_()
+
 
         #Here you would call a method to show the profile page
 
