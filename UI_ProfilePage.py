@@ -306,7 +306,14 @@ class UI_ProfilePage(QtWidgets.QDialog):
         #Parameters: header, information, nameOfList
         #Selected_info = self.sl.table_item_clicked().selectedRow
         #Table_Headers = self.sl.table_item_clicked().columHeaders
-
+        
+        
+        
+        
+        print("llllllllllllllllllllllllllllll")
+        
+        
+        
         self.header = headers
         self.information=info
         count =0
@@ -333,7 +340,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
                     elif self.information[x] == "2":
                         self.Not_interested.setChecked(True)
                     count=count+1
-
+                    print(count)
                 elif self.header[x] == "Status":
 
                     if self.information[x] == "0":
@@ -354,6 +361,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
 
             '''
+            fjbeBVIUEBVIUEHVIE
             count=count+1
 
             item= QtWidgets.QTableWidgetItem()
@@ -399,7 +407,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.Button_NOresponse.setEnabled(True)
         self.Button_responded.setEnabled(True)
         self.AdditionalInfo_txt.setReadOnly(False)
-        
+        print(count)
 
     def Handle_Save (self):
         self.CheckEdit = True
@@ -450,7 +458,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
                         self.information[x] = "2"
                         count =count+1
                     break
-
+                    print(count)
 
 
                 elif self.header[x]== self.label_8.text():
@@ -501,6 +509,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         else:
             a = -1
         return a
+        print(a)
 
     def searchAdressZillow (self):
         """
@@ -520,6 +529,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
                         Adress=Adress+HoldD[y]+"-"
                 print(Adress)
         for x in range(0, count):
+            print(x)
             if self.header[x] == "City:":
                 Adress = Adress+",-"+self.information[x]
         for x in range(0, count):
@@ -547,6 +557,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         print('start')
         Adress="/"
         count = len(self.header)
+        print(count)
         for x in range(0, count):
             if self.header[x] == "State:":
                 print(self.information[x])
@@ -605,6 +616,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
                 Adress = Adress+"/"+self.information[x]+"/"
         
         for x in range(0, count):
+            print(x)
             if self.header[x] == "Adress:":
                 HoldD = self.information[x].split(" ")
                 print('hold d')
@@ -630,6 +642,8 @@ class UI_ProfilePage(QtWidgets.QDialog):
                 s = "-"
                 s = s.join(find_street_type)  
                 Adress = s
+                print("cl")
+                print("kkdkdkdkd")
                                
              
              
@@ -643,7 +657,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
 if __name__ == '__main__':                      #
     import sys
-
+    print("hello tyler you'r a pussy")
     app = QApplication(sys.argv)
 
     header = ["Site_Address", "Site_City", "Zip Code", "State","Status","Comments of Property"]
