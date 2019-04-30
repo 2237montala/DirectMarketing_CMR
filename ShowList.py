@@ -315,16 +315,14 @@ class Ui_MainWindow(QtWidgets.QWidget):
         selectedRow = self.db.get_row_at(table_name=self.curr_table,row_id = row+1)
         columnHeaders = self.db.get_headers(self.curr_table)
         Table_name= self.curr_table
-        print(selectedRow)
-#         print(Table_name)
-
 #         print(selectedRow)
-        #self.ui_ProfilePage().filltable(columHeaders, selectedRow, Table_name)
-        print(columnHeaders)
-        self.profilePage = UI_ProfilePage()
-        #self.profilePage.filltable(columnHeaders,selectedRow)
-        self.profilePage.filltable(selectedRow,columnHeaders)
-#         self.createAccountWidget.create_account_done_signal.connect(self.create_account_closed)
+        #self.ui_ProfilePage().filltable(columHeaders, selectedRow, Table_name)\
+        try:
+            self.UI_P = UI_ProfilePage(columnHeaders, selectedRow)
+            self.UI_P.exec_()
+        except Exception as er:
+            print('Error message:', er.args[0])
+            return False
 
 #         self.csv_importer.importDoneSignal.connect(self.import_closed)
 #         self.csv_importer.run_popup(file)
