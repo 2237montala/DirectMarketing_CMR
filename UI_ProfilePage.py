@@ -652,6 +652,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         webbrowser.open(url, new=1, autoraise=True)
 
 if __name__ == '__main__':                      #
+    
     import sys
 
     app = QApplication(sys.argv)
