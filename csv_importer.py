@@ -13,19 +13,20 @@ from re import search
 #interested
 
 class csv_importer_popup(QtWidgets.QDialog):
+    #Signals when csv_importer_popup closes
     importDoneSignal = QtCore.pyqtSignal('QString')
 
     def __init__(self,window_title,db_file_loc,tables,protected_table_prefix):
         super().__init__()
+        #Creating the window
         self.title = window_title
         self.setWindowTitle(self.title)
         self.protected_table_prefix = protected_table_prefix
-
         self.tablesInDB = tables
         #Database manager stuff
         self.db = DatabaseManager(db_file_loc,protected_table_prefix)
 
-        #Create array with tables already in the db to be
+        #Create array with tables already in the database to be
         #put in the common files radio button box
         self.default_lists = []
         for table in tables:
@@ -33,9 +34,6 @@ class csv_importer_popup(QtWidgets.QDialog):
             for columnName in self.db.get_headers(table):
                 tempList.append(columnName)
             self.default_lists.append(tempList)
-
-        print(self.default_lists)
-
 
         self.layout = QGridLayout()
 
@@ -54,7 +52,7 @@ class csv_importer_popup(QtWidgets.QDialog):
         scrollArea.setWidget(self.csvHeaderGroup_box)
         scrollArea.horizontalScrollBar().setEnabled(False)
 
-        #Create the buttson for tables that already exist in the db
+        #Create the buttons for tables that already exist in the database
         self.generate_radiobuttons(self.tablesInDB)
 
         #List of button groups
@@ -93,7 +91,7 @@ class csv_importer_popup(QtWidgets.QDialog):
 
 
     def generate_checkboxes(self, button_name_list):
-        print(button_name_list)
+        #Generate check_boxes
         self.csvHeaderGroup = QButtonGroup()
         self.csvHeaderGroup_layout = QVBoxLayout()
         self.csvHeaderGroup.setExclusive(False)
@@ -108,12 +106,14 @@ class csv_importer_popup(QtWidgets.QDialog):
         self.csvHeaderGroup_box.setLayout(self.csvHeaderGroup_layout)
 
     def generate_radiobuttons(self,button_name_list):
+        #Generate Radio Buttons
         self.commonFileTypesGroup = QButtonGroup()
         self.commonFileTypesGroupLayout = QVBoxLayout()
-        self.commonFileTypesGroupBox = QGroupBox('Select a prexisting table')
+        self.commonFileTypesGroupBox = QGroupBox('Select a pre-existing table')
         self.commonFileTypesGroupLayout.addStretch(1)
         count = 0
         for button_name in button_name_list:
+            #Add each button from available lists in database
             radioButton = QRadioButton(button_name)
             self.commonFileTypesGroup.addButton(radioButton,count)
             self.commonFileTypesGroupLayout.addWidget(self.commonFileTypesGroup.buttons()[-1])
@@ -123,7 +123,7 @@ class csv_importer_popup(QtWidgets.QDialog):
 
 
     def import_done(self,tableName):
-        print("Emiting %s signal name" % tableName)
+        #Returns what table was created
         self.importDoneSignal.emit(tableName)
         self.accept()
 
@@ -134,20 +134,18 @@ class csv_importer_popup(QtWidgets.QDialog):
     def importCSV(self):
         self.importButton.setEnabled(False)
         self.cancelButton.setEnabled(False)
-        #Check if any radio buttons were presssed by checking if they were
+        #Check if any radio buttons were pressed by checking if they were
         #checked and save the number in the button group
         radio_button_number = -1
         special_button_number = -1
         count = 0
         for radioButton in self.buttonGroups[0].buttons():
             if radioButton.isChecked():
-                print(radioButton.text())
                 radio_button_number = count
                 break;
             count += 1
-        for specialButton in self.buttonGroups[1].buttons():
+        for specialButton in self.buttonGroups[1].buttons(): # Do the same for the special buttons
             if specialButton.isChecked():
-                print(specialButton.text())
                 special_button_number = count
                 break;
             count += 1
@@ -155,19 +153,12 @@ class csv_importer_popup(QtWidgets.QDialog):
         if radio_button_number > -1:
             searchCritera = self.ingestor.getHeaderIndex(self.default_lists[radio_button_number]
                                                         ,self.ingestor.getCSVHeaders())
-            #print(searchCritera)
-
             buttonText = self.buttonGroups[0].buttons()[radio_button_number].text()
-            #print(buttonText)
-            #buttonText = self.buttonGroups[0].id(self.buttonGroups[0].checkedId()).text()
-
-            #Check which table coresponds with the button pressed
+            #Check which table corresponds with the button pressed
             for tableName in self.tablesInDB:
-                #print('%s == %s' % (buttonText.replace(' ','_'), tableName))
                 if buttonText.replace(' ','_') == tableName:
-                    #print(tableName)
-                    #Uses the ingestor to search the unfiltered rows using
-                    #this search critera list
+                    #Uses the ingestor to search the un-filtered rows using
+                    #this search criteria list
                     self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                     #Check if tables exists already
                     if not self.db.doesTableExist(tableName):
@@ -184,29 +175,25 @@ class csv_importer_popup(QtWidgets.QDialog):
                     raise Exception()
                 else:
                     customTableName = self.db.is_valid_string(self.tableNameField.text().replace(' ','_'))
-                    print(customTableName)
                     if special_button_number > -1:
-                        #default header option not choosen, so custom lists
+                        # Default header option not chosen, so custom lists
                         try:
                             requestedHeaders = []
                             for item in self.buttonGroups[1].buttons():
                                 if item.isChecked():
-                                    #print(item.text())
                                     requestedHeaders.append(item.text())
 
                             does_exist = self.db.doesTableExist(customTableName)
                             has_same_cols = True
                             if not does_exist:
                                 #If not the create it with the table name
-                                print('%s doesn\'t exist. Creating' % customTableName)
                                 self.db.create_table_list(customTableName,self.db.remove_spaces(requestedHeaders),'string')
                             else:
                                 #Tables exists. Does it have the same columns?
                                 if not(requestedHeaders == self.db.get_headers(customTableName)):
-                                    print("Same table name, different columns")
                                     has_same_cols = False
                                     #Find the different column names
-                                    #This works by turing the lists into sets
+                                    #This works by turning the lists into sets
                                     #A set is an unordered list with no duplicate elements
                                     #A set supports matrix operations so you can subtract the two sets
                                     #This returns the elements that are not shared
@@ -226,15 +213,11 @@ class csv_importer_popup(QtWidgets.QDialog):
                                 #New table has different columns
                                 #Combine the headers in the lists
                                 combinedHeaders = self.db.get_headers(customTableName) + requestedHeaders
-                                print(combinedHeaders)
                                 #Have to re order them to match the csv file
                                 newRequestedHeaders = []
-                                #print(self.ingestor.getCSVHeaders())
                                 for header in self.db.remove_spaces(self.ingestor.getCSVHeaders()):
                                     if header in combinedHeaders:
                                         newRequestedHeaders.append(header)
-
-                                print(newRequestedHeaders)
                                 searchCritera = self.ingestor.getHeaderIndex(newRequestedHeaders,self.ingestor.getCSVHeaders())
                                 self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                                 rows = self.ingestor.getRows()
@@ -267,7 +250,7 @@ class csv_importer_popup(QtWidgets.QDialog):
         Adds the ingestor rows to the db one row at a time so the progress
         bar will show the progress
         """
-        #Set the max value of the progess bar to the number of rows to be add
+        #Set the max value of the progress bar to the number of rows to be add
         self.progressBar.setMaximum(len(rows_to_be_added))
         #self.db.add_list_of_rows(tableName,self.db.remove_spaces(self.default_lists[button_number]),rows)
         count = 0
