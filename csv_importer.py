@@ -155,10 +155,13 @@ class csv_importer_popup(QtWidgets.QDialog):
                                                         ,self.ingestor.getCSVHeaders())
             buttonText = self.buttonGroups[0].buttons()[radio_button_number].text()
             #Check which table corresponds with the button pressed
+
             for tableName in self.tablesInDB:
                 if buttonText.replace(' ','_') == tableName:
+
                     #Uses the ingestor to search the un-filtered rows using
                     #this search criteria list
+
                     self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                     #Check if tables exists already
                     if not self.db.doesTableExist(tableName):
@@ -205,6 +208,7 @@ class csv_importer_popup(QtWidgets.QDialog):
 
                             if has_same_cols:
                                 #New table is identical to existing one
+                                print("same columns")
                                 searchCritera = self.ingestor.getHeaderIndex(requestedHeaders,self.ingestor.getCSVHeaders())
                                 self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                                 rows = self.ingestor.getRows()
@@ -212,15 +216,22 @@ class csv_importer_popup(QtWidgets.QDialog):
                             else:
                                 #New table has different columns
                                 #Combine the headers in the lists
+                                print("diff columns")
                                 combinedHeaders = self.db.get_headers(customTableName) + requestedHeaders
                                 #Have to re order them to match the csv file
                                 newRequestedHeaders = []
                                 for header in self.db.remove_spaces(self.ingestor.getCSVHeaders()):
+                                    #Find the header in the csv file
+                                    #The order matters because the primary key is needed to update the row
                                     if header in combinedHeaders:
                                         newRequestedHeaders.append(header)
+
+                                #Get the index for the header
                                 searchCritera = self.ingestor.getHeaderIndex(newRequestedHeaders,self.ingestor.getCSVHeaders())
+                                #Filter the rows so only the requested info is there
                                 self.ingestor.searchRows(searchCritera,self.ingestor.getRows())
                                 rows = self.ingestor.getRows()
+                                #Import them nomrally
                                 self.import_with_progress_bar(customTableName, self.ingestor.getRows(),newRequestedHeaders)
 
                             self.import_done(customTableName)
@@ -251,6 +262,7 @@ class csv_importer_popup(QtWidgets.QDialog):
         bar will show the progress
         """
         #Set the max value of the progress bar to the number of rows to be add
+
         self.progressBar.setMaximum(len(rows_to_be_added))
         #self.db.add_list_of_rows(tableName,self.db.remove_spaces(self.default_lists[button_number]),rows)
         count = 0
