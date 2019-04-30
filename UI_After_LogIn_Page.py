@@ -84,12 +84,12 @@ class Ui_CalendarForm(QtWidgets.QDialog):
             dater = date.toString("MM-dd-yy")
             self.label.setText(dater)
             if not self.db.doesTableExist(self.event_info_table_name):
-                self.label_3.setText('No Event')
+                self.label_3.setText('No events')
             row = self.db.get_row_at(self.event_info_table_name,Event_Columns[0],dater)
             if not row == None:
                 self.label_3.setText(row[1])
             else:
-                self.label_3.setText('NO event')
+                self.label_3.setText('No events')
         except Exception as er:
             print('Error message:', er.args[0])
             return False
