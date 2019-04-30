@@ -23,7 +23,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.headers = headers
         self.info = info
         self.setupUi()
-        
+
     def setupUi(self):
         try:
             self.setObjectName("Form")
@@ -303,7 +303,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.pushButton_3.setText(_translate("Form", "PushButton"))
         self.pushButton_Zillow.setText(_translate("Form", "Search Property In Zillow"))
         self.pushButton_Redfin.setText(_translate("Form", "Search Property In Red Fin"))
-
         self.filltable(self.headers, self.info)
 
     def filltable(self, headers, info):
@@ -659,4 +658,5 @@ if __name__ == '__main__':
     information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0",'10',"comments"]
     app = QApplication(sys.argv)
     window = UI_ProfilePage(header, information)
+    window.show()
     sys.exit(app.exec_())
