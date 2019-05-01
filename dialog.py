@@ -1,11 +1,3 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'CalendarDialouge.ui'
-#
-# Created by: PyQt5 UI code generator 5.11.3
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from DatabaseManager import DatabaseManager
@@ -16,6 +8,7 @@ from csv_importer import csv_importer_popup
 Event_Columns = ['Date', 'Event', 'Address', 'Group']
 
 class Ui_Dialog(QtWidgets.QDialog):
+    
     calendar_dialog_signal = QtCore.pyqtSignal()
     
     def __init__(self, db_file, protected_table_prefix):
@@ -28,7 +21,7 @@ class Ui_Dialog(QtWidgets.QDialog):
               self.event_info_table_name = protected_table_prefix + "Event_Information"
         except Exception as er:
             print('Error message:', er.args[0])
-            return False
+            return None
     # creates method for the ok button that creates variables holding the date and event text typed by the user
     # it will also save the information into the table
     def handle_acceptClick(self):
@@ -51,7 +44,7 @@ class Ui_Dialog(QtWidgets.QDialog):
         except Exception as er:
             print('Error message:', er.args[0])
             return False
-        
+         
     # creates method for the cancel button that closes the dialog and leaves the calendar widget open
     def handle_rejectClick(self):
         self.close()

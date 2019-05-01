@@ -1,21 +1,8 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'After_LogIn_Page.ui'
-#
-# Created by: PyQt5 UI code generator 5.12
-#
-# WARNING! All changes made in this file will be lost!
-# Form implementation generated from reading ui file 'CalendarforSMP.ui'
-#
-# Created by: PyQt5 UI code generator 5.11.3
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QDate, QDateTime
 from PyQt5.QtWidgets import QCalendarWidget, QDateEdit
 from dialog import *
-from UI_ProfilePage import *
+from ui_ProfilePage import *
 from calendar import calendar
 
 from DatabaseManager import DatabaseManager
@@ -43,15 +30,15 @@ class Ui_CalendarForm(QtWidgets.QDialog):
     def EventButton_handler(self):
         try:
             self.ui_update = Ui_Dialog('test.db', '__ADMIN__')
-            self.ui_update.calendar_dialog_signal.connect(lambda: self.offpass(self))
+            self.ui_update.calendar_dialog_signal.connect(self.offpass)
             self.ui_update.exec_()
         except Exception as er:
             print('Error message:', er.args[0])
             return False
-
+        #self.calendar.
     #passes
     def offpass(self):
-        print("kjfdsja;lkf")
+        pass
     
     # creates method that handles lists page button and changes widget to the show lists page
     def handle_listsPageButton(self):
@@ -97,12 +84,12 @@ class Ui_CalendarForm(QtWidgets.QDialog):
             dater = date.toString("MM-dd-yy")
             self.label.setText(dater)
             if not self.db.doesTableExist(self.event_info_table_name):
-                self.label_3.setText('No Event')
+                self.label_3.setText('No events')
             row = self.db.get_row_at(self.event_info_table_name,Event_Columns[0],dater)
             if not row == None:
                 self.label_3.setText(row[1])
             else:
-                self.label_3.setText('NO event')
+                self.label_3.setText('No events')
         except Exception as er:
             print('Error message:', er.args[0])
             return False
@@ -190,29 +177,30 @@ class Ui_CalendarForm(QtWidgets.QDialog):
             self.ProfilePageButton.setObjectName("ProfilePageButton")
             self.horizontalLayout_2.addWidget(self.ProfilePageButton)
             self.label = QtWidgets.QLabel(self)
-            self.label.setGeometry(QtCore.QRect(925, 200, 645, 100))
+            self.label.setGeometry(QtCore.QRect(975, 159, 150, 50))
             font = QtGui.QFont()
             font.setPointSize(22)
             font.setBold(True)
             font.setWeight(75)
             self.label.setFont(font)
-            self.label.setAutoFillBackground(True)
+            self.label.setAutoFillBackground(False)
             self.label.setObjectName("label")
             self.label_2 = QtWidgets.QLabel(self)
-            self.label_2.setGeometry(QtCore.QRect(925, 350, 100, 50))
+            self.label_2.setGeometry(QtCore.QRect(875, 134, 300, 100))
             font = QtGui.QFont()
             font.setPointSize(20)
             font.setBold(True)
             font.setUnderline(True)
             font.setWeight(75)
             self.label_2.setFont(font)
-            self.label_2.setAutoFillBackground(True)
+            self.label_2.setAutoFillBackground(False)
             self.label_2.setObjectName("label_2")
-            self.label_3 = QtWidgets.QLabel(self)
-            self.label_3.setGeometry(QtCore.QRect(1025, 350, 500, 425))
-            self.label_3.setAutoFillBackground(True)
-            self.label_3.setAlignment(QtCore.Qt.AlignHCenter|QtCore.Qt.AlignTop)
+            self.label_3 = QtWidgets.QTextBrowser(self)
+            self.label_3.setGeometry(QtCore.QRect(875, 250, 700, 625))
+            self.label_3.setAutoFillBackground(False)
+            self.label_3.setAlignment(QtCore.Qt.AlignTop)
             self.label_3.setObjectName("label_3")
+            self.label_3.setFontPointSize(20)
             self.label_4 = QtWidgets.QLabel(self)
             self.label_4.setGeometry(QtCore.QRect(925, 775, 100, 50))
             font = QtGui.QFont()
@@ -220,15 +208,20 @@ class Ui_CalendarForm(QtWidgets.QDialog):
             font.setUnderline(True)
             font.setWeight(50)
             self.label_4.setFont(font)
-            self.label_4.setAutoFillBackground(True)
+            self.label_4.setAutoFillBackground(False)
             self.label_4.setObjectName("label_4")
             self.label_5 = QtWidgets.QLabel(self)
             self.label_5.setGeometry(QtCore.QRect(925, 825, 100, 50))
             font = QtGui.QFont()
             font.setUnderline(True)
             self.label_5.setFont(font)
-            self.label_5.setAutoFillBackground(True)
+            self.label_5.setAutoFillBackground(False)
             self.label_5.setObjectName("label_5")
+            self.line = QtWidgets.QFrame(self)
+            self.line.setGeometry(QtCore.QRect(10, 75, 1630, 20))
+            self.line.setFrameShape(QtWidgets.QFrame.HLine)
+            self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+            self.line.setObjectName("line")
     
             self.retranslateUi()
             
@@ -257,10 +250,10 @@ class Ui_CalendarForm(QtWidgets.QDialog):
         self.SearchPageButton.setText(_translate("CalendarForm", "Search for Lead"))
         self.ProfilePageButton.setText(_translate("CalendarForm", "Create New Profile"))
         self.label.setText(_translate("CalendarForm", ""))
-        self.label_2.setText(_translate("CalendarForm", "Events"))
+        self.label_2.setText(_translate("CalendarForm", "Event:"))
         self.label_3.setText(_translate("CalendarForm", " "))
-        self.label_4.setText(_translate("CalendarForm", "Attached Address"))
-        self.label_5.setText(_translate("CalendarForm", "Attached Group"))
+        self.label_4.setText(_translate("CalendarForm", ""))
+        self.label_5.setText(_translate("CalendarForm", ""))
 
 if __name__ == "__main__":
     import sys
