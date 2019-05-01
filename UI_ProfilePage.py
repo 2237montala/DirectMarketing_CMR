@@ -18,10 +18,12 @@ class UI_ProfilePage(QtWidgets.QDialog):
     profile_saved_signal = QtCore.pyqtSignal('QString')
     CheckEdit = True
 
-    def __init__(self):
+    def __init__(self,info,headers):
         super().__init__()
         self.setupUi()
         self.show()
+        self.header = headers
+        self.information=info
 
     def setupUi(self):
         self.setObjectName("Form")
@@ -222,6 +224,11 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
+        for i in range(self.house_info.rowCount()-1):
+            item = QtWidgets.QTableWidgetItem("T")
+            item.setFlags(QtCore.Qt.ItemIsEditable)
+            self.house_info.setItem(i,0, item)
+
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("Form", "Form"))
@@ -302,25 +309,22 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.pushButton_Redfin.setText(_translate("Form", "Search Property In Home Snap"))
 
 
-    def filltable(self, info, headers):
+    def filltable(self):
         #Parameters: header, information, nameOfList
         #Selected_info = self.sl.table_item_clicked().selectedRow
-        #Table_Headers = self.sl.table_item_clicked().columHeaders
-        self.header = headers
-        self.information=info
+        #Table_Headers = self.sl.table_item_clicked().columHeader
         count =0
         while count != self.house_info.rowCount()-1:
             count2 = len(self.header)
             for x in range(0, count2):
-
-                if headers[x] == self.house_info.verticalHeaderItem(count).text():
-                   item = QtWidgets.QTableWidgetItem(str(info[x]))
+                if self.header[x] == self.house_info.verticalHeaderItem(count).text():
+                   item = QtWidgets.QTableWidgetItem(str(self.information[x]))
                    if self.CheckEdit:
                        item.setFlags(QtCore.Qt.ItemIsEditable)
                    self.house_info.setItem(count,0, item)
+                   print(self.header[x])
                    count=count+1
                    break
-
                 elif self.header[x]=="Interested":
                     if self.information[x] == "0":
                         self.Very_interested.setChecked(True)
@@ -338,12 +342,13 @@ class UI_ProfilePage(QtWidgets.QDialog):
                     elif self.information[x] == "2":
                         self.Button_responded.setChecked(True)
                     count =count+1
-                elif headers[x]== self.label_8.text():
+                elif self.header[x]== self.label_8.text():
                     self.AdditionalInfo_txt.setPlainText(info[x])
                     count += 1
                 elif x+1 == count2:
                    count = count+1
                    break
+
 
         count =0
         while count != self.owner_info.rowCount()-1:
@@ -363,10 +368,20 @@ class UI_ProfilePage(QtWidgets.QDialog):
                     break
 
     def Handle_edit (self):
-        for x in range(0,3):
-            self.CheckEdit = False
-            self.update()
-            self.filltable(self.header, self.information)
+        #for x in range(0,3):
+        self.CheckEdit = False
+        for i in range(0, self.house_info.rowCount()-1):
+            print(i)
+            itemText = self.house_info.item(i,0).text()
+            print(itemText)
+            self.house_info.removeCellWidget(i,0)
+            #self.house_info.setItem(i,0, None)
+            #self.house_info.removeRow(i)
+            item = QtWidgets.QTableWidgetItem(itemText)
+
+            self.house_info.setItem(i,0, item)
+            #self.update()
+            #self.filltable()
         #for x in range(0, )
         self.Very_interested.setEnabled(True)
         self.Interested.setEnabled(True)
@@ -439,10 +454,10 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.Button_responded.setEnabled(False)
         self.AdditionalInfo_txt.setReadOnly(True)
 
-        self.filltable(self.header, self.information)
+        self.filltable()
 
 
-        signal_info_str = "//".join(UserInfo)
+        #signal_info_str = "//".join(UserInfo)
 
         '''
         here the method would call the data base to save any changes.
@@ -613,7 +628,7 @@ if __name__ == '__main__':                      #
 
     header = ["Site_Address", "Site_City", "Zip Code", "State","Status","Comments of Property"]
     information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0","comments"]
-    window = UI_ProfilePage()
-    window.filltable(information,header)
+    window = UI_ProfilePage(information,header)
+    window.filltable()
     window.show()
     sys.exit(app.exec_())
