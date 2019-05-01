@@ -15,14 +15,13 @@ import webbrowser
 #from ShowList import ShowList
 
 class UI_ProfilePage(QtWidgets.QDialog):
-
+    profile_saved_signal = QtCore.pyqtSignal('QString')
     CheckEdit = True
 
     def __init__(self):
         super().__init__()
         self.setupUi()
         self.show()
-        print("sadfas")
 
     def setupUi(self):
         self.setObjectName("Form")
@@ -191,10 +190,10 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.Not_interested.setGeometry(QtCore.QRect(890, 640, 111, 20))
         self.Not_interested.setObjectName("Not_interested")
         self.label = QtWidgets.QLabel(self)
-        self.label.setGeometry(QtCore.QRect(550, 590, 41, 16))
+        self.label.setGeometry(QtCore.QRect(550, 590, 52, 16))
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self)
-        self.label_2.setGeometry(QtCore.QRect(530, 640, 71, 16))
+        self.label_2.setGeometry(QtCore.QRect(530, 640, 80, 16))
         self.label_2.setObjectName("label_2")
         self.pushButton_2 = QtWidgets.QPushButton(self)
         self.pushButton_2.setGeometry(QtCore.QRect(880, 0, 93, 28))
@@ -300,21 +299,13 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.pushButton_2.setText(_translate("Form", "Save Edit"))
         self.pushButton_3.setText(_translate("Form", "PushButton"))
         self.pushButton_Zillow.setText(_translate("Form", "Search Property In Zillow"))
-        self.pushButton_Redfin.setText(_translate("Form", "Search Property In Red Fin"))
-        
+        self.pushButton_Redfin.setText(_translate("Form", "Search Property In Home Snap"))
+
 
     def filltable(self, info, headers):
         #Parameters: header, information, nameOfList
         #Selected_info = self.sl.table_item_clicked().selectedRow
         #Table_Headers = self.sl.table_item_clicked().columHeaders
-        
-        
-        
-        
-        print("llllllllllllllllllllllllllllll")
-        
-        
-        
         self.header = headers
         self.information=info
         count =0
@@ -324,11 +315,8 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
                 if headers[x] == self.house_info.verticalHeaderItem(count).text():
                    item = QtWidgets.QTableWidgetItem(str(info[x]))
-                   
-                   
                    if self.CheckEdit:
                        item.setFlags(QtCore.Qt.ItemIsEditable)
-
                    self.house_info.setItem(count,0, item)
                    count=count+1
                    break
@@ -343,7 +331,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
                     count=count+1
 
                 elif self.header[x] == "Status":
-
                     if self.information[x] == "0":
                         self.Respond_person.setChecked(True)
                     elif self.information[x] == "1":
@@ -351,8 +338,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
                     elif self.information[x] == "2":
                         self.Button_responded.setChecked(True)
                     count =count+1
-
-
                 elif headers[x]== self.label_8.text():
                     self.AdditionalInfo_txt.setPlainText(info[x])
                     count += 1
@@ -360,15 +345,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
                    count = count+1
                    break
 
-
-            '''
-            count=count+1
-
-            item= QtWidgets.QTableWidgetItem()
-            item.setText("You did it")
-            self.house_info.setItem(count,0, item)
-            count=count+1
-            '''
         count =0
         while count != self.owner_info.rowCount()-1:
             count2 = len(self.header)
@@ -378,21 +354,13 @@ class UI_ProfilePage(QtWidgets.QDialog):
 
                    if self.CheckEdit:
                     item.setFlags(QtCore.Qt.ItemIsEditable)
-                    
+
                    self.owner_info.setItem(count,0, item)
                    count=count+1
                    break
                 elif x+1 == count2:
                     count = count+1
                     break
-            '''
-            item= QtWidgets.QTableWidgetItem()
-            item.setText("You did it")
-            self.owner_info.setItem(count,0,item)
-            count=count+1
-            '''
-
-
 
     def Handle_edit (self):
         for x in range(0,3):
@@ -407,68 +375,46 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.Button_NOresponse.setEnabled(True)
         self.Button_responded.setEnabled(True)
         self.AdditionalInfo_txt.setReadOnly(False)
-        
 
     def Handle_Save (self):
         self.CheckEdit = True
-
+        print("Saving")
         count =0
         while count != self.house_info.rowCount()-1:
             count2 = len(self.header)
             for x in range(0, count2):
-                print(self.house_info.verticalHeaderItem(count).text())
                 if self.header[x] == self.house_info.verticalHeaderItem(count).text():
-
                    self.information[x] = self.house_info.item(count,0).text()
-
-                   print(self.information[x])
                    count=count+1
                    break
-
-
                 elif self.header[x]=="Interested":
                     if self.Very_interested.isChecked:
                         info[x] = "0"
-
                         count =count+1
-
                     elif self.Interested.isChecked():
                         self.information[x] = "1"
                         count =count+1
-
-
                     elif self.Not_interested.sisChecked():
                         self.information[x] = "2"
                         count =count+1
-
                     elif self.Not_interested.sisChecked:
                         info[x] = "2"
-
                         count =count+1
                     break
-
-
                 elif self.header[x] == "Status":
                     if self.Respond_person.isChecked():
                         self.information[x] = "0"
                         count =count+1
-
-
                     elif self.Button_NOresponse.isChecked():
                         self.information[x] = "1"
                         count =count+1
-
                     elif self.Button_responded.isChecked():
                         self.information[x] = "2"
                         count =count+1
                     break
-
-
-
                 elif self.header[x]== self.label_8.text():
                     self.information[x]=self.AdditionalInfo_txt.toPlainText().txt()
                     count = count+1
-
                 elif x+1 == count2:
                     count = count+1
                     break
@@ -492,9 +438,11 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.Button_NOresponse.setEnabled(False)
         self.Button_responded.setEnabled(False)
         self.AdditionalInfo_txt.setReadOnly(True)
-        
+
         self.filltable(self.header, self.information)
-            
+
+
+        signal_info_str = "//".join(UserInfo)
 
         '''
         here the method would call the data base to save any changes.
@@ -551,11 +499,11 @@ class UI_ProfilePage(QtWidgets.QDialog):
         print(url)
         system = self.searchOS()
         webbrowser.open(url, new=1, autoraise=True)
-        
+
     def searchAdressHomesnap (self):
         """
-        
-        Looks up the property on zillow.com. It takes the street address, zip, 
+
+        Looks up the property on zillow.com. It takes the street address, zip,
         and county and forms a url for zillow and opens the web page
         """
         print('start')
@@ -617,7 +565,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         for x in range(0, count):
             if self.header[x] == "City:":
                 Adress = Adress+"/"+self.information[x]+"/"
-        
+
         for x in range(0, count):
             if self.header[x] == "Adress:":
                 HoldD = self.information[x].split(" ")
@@ -632,7 +580,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
                 find_street_type = Adress.split('-')
                 print(find_street_type[2])
                 find_street_type[2] = find_street_type[2].replace("Ave","Avenue")
-                find_street_type[2] = find_street_type[2].replace('ALy', "Alley") 
+                find_street_type[2] = find_street_type[2].replace('ALy', "Alley")
                 find_street_type[2] = find_street_type[2].replace("BCH","Beach")
                 find_street_type[2] = find_street_type[2].replace("BLVD", "Boulevard")
                 find_street_type[2] = find_street_type[2].replace("CT", "Court")
@@ -642,13 +590,13 @@ class UI_ProfilePage(QtWidgets.QDialog):
                 find_street_type[2] = find_street_type[2].replace("HL","Hills")
                 print(find_street_type[2])
                 s = "-"
-                s = s.join(find_street_type)  
+                s = s.join(find_street_type)
                 Adress = s
                 print("cl")
                 print("kkdkdkdkd")
-                               
-             
-             
+
+
+
         print(Adress)
         Adress = "https://www.homesnap.com"+Adress
         print(Adress)
@@ -658,7 +606,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         webbrowser.open(url, new=1, autoraise=True)
 
 if __name__ == '__main__':                      #
-    
+
     import sys
 
     app = QApplication(sys.argv)
