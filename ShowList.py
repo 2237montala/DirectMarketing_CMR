@@ -119,7 +119,8 @@ class Ui_MainWindow(QtWidgets.QWidget):
 
         #Resizes the cells to fit text without clipping
         #1 = stretch to max string length
-        table.horizontalHeader().setSectionResizeMode(1)
+        #table.horizontalHeader().setSectionResizeMode(1)
+        table.resizeColumnsToContents()
         table.setSelectionBehavior(QtWidgets.QTableView.SelectRows);
         self.set_table(table)
 
@@ -306,25 +307,15 @@ class Ui_MainWindow(QtWidgets.QWidget):
         #The double clicked signal returns the row and column of the
         #double clicked item. It will automatically pass those into the method
         #if the paramaters are row and column
-        print("it read something")
         selectedRow = self.db.get_row_at(table_name=self.curr_table,row_id = row+1)
-        print(selectedRow)
         columHeaders = self.db.get_headers(self.curr_table)
-        print(columHeaders)
         Table_name= self.curr_table
-#         print(selectedRow)
+        print(selectedRow)
 #         print(Table_name)
-        
+
         self.profilePage = UI_ProfilePage()
         #self.profilePage.filltable(columnHeaders,selectedRow)
         self.profilePage.filltable(selectedRow,columHeaders)
-        print("didnt pass this")
-#         self.csv_importer.importDoneSignal.connect(self.import_closed)
-#         self.csv_importer.run_popup(file)
-#         #Runs to the window
-
-
-        #Here you would call a method to show the profile page
 
     def get_search_key(self):
         """
