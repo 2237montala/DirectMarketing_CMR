@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QDate, QDateTime
 from PyQt5.QtWidgets import QCalendarWidget, QDateEdit
 from dialog import *
-from UI_ProfilePage import *
+from ui_ProfilePage import *
 from calendar import calendar
 
 from DatabaseManager import DatabaseManager
