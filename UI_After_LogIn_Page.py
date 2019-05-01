@@ -43,7 +43,7 @@ class Ui_CalendarForm(QtWidgets.QDialog):
     def EventButton_handler(self):
         try:
             self.ui_update = Ui_Dialog('test.db', '__ADMIN__')
-            self.ui_update.calendar_dialog_signal.connect(lambda: self.offpass(self))
+            self.ui_update.calendar_dialog_signal.connect(self.offpass)
             self.ui_update.exec_()
         except Exception as er:
             print('Error message:', er.args[0])
@@ -51,7 +51,7 @@ class Ui_CalendarForm(QtWidgets.QDialog):
 
     #passes
     def offpass(self):
-        print("kjfdsja;lkf")
+        pass
     
     # creates method that handles lists page button and changes widget to the show lists page
     def handle_listsPageButton(self):
