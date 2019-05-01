@@ -225,9 +225,14 @@ class UI_ProfilePage(QtWidgets.QDialog):
         QtCore.QMetaObject.connectSlotsByName(self)
 
         for i in range(self.house_info.rowCount()-1):
-            item = QtWidgets.QTableWidgetItem("T")
+            item = QtWidgets.QTableWidgetItem("")
             item.setFlags(QtCore.Qt.ItemIsEditable)
             self.house_info.setItem(i,0, item)
+
+        for i in range(self.owner_info.rowCount()-1):
+            item = QtWidgets.QTableWidgetItem("")
+            item.setFlags(QtCore.Qt.ItemIsEditable)
+            self.owner_info.setItem(i,0, item)
 
     def retranslateUi(self):
         _translate = QtCore.QCoreApplication.translate
@@ -371,15 +376,16 @@ class UI_ProfilePage(QtWidgets.QDialog):
         #for x in range(0,3):
         self.CheckEdit = False
         for i in range(0, self.house_info.rowCount()-1):
-            print(i)
             itemText = self.house_info.item(i,0).text()
-            print(itemText)
             self.house_info.removeCellWidget(i,0)
-            #self.house_info.setItem(i,0, None)
-            #self.house_info.removeRow(i)
             item = QtWidgets.QTableWidgetItem(itemText)
-
             self.house_info.setItem(i,0, item)
+
+        for i in range(0, self.owner_info.rowCount()-1):
+            itemText = self.owner_info.item(i,0).text()
+            self.owner_info.removeCellWidget(i,0)
+            item = QtWidgets.QTableWidgetItem(itemText)
+            self.owner_info.setItem(i,0, item)
             #self.update()
             #self.filltable()
         #for x in range(0, )

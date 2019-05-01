@@ -313,9 +313,10 @@ class Ui_MainWindow(QtWidgets.QWidget):
         print(selectedRow)
 #         print(Table_name)
 
-        self.profilePage = UI_ProfilePage()
+        self.profilePage = UI_ProfilePage(list(selectedRow),columHeaders)
         #self.profilePage.filltable(columnHeaders,selectedRow)
-        self.profilePage.filltable(selectedRow,columHeaders)
+        #The selected row is returned as a tuple. It is converted to a list
+        self.profilePage.filltable()
 
     def get_search_key(self):
         """

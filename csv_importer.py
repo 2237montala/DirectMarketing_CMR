@@ -1,4 +1,4 @@
-#https://blog.manash.me/quick-pyqt5-1-signal-and-slot-example-in-pyqt5-bf502ccaf11d <- used for import done signal
+    #https://blog.manash.me/quick-pyqt5-1-signal-and-slot-example-in-pyqt5-bf502ccaf11d <- used for import done signal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QCheckBox
 from PyQt5.QtWidgets import QGroupBox, QVBoxLayout,QScrollArea, QPushButton
 from PyQt5.QtWidgets import QRadioButton, QButtonGroup
@@ -11,6 +11,10 @@ from re import search
 #Phone number
 #status
 #interested
+
+#If you try and update the colums and you add a column that shows up before
+#the primary key it won't work. Since the column being added is before the primary
+#key in the csv it thinks it doens't have a primary key
 
 class csv_importer_popup(QtWidgets.QDialog):
     #Signals when csv_importer_popup closes
