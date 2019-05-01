@@ -30,9 +30,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         self.db = DatabaseManager(db_file,self.protected_table_prefix)
         self.tables_in_db = self.db.get_table_names()
         self.db_file_loc = db_file
-        self.curr_table = ''
-        if(len(self.tables_in_db) > 0):
-            self.curr_table = self.tables_in_db[0]
+        self.curr_table = None
 
 
     def setup_main_widget(self,width,height):
@@ -80,6 +78,15 @@ class Ui_MainWindow(QtWidgets.QWidget):
         self.comboBox.activated.connect(self.switch_curr_table_comboBox)
         self.gridLayout.addWidget(self.comboBox, 1, 0, 1, 1)
         QtCore.QMetaObject.connectSlotsByName(self)
+        print(self.tables_in_db)
+        if (self.tables_in_db != []):
+            print(self.tables_in_db[0])
+            print("Tables in db")
+            self.set_curr_table_name(self.tables_in_db[0])
+            self.update_table(self.db.get_table(self.tables_in_db[0]), self.db.get_headers(self.tables_in_db[0]))
+        else:
+            print("Nothing in db")
+            pass
 
     def setup_menu_bar(self):
         """
@@ -259,7 +266,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         Clears the current table and verifies if the users wants to clear it
         """
         choice  = QtWidgets.QMessageBox.question(self, 'Confirmation',
-                                    "Are you sure you want to clear the current table?",
+                                    "Are you sure you want to clear \"%s\" table? \nTHIS OPERATION IS NOT RECOVERABLE" % self.curr_table,
                                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if choice == QtWidgets.QMessageBox.Yes:
             self.db.clear_table(self.curr_table)
@@ -270,18 +277,18 @@ class Ui_MainWindow(QtWidgets.QWidget):
         Delete the current table and verifies if the users wants to delete it
         """
         choice  = QtWidgets.QMessageBox.question(self, 'Confirmation',
-                                    "Are you sure you want to delete the current table? \nTHIS OPERATION IS NOT RECOVERABLE",
+                                    "Are you sure you want to delete \"%s\" table? \nTHIS OPERATION IS NOT RECOVERABLE" % self.curr_table,
                                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if choice == QtWidgets.QMessageBox.Yes:
             self.db.delete_table(self.curr_table)
             self.update_view_menu()
             self.update_combobox()
-
-            if(len(self.tables_in_db) == 0):
-                self.update_table([],[])
+            if (self.tables_in_db != []):
+                self.set_curr_table_name(self.tables_in_db[0])
+                self.update_table(self.db.get_table(self.tables_in_db[0]), self.db.get_headers(self.tables_in_db[0]))
             else:
-                #Update the table to show another table
-                pass
+                self.set_curr_table_name(None)
+                self.update_table([],[])
 
     def update_view_menu(self):
         """
