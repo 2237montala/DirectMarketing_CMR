@@ -416,8 +416,12 @@ class UI_ProfilePage(QtWidgets.QDialog):
         while count != self.house_info.rowCount()-1:
             count2 = len(self.header)
             for x in range(0, count2):
+                print(self.house_info.verticalHeaderItem(count).text())
                 if self.header[x] == self.house_info.verticalHeaderItem(count).text():
+
                    self.information[x] = self.house_info.item(count,0).text()
+
+                   print(self.information[x])
                    count=count+1
                    break
 
@@ -488,7 +492,9 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.Button_NOresponse.setEnabled(False)
         self.Button_responded.setEnabled(False)
         self.AdditionalInfo_txt.setReadOnly(True)
+        
         self.filltable(self.header, self.information)
+            
 
         '''
         here the method would call the data base to save any changes.
