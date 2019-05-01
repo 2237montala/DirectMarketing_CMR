@@ -22,7 +22,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
         super().__init__()
         self.setupUi()
         self.show()
-        print("sadfas")
 
     def setupUi(self):
         self.setObjectName("Form")
