@@ -278,7 +278,6 @@ class DatabaseManager:
             with self.conn:
                 rows = []
                 for header in columns:
-                    #print(header)
                     #Use '"{}"'.format() to allow for special characters in column names
                     self.cursor.execute("SELECT * FROM %s WHERE %s LIKE ?" % (table_name, '"{}"'.format(header)), (searchCriteria,))
                     row = self.cursor.fetchall()
@@ -286,20 +285,14 @@ class DatabaseManager:
                         print("No Row Found at %s" % (header))
                     else:
                         for r in row:
-#                             print(r)
-#                             print('r')
                             if len(rows) == 0:
                                 rows.append(r)
-                            for i in rows:
-#                                 print(i)
-#                                 print('i')
-                                if (r == i):
-#                                     print('i matches r')
-                                    break
-                                else:
+                            else:
+                                for i in rows:
+                                    if (r == i):
+                                        break
+                                if (r != i):
                                     rows.append(r)
-                                    break
-#                         print(rows)
                 return rows
         except Exception as e:
             print("Error Message:", e.args[0])
