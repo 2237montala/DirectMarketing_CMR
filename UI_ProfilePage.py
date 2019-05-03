@@ -12,7 +12,7 @@ import webbrowser
 from DatabaseManager import DatabaseManager
 
 class UI_ProfilePage(QtWidgets.QDialog):
-    profile_saved_signal = QtCore.pyqtSignal(list())
+    #profile_saved_signal = QtCore.pyqtSignal(list())
     CheckEdit = True
 
     def __init__(self,info,headers,current_table,db_file,protected_table_prefix,row_id):
@@ -497,7 +497,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
         db.update_row_at(self.curr_table,primary_key=self.rowID,new_row=ordered_info)
 
         self.filltable()
-        self.profile_saved_signal.emit()
 
         '''
         here the method would call the data base to save any changes.

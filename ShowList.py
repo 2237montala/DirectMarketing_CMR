@@ -7,7 +7,7 @@ import sys
 from DatabaseManager import DatabaseManager
 from file_browser import file_browser
 from csv_importer import csv_importer_popup
-from ui_ProfilePage import UI_ProfilePage
+from UI_ProfilePage import UI_ProfilePage
 
 class Ui_MainWindow(QtWidgets.QWidget):
     log_out_signal = QtCore.pyqtSignal()
@@ -350,7 +350,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
     def log_out(self):
         print("Logging out\nEmitting signal")
         self.log_out_signal.emit()
-    
+
     def switchCalendar(self):
         self.goto_calendar_signal.emit()
 

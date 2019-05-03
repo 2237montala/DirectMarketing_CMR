@@ -8,7 +8,7 @@ from UI_After_LogIn_Page import Ui_CalendarForm
 protected_table_prefix = "__ADMIN__"
 
 #TO make this an .exe run pyinstall gui.py
-#you need to install pyInstall 
+#you need to install pyInstall
 
 
 class gui(QtWidgets.QMainWindow):
@@ -40,7 +40,7 @@ class gui(QtWidgets.QMainWindow):
         self.main_window.valid_login_signal.connect(self.switchCalendar)
         self.setMenuBar(QtWidgets.QMenuBar())
         self.setCentralWidget(self.main_window)
-        
+
     def switchCalendar(self):
         ## Setting the calendar page to main window
         self.main_window = Ui_CalendarForm(self.data_base_file, protected_table_prefix)

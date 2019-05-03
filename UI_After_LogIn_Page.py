@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QDate, QDateTime
 from PyQt5.QtWidgets import QCalendarWidget, QDateEdit
 from dialog import *
-from ui_ProfilePage import UI_ProfilePage
+from UI_ProfilePage import UI_ProfilePage
 from UI_LogIn_Page import Ui_LogIn_Page
 from ShowList import Ui_MainWindow
 from calendar import calendar
@@ -14,7 +14,7 @@ from csv_importer import csv_importer_popup
 Event_Columns = ['Date', 'Event', 'Address', 'Group']
 
 class Ui_CalendarForm(QtWidgets.QDialog):
-    
+
     calendar_to_lists_signal = QtCore.pyqtSignal()
     calendar_to_login_signal = QtCore.pyqtSignal()
 
@@ -44,12 +44,12 @@ class Ui_CalendarForm(QtWidgets.QDialog):
     #passes
     def offpass(self):
         pass
-    
+
     # creates method that handles lists page button and changes widget to the show lists page
     def handle_listsPageButton(self):
         self.calendar_to_lists_signal.emit()
 
-    # creates method that handles the profile page button and it opens the profile page 
+    # creates method that handles the profile page button and it opens the profile page
     def handle_profilePageButton(self):
         try:
             self.createProfileWidget = UI_ProfilePage()
@@ -212,9 +212,9 @@ class Ui_CalendarForm(QtWidgets.QDialog):
             self.line.setFrameShape(QtWidgets.QFrame.HLine)
             self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
             self.line.setObjectName("line")
-    
+
             self.retranslateUi()
-            
+
             # these lines create connects to the buttons with there corresponding methods
             self.calendar.clicked[QtCore.QDate].connect(self.showDate)
             date = self.calendar.selectedDate()
