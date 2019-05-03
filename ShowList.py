@@ -276,9 +276,6 @@ class Ui_MainWindow(QtWidgets.QWidget):
                 self.set_curr_table_name(None)
                 self.update_table([],[])
 
-
-
-
     def update_view_menu(self):
         """
         Updates the options in the view -> switch table menu to display
@@ -310,13 +307,16 @@ class Ui_MainWindow(QtWidgets.QWidget):
         selectedRow = self.db.get_row_at(table_name=self.curr_table,row_id = row+1)
         columHeaders = self.db.get_headers(self.curr_table)
         Table_name= self.curr_table
-        print(selectedRow)
-#         print(Table_name)
 
-        self.profilePage = UI_ProfilePage(list(selectedRow),columHeaders)
+        self.profilePage = UI_ProfilePage(list(selectedRow),columHeaders,self.curr_table,self.db_file_loc,self.protected_table_prefix,row+1)
+        self.profilePage.rejected.connect(self.save_profile)
         #self.profilePage.filltable(columnHeaders,selectedRow)
         #The selected row is returned as a tuple. It is converted to a list
         self.profilePage.filltable()
+
+    def save_profile(self):
+        self.update_menu_action()
+
 
     def get_search_key(self):
         """

@@ -230,10 +230,7 @@ class DatabaseManager:
     def update_row_at(self, table_name, column_name = None, column_value = None, primary_key = -1, new_row = None):
         column_arr =  self.get_headers(table_name)
         if (primary_key != -1):
-            print("PK found")
-            print(primary_key)
             old_row = self.get_row_at(table_name, row_id = primary_key)
-            print(old_row)
             if (len(old_row) == len(new_row)):
                 try:
                     with self.conn:
@@ -249,17 +246,17 @@ class DatabaseManager:
                 return False
         else:
             print("using column method")
-            old_row = self.get_row_at(table_name, column_name, column_value)
+            old_row = self.get_row_at(table_name, '"{}"'.format(column_name), column_value)
             if (len(old_row) == len(new_row)):
                 try:
                     with self.conn:
-                        self.cursor.execute("SELECT _rowid_, * FROM %s WHERE %s = ?" % (table_name, column_name), (column_value,))
-                        rowid = self.cursor.fetchone()
+                        self.cursor.execute("SELECT _rowid_, * FROM %s WHERE %s = ?" % (table_name, '"{}"'.format(column_name)), (column_value,))
+                        row_id = self.cursor.fetchone()
 #                         print(rowid[0])
                         for i in range(0, len(new_row)):
     #                         print(column_arr[i])
     #                         print(new_row[i])
-                            self.cursor.execute("UPDATE %s SET %s='%s' WHERE _rowid_ = ?" % (table_name, column_arr[i], new_row[i]), (rowid[0],))
+                            self.cursor.execute("UPDATE %s SET %s='%s' WHERE _rowid_ = ?" % (table_name, '"{}"'.format(column_arr[i]), new_row[i]), (rowid[0],))
                         return True
                 except Exception as er:
                     #General error message

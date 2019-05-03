@@ -6,24 +6,25 @@
 #
 # WARNING! All changes made in this file will be lost!
 from PyQt5 import QtCore, QtGui, QtWidgets
-from distutils.log import info
 from PyQt5.Qt import QWidget, QApplication, QAbstractItemView, QTableWidgetItem
-from _sqlite3 import Row
 from sys import platform
-
 import webbrowser
-#from ShowList import ShowList
+from DatabaseManager import DatabaseManager
 
 class UI_ProfilePage(QtWidgets.QDialog):
-    profile_saved_signal = QtCore.pyqtSignal('QString')
+    profile_saved_signal = QtCore.pyqtSignal(list())
     CheckEdit = True
 
-    def __init__(self,info,headers):
+    def __init__(self,info,headers,current_table,db_file,protected_table_prefix,row_id):
         super().__init__()
         self.setupUi()
         self.show()
         self.header = headers
         self.information=info
+        self.curr_table = current_table
+        self.db_file_loc = db_file
+        self.protected_table_prefix = protected_table_prefix
+        self.rowID = row_id
 
     def setupUi(self):
         self.setObjectName("Form")
@@ -327,7 +328,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
                    if self.CheckEdit:
                        item.setFlags(QtCore.Qt.ItemIsEditable)
                    self.house_info.setItem(count,0, item)
-                   print(self.header[x])
                    count=count+1
                    break
                 elif self.header[x]=="Interested":
@@ -372,7 +372,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
                     break
 
     def Handle_edit (self):
-        #for x in range(0,3):
         self.CheckEdit = False
         for i in range(0, self.house_info.rowCount()-1):
             itemText = self.house_info.item(i,0).text()
@@ -385,9 +384,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
             self.owner_info.removeCellWidget(i,0)
             item = QtWidgets.QTableWidgetItem(itemText)
             self.owner_info.setItem(i,0, item)
-            #self.update()
-            #self.filltable()
-        #for x in range(0, )
+
         self.Very_interested.setEnabled(True)
         self.Interested.setEnabled(True)
         self.Not_interested.setEnabled(True)
@@ -403,11 +400,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
         while count != self.house_info.rowCount()-1:
             count2 = len(self.header)
             for x in range(0, count2):
-                # if self.header[x] == self.house_info.verticalHeaderItem(count).text():
-                #    self.information[x] = self.house_info.item(count,0).text()
-                #    count=count+1
-                #    break
-                #el
                 if self.header[x]=="Interested":
                     if self.Very_interested.isChecked:
                         info[x] = "0"
@@ -441,16 +433,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
                     break
 
         count =0
-        # while count != self.owner_info.rowCount():
-        #     count2 = len(self.header)
-        #     for x in range(0, count2):
-        #         if self.header[x] == self.owner_info.verticalHeaderItem(count).text():
-        #            self.information[x] = self.owner_info.item(count,0).text()
-        #            count=count+1
-        #            break
-        #         elif x+1 == count2:
-        #             count = count+1
-        #             break
 
         self.Very_interested.setEnabled(False)
         self.Interested.setEnabled(False)
@@ -471,7 +453,6 @@ class UI_ProfilePage(QtWidgets.QDialog):
             elif self.house_info.item(i,0).text() != ".":
                 self.header.insert(headerCount,str(self.house_info.verticalHeaderItem(i).text()))
                 self.information.insert(headerCount,self.house_info.item(i,0).text())
-                print(self.header)
                 headerCount += 1
                 #count2 = len(self.header)
                 #x = 0
@@ -485,20 +466,38 @@ class UI_ProfilePage(QtWidgets.QDialog):
             if self.owner_info.item(i,0).text() != ".":
                 self.header.insert(headerCount,str(self.owner_info.verticalHeaderItem(i).text()))
                 self.information.insert(headerCount,str(self.owner_info.item(i,0).text()))
-                print(self.header)
+
                 headerCount += 1
                 #count2 = len(self.header)
                 #x = 0
 
+        db = DatabaseManager(self.db_file_loc,self.protected_table_prefix)
+        header_from_db = db.get_headers(self.curr_table)
 
+        different_cols = list(set(self.header)
+                                - set(header_from_db))
 
-        print(self.header)
-        print(self.information)
+        print(different_cols)
+        #Add the extra columns
+        for col in different_cols:
+            db.add_column(self.curr_table,col,'string')
+            pass
+
+        ordered_headers = header_from_db + different_cols
+        ordered_info = []
+
+        for i in range(len(ordered_headers)):
+            for q in range(len(self.header)):
+                if ordered_headers[i] == self.header[q]:
+                    ordered_info.append(str(self.information[q]))
+
+        print(ordered_headers)
+        print(ordered_info)
+
+        db.update_row_at(self.curr_table,primary_key=self.rowID,new_row=ordered_info)
 
         self.filltable()
-
-
-        #signal_info_str = "//".join(UserInfo)
+        self.profile_saved_signal.emit()
 
         '''
         here the method would call the data base to save any changes.
@@ -669,7 +668,7 @@ if __name__ == '__main__':                      #
 
     header = ["Site_Address", "Site_City", "Zip Code", "State","Status","Comments of Property"]
     information = ["517 Madison Ave", "Glencoe", "60022","Illinois","0","comments"]
-    window = UI_ProfilePage(information,header)
+    window = UI_ProfilePage(information,header,'Test15')
     window.filltable()
     window.show()
     sys.exit(app.exec_())
