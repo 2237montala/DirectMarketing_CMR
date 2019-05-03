@@ -2,7 +2,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QDate, QDateTime
 from PyQt5.QtWidgets import QCalendarWidget, QDateEdit
 from dialog import *
-from ui_ProfilePage import *
+from ui_ProfilePage import UI_ProfilePage
+from UI_LogIn_Page import Ui_LogIn_Page
+from ShowList import Ui_MainWindow
 from calendar import calendar
 
 from DatabaseManager import DatabaseManager
@@ -12,6 +14,9 @@ from csv_importer import csv_importer_popup
 Event_Columns = ['Date', 'Event', 'Address', 'Group']
 
 class Ui_CalendarForm(QtWidgets.QDialog):
+    
+    calendar_to_lists_signal = QtCore.pyqtSignal()
+    calendar_to_login_signal = QtCore.pyqtSignal()
 
     def __init__(self, db_file, protected_table_prefix):
         try:
@@ -42,40 +47,28 @@ class Ui_CalendarForm(QtWidgets.QDialog):
     
     # creates method that handles lists page button and changes widget to the show lists page
     def handle_listsPageButton(self):
-        print("clicked")
-        #self.window2 = QtWidgets.QMainWindow()
-        #self.ui2 = whatever the right window is
-        #self.ui2.name of class
-        #self.window2.show()
-        #CalendarForm.hide()
-        print("made it")
+        self.calendar_to_lists_signal.emit()
 
     # creates method that handles the profile page button and it opens the profile page 
     def handle_profilePageButton(self):
-        print("clicked")
-        self.window3 = QtWidgets.QWidget()
-        self.ui3 = ui_ProfilePage()
-        self.ui3.setupUi(self.window3)
-        self.window3.show()
-        self.hide()
-        print("made it")
+        try:
+            self.createProfileWidget = UI_ProfilePage()
+            self.createProfileWidget.create_account_done_signal.connect()
+            self.createProfileWidget.exec_()
+        except Exception as er:
+            print('Error message:', er.args[0])
+            return False
 
     # creates method that handles the search page button and it should open the show list ui page
     def handle_searchPageButton(self):
-        print("clicked")
-        #self.window4 = QtWidgets.QMainWindow()
-        #self.ui4 =
-        #self.ui4.classname(self.window4)
-        #self.window4.show()
-        #CalendarForm.hide()
-        print("made it")
+        try:
+            self.calendar_to_login_signal.emit()
+        except Exception as er:
+            print('Error message:', er.args[0])
+            return False
 
     # creates method that handles the home page button and it just refreshes the page
     def handle_homePageButton(self):
-        self.update()
-
-    # creates a method that refreshes the page
-    def handle_refreshButton(self):
         self.update()
 
     # creates a method that sets the label on the page to the date that is selected from the calendar
@@ -147,9 +140,6 @@ class Ui_CalendarForm(QtWidgets.QDialog):
             self.horizontalLayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
             self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
             self.horizontalLayout.setObjectName("horizontalLayout")
-            self.RefreshButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-            self.RefreshButton.setObjectName("RefreshButton")
-            self.horizontalLayout.addWidget(self.RefreshButton)
             self.EventButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
             self.EventButton.setIconSize(QtCore.QSize(20, 20))
             self.EventButton.setCheckable(False)
@@ -232,7 +222,6 @@ class Ui_CalendarForm(QtWidgets.QDialog):
             self.ProfilePageButton.clicked.connect(self.handle_profilePageButton)
             self.SearchPageButton.clicked.connect(self.handle_searchPageButton)
             self.HomePageButton.clicked.connect(self.handle_homePageButton)
-            self.RefreshButton.clicked.connect(self.handle_refreshButton)
             self.EventButton.clicked.connect(self.EventButton_handler)
             QtCore.QMetaObject.connectSlotsByName(self)
         except Exception as er:
@@ -243,11 +232,10 @@ class Ui_CalendarForm(QtWidgets.QDialog):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("CalendarForm", "Calendar"))
         self.CompNameLabel.setText(_translate("CalendarForm", "Chicago Turnkey Properties"))
-        self.RefreshButton.setText(_translate("CalendarForm", "Refresh"))
         self.EventButton.setText(_translate("CalendarForm", "Add Event"))
         self.HomePageButton.setText(_translate("CalendarForm", "Home"))
         self.ListsPageButton.setText(_translate("CalendarForm", "Leads Page"))
-        self.SearchPageButton.setText(_translate("CalendarForm", "Search for Lead"))
+        self.SearchPageButton.setText(_translate("CalendarForm", "Sign out"))
         self.ProfilePageButton.setText(_translate("CalendarForm", "Create New Profile"))
         self.label.setText(_translate("CalendarForm", ""))
         self.label_2.setText(_translate("CalendarForm", "Event:"))

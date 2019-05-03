@@ -3,6 +3,7 @@ import sys
 from ShowList import Ui_MainWindow
 from UI_LogIn_Page import Ui_LogIn_Page
 from PyQt5.Qt import QDesktopWidget
+from UI_After_LogIn_Page import Ui_CalendarForm
 
 protected_table_prefix = "__ADMIN__"
 
@@ -22,21 +23,30 @@ class gui(QtWidgets.QMainWindow):
         ## Setting initial main window to be the login page
         self.main_window = Ui_LogIn_Page(self.data_base_file, protected_table_prefix)
         self.setCentralWidget(self.main_window)
-        self.main_window.valid_login_signal.connect(self.switchMainWidget)
+        self.main_window.valid_login_signal.connect(self.switchCalendar)
 
     def switchMainWidget(self):
         ## Setting the main widget to be the ShowList gui
         self.main_window = Ui_MainWindow(self.data_base_file,protected_table_prefix)
         self.main_window.setup_main_widget(self.width,self.height)
-        self.main_window.log_out_signal.connect(self.log_out)
-
+        self.main_window.log_out_signal.connect(self.switchLogIn)
+        self.main_window.goto_calendar_signal.connect(self.switchCalendar)
         self.setMenuBar(self.main_window.setup_menu_bar())
         self.setCentralWidget(self.main_window)
 
-    def log_out(self):
+    def switchLogIn(self):
         ## Setting the login page to be the main window
         self.main_window = Ui_LogIn_Page(self.data_base_file, protected_table_prefix)
-        self.main_window.valid_login_signal.connect(self.switchMainWidget)
+        self.main_window.valid_login_signal.connect(self.switchCalendar)
+        self.setMenuBar(QtWidgets.QMenuBar())
+        self.setCentralWidget(self.main_window)
+        
+    def switchCalendar(self):
+        ## Setting the calendar page to main window
+        self.main_window = Ui_CalendarForm(self.data_base_file, protected_table_prefix)
+        self.main_window.calendar_to_login_signal.connect(self.switchLogIn)
+        self.main_window.calendar_to_lists_signal.connect(self.switchMainWidget)
+        self.setMenuBar(QtWidgets.QMenuBar())
         self.setCentralWidget(self.main_window)
 
 if __name__ == "__main__":
