@@ -291,7 +291,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
         item = self.owner_info.verticalHeaderItem(9)
         item.setText(_translate("Form", "Owner_Occupied"))
         item = self.owner_info.verticalHeaderItem(10)
-        item.setText(_translate("Form", "Purchased_Prise"))
+        item.setText(_translate("Form", "Purchased_Price"))
         item = self.owner_info.verticalHeaderItem(11)
         item.setText(_translate("Form", "Phone_Number"))
         item = self.owner_info.horizontalHeaderItem(0)
@@ -526,23 +526,23 @@ class UI_ProfilePage(QtWidgets.QDialog):
         Adress="/"
         count = len(self.header)
         for x in range(0, count):
-            if self.header[x] == "Adress:":
+            if self.header[x] == "Site_Address":
                 HoldD = self.information[x].split(" ")
                 print(HoldD)
                 for y in range(0, len(HoldD)):
                     if y==len(HoldD)-1:
-                        Adress=Adress+HoldD[y]
+                        Adress=Adress+str(HoldD[y])
                     else:
-                        Adress=Adress+HoldD[y]+"-"
+                        Adress=Adress+str(HoldD[y])+"-"
                 print(Adress)
         for x in range(0, count):
-            if self.header[x] == "City:":
+            if self.header[x] == "Site_City":
                 Adress = Adress+",-"+self.information[x]
         for x in range(0, count):
-            if self.header[x] == "Zip Code:":
-                Adress = Adress+"-"+self.information[x]
+            if self.header[x] == "Site_Zip_Code":
+                Adress = Adress+"-"+str(self.information[x])
         for x in range(0, count):
-            if self.header[x] == "State:":
+            if self.header[x] == "Site_State":
                 Adress = Adress+"-"+self.information[x]
 
 
