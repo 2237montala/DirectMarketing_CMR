@@ -7,11 +7,12 @@ import sys
 from DatabaseManager import DatabaseManager
 from file_browser import file_browser
 from csv_importer import csv_importer_popup
-from UI_ProfilePage import UI_ProfilePage
+from ui_ProfilePage import UI_ProfilePage
 
 class Ui_MainWindow(QtWidgets.QWidget):
     log_out_signal = QtCore.pyqtSignal()
     goto_profile_signal = QtCore.pyqtSignal()
+    goto_calendar_signal = QtCore.pyqtSignal()
 
     def __init__(self,db_file,protected_table_prefix):
         super().__init__()
@@ -81,6 +82,7 @@ class Ui_MainWindow(QtWidgets.QWidget):
         self.menubar.setNativeMenuBar(True)
 
         fileMenu = self.menubar.addMenu("File")
+        fileMenu.addAction("Home", self.switchCalendar)
         fileMenu.addAction("Log Out", self.log_out)
         editMenu = self.menubar.addMenu("Edit")
         editMenu.addAction('Import CSV',self.open_csv_import)
@@ -349,6 +351,9 @@ class Ui_MainWindow(QtWidgets.QWidget):
     def log_out(self):
         print("Logging out\nEmitting signal")
         self.log_out_signal.emit()
+    
+    def switchCalendar(self):
+        self.goto_calendar_signal.emit()
 
 if __name__ == '__main__':
     data_base_file = 'programData.db'
