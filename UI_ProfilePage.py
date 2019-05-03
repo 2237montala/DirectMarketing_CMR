@@ -224,13 +224,13 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.retranslateUi()
         QtCore.QMetaObject.connectSlotsByName(self)
 
-        for i in range(self.house_info.rowCount()-1):
-            item = QtWidgets.QTableWidgetItem("")
+        for i in range(self.house_info.rowCount()):
+            item = QtWidgets.QTableWidgetItem(".")
             item.setFlags(QtCore.Qt.ItemIsEditable)
             self.house_info.setItem(i,0, item)
 
-        for i in range(self.owner_info.rowCount()-1):
-            item = QtWidgets.QTableWidgetItem("")
+        for i in range(self.owner_info.rowCount()):
+            item = QtWidgets.QTableWidgetItem(".")
             item.setFlags(QtCore.Qt.ItemIsEditable)
             self.owner_info.setItem(i,0, item)
 
@@ -360,8 +360,7 @@ class UI_ProfilePage(QtWidgets.QDialog):
             count2 = len(self.header)
             for x in range(0, count2):
                 if self.header[x] == self.owner_info.verticalHeaderItem(count).text():
-                   item = QtWidgets.QTableWidgetItem(self.information[x])
-
+                   item = QtWidgets.QTableWidgetItem(str(self.information[x]))
                    if self.CheckEdit:
                     item.setFlags(QtCore.Qt.ItemIsEditable)
 
@@ -404,11 +403,12 @@ class UI_ProfilePage(QtWidgets.QDialog):
         while count != self.house_info.rowCount()-1:
             count2 = len(self.header)
             for x in range(0, count2):
-                if self.header[x] == self.house_info.verticalHeaderItem(count).text():
-                   self.information[x] = self.house_info.item(count,0).text()
-                   count=count+1
-                   break
-                elif self.header[x]=="Interested":
+                # if self.header[x] == self.house_info.verticalHeaderItem(count).text():
+                #    self.information[x] = self.house_info.item(count,0).text()
+                #    count=count+1
+                #    break
+                #el
+                if self.header[x]=="Interested":
                     if self.Very_interested.isChecked:
                         info[x] = "0"
                         count =count+1
@@ -441,16 +441,16 @@ class UI_ProfilePage(QtWidgets.QDialog):
                     break
 
         count =0
-        while count != self.owner_info.rowCount():
-            count2 = len(self.header)
-            for x in range(0, count2):
-                if self.header[x] == self.owner_info.verticalHeaderItem(count).text():
-                   self.information[x] = self.owner_info.item(count,0).text()
-                   count=count+1
-                   break
-                elif x+1 == count2:
-                    count = count+1
-                    break
+        # while count != self.owner_info.rowCount():
+        #     count2 = len(self.header)
+        #     for x in range(0, count2):
+        #         if self.header[x] == self.owner_info.verticalHeaderItem(count).text():
+        #            self.information[x] = self.owner_info.item(count,0).text()
+        #            count=count+1
+        #            break
+        #         elif x+1 == count2:
+        #             count = count+1
+        #             break
 
         self.Very_interested.setEnabled(False)
         self.Interested.setEnabled(False)
@@ -459,6 +459,41 @@ class UI_ProfilePage(QtWidgets.QDialog):
         self.Button_NOresponse.setEnabled(False)
         self.Button_responded.setEnabled(False)
         self.AdditionalInfo_txt.setReadOnly(True)
+
+        self.header = []
+        self.information = []
+
+        headerCount = 0
+        for i in range(self.house_info.rowCount()):
+            if self.house_info.verticalHeaderItem(i).text() in self.header:
+                self.information[headerCount] = self.house_info.item(i,0).text()
+                headerCount += 1
+            elif self.house_info.item(i,0).text() != ".":
+                self.header.insert(headerCount,str(self.house_info.verticalHeaderItem(i).text()))
+                self.information.insert(headerCount,self.house_info.item(i,0).text())
+                print(self.header)
+                headerCount += 1
+                #count2 = len(self.header)
+                #x = 0
+
+        tempCount = headerCount
+        headerCount = tempCount
+        for i in range(self.owner_info.rowCount()):
+            if self.owner_info.verticalHeaderItem(i).text() in self.header:
+                self.information[headerCount] = self.owner_info.item(i,0).text()
+                headerCount += 1
+            if self.owner_info.item(i,0).text() != ".":
+                self.header.insert(headerCount,str(self.owner_info.verticalHeaderItem(i).text()))
+                self.information.insert(headerCount,str(self.owner_info.item(i,0).text()))
+                print(self.header)
+                headerCount += 1
+                #count2 = len(self.header)
+                #x = 0
+
+
+
+        print(self.header)
+        print(self.information)
 
         self.filltable()
 

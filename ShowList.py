@@ -353,7 +353,7 @@ if __name__ == '__main__':
     data_base_file = 'programData.db'
     app = QtWidgets.QApplication(sys.argv)
     mainWindow = QtWidgets.QMainWindow()
-    mainWindow.resize(1600 , 900+50)
+    mainWindow.resize(1600 , 600)
     leadsTable = Ui_MainWindow(data_base_file,'__ADMIN__')
     leadsTable.setup_main_widget(1600,900)
     mainWindow.setCentralWidget(leadsTable)
