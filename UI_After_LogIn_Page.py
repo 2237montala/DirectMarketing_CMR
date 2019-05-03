@@ -34,16 +34,16 @@ class Ui_CalendarForm(QtWidgets.QDialog):
     # creates method that handles the add event button and opens the dialog window
     def EventButton_handler(self):
         try:
-            ui_update = Ui_Dialog('test.db', '__ADMIN__')
-            ui_update.calendar_dialog_signal.connect(lambda: self.offpass())
-            ui_update.exec_()
+            self.ui_update = Ui_Dialog('test.db', '__ADMIN__')
+            self.ui_update.calendar_dialog_signal.connect(self.offpass)
+            self.ui_update.exec_()
         except Exception as er:
             print('Error message:', er.args[0])
             return False
         #self.calendar.
     #passes
     def offpass(self):
-        print('')
+        pass
     
     # creates method that handles lists page button and changes widget to the show lists page
     def handle_listsPageButton(self):
