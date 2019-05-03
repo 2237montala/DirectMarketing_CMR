@@ -7,7 +7,7 @@ import sys
 from DatabaseManager import DatabaseManager
 from file_browser import file_browser
 from csv_importer import csv_importer_popup
-from ui_ProfilePage import UI_ProfilePage
+from UI_ProfilePage import UI_ProfilePage
 
 class Ui_MainWindow(QtWidgets.QWidget):
     log_out_signal = QtCore.pyqtSignal()
