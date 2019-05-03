@@ -34,7 +34,7 @@ class Ui_CalendarForm(QtWidgets.QDialog):
     # creates method that handles the add event button and opens the dialog window
     def EventButton_handler(self):
         try:
-            self.ui_update = Ui_Dialog('test.db', '__ADMIN__')
+            self.ui_update = Ui_Dialog('programData.db', '__ADMIN__')
             self.ui_update.calendar_dialog_signal.connect(self.offpass)
             self.ui_update.exec_()
         except Exception as er:
@@ -163,9 +163,6 @@ class Ui_CalendarForm(QtWidgets.QDialog):
             self.SearchPageButton = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
             self.SearchPageButton.setObjectName("SearchPageButton")
             self.horizontalLayout_2.addWidget(self.SearchPageButton)
-            self.ProfilePageButton = QtWidgets.QPushButton(self.horizontalLayoutWidget_2)
-            self.ProfilePageButton.setObjectName("ProfilePageButton")
-            self.horizontalLayout_2.addWidget(self.ProfilePageButton)
             self.label = QtWidgets.QLabel(self)
             self.label.setGeometry(QtCore.QRect(975, 159, 150, 50))
             font = QtGui.QFont()
@@ -219,7 +216,6 @@ class Ui_CalendarForm(QtWidgets.QDialog):
             self.calendar.clicked[QtCore.QDate].connect(self.showDate)
             date = self.calendar.selectedDate()
             self.ListsPageButton.clicked.connect(self.handle_listsPageButton)
-            self.ProfilePageButton.clicked.connect(self.handle_profilePageButton)
             self.SearchPageButton.clicked.connect(self.handle_searchPageButton)
             self.HomePageButton.clicked.connect(self.handle_homePageButton)
             self.EventButton.clicked.connect(self.EventButton_handler)
@@ -236,7 +232,6 @@ class Ui_CalendarForm(QtWidgets.QDialog):
         self.HomePageButton.setText(_translate("CalendarForm", "Home"))
         self.ListsPageButton.setText(_translate("CalendarForm", "Leads Page"))
         self.SearchPageButton.setText(_translate("CalendarForm", "Sign out"))
-        self.ProfilePageButton.setText(_translate("CalendarForm", "Create New Profile"))
         self.label.setText(_translate("CalendarForm", ""))
         self.label_2.setText(_translate("CalendarForm", "Event:"))
         self.label_3.setText(_translate("CalendarForm", " "))
